@@ -87,10 +87,10 @@ export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
         </header>
 
         <main
-          className="flex min-h-0 flex-1 flex-col items-center justify-start px-5 pt-8 pb-[clamp(11rem,42vmin,20rem)] sm:px-8 sm:pt-12 md:px-12 md:pt-16"
+          className="flex min-h-0 flex-1 flex-col items-center justify-center px-5 pb-[clamp(14rem,48vmin,26rem)] sm:px-8 md:px-12"
           aria-label="Early access"
         >
-          <div className="mt-[100px] flex w-full max-w-sm flex-wrap items-stretch justify-center gap-3 text-[#0C0B09]">
+          <div className="flex w-full max-w-sm flex-wrap items-stretch justify-center gap-3 text-[#0C0B09]">
             <button
               type="button"
               onClick={() => {
