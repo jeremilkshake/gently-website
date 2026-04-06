@@ -90,7 +90,7 @@ export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
         </header>
 
         <main
-          className="flex min-h-0 flex-1 flex-col items-center justify-center px-5 pb-[clamp(14rem,48vmin,26rem)] sm:px-8 md:px-12"
+          className="flex min-h-0 flex-1 flex-col items-center justify-start pt-8 pb-[clamp(14rem,48vmin,26rem)] sm:justify-center sm:pt-0 px-5 sm:px-8 md:px-12"
           aria-label="Early access"
         >
           <div className="flex w-full max-w-sm flex-wrap items-stretch justify-center gap-3 text-[#0C0B09]">
@@ -123,7 +123,10 @@ export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
             </button>
           </div>
 
-          <p className="mt-6 text-center font-nunito font-extrabold leading-[1.31] tracking-[0%] text-[#0C0B09]" style={{ fontSize: "clamp(2rem, 5vw, 3.85rem)" }}>
+          <p
+            className="mt-8 text-center font-nunito font-extrabold leading-[1.31] tracking-[0%] text-[#0C0B09] sm:mt-10"
+            style={{ fontSize: "clamp(2rem, 5vw, 3.85rem)" }}
+          >
             Grief shouldn&apos;t feel like admin.{" "}
             <br />
             Let us handle the paperwork,{" "}
