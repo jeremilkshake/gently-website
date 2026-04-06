@@ -1,7 +1,8 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { GatePageContent } from "@/types";
 import { gateScreenAssets, marketingAccessGate, openExternalTab } from "@/lib/content";
@@ -23,7 +24,61 @@ type Props = {
 
 export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
   const router = useRouter();
+  const reduceMotion = useReducedMotion();
   const showMisconfigured = urlGate === "misconfigured";
+
+  const fadeEase = [0.22, 0.94, 0.32, 1] as const;
+  const fadeUp = reduceMotion ? 0 : 14;
+
+  /** End-to-end intro ≈ 3s: header (parallel) → word cascade → Early Access → Info */
+  const timeline = useMemo(() => {
+    const TOTAL = 3;
+    if (reduceMotion) {
+      return {
+        headerDur: 0,
+        wordDur: 0,
+        wordDelays: [] as number[],
+        btnDur: 0,
+        btn1Delay: 0,
+        btn2Delay: 0,
+      };
+    }
+    const flat = content.headlineLines.flat();
+    const n = flat.length;
+    const T_HEADER = 0.45;
+    const wordDur = 0.16;
+    const btnDur = 0.34;
+    const btnStagger = 0.12;
+    const gapBeforeBtns = 0.06;
+    const btn2Start = TOTAL - btnDur;
+    const btn1Start = btn2Start - btnStagger;
+    const wordsEnd = btn1Start - gapBeforeBtns;
+    const wordsStart = T_HEADER;
+    const wordsWindow = Math.max(0, wordsEnd - wordsStart - wordDur);
+    const wordStagger = n <= 1 ? 0 : wordsWindow / (n - 1);
+    const wordDelays = flat.map((_, i) => wordsStart + i * wordStagger);
+
+    return {
+      headerDur: T_HEADER,
+      wordDur,
+      wordDelays,
+      btnDur,
+      btn1Delay: btn1Start,
+      btn2Delay: btn2Start,
+    };
+  }, [content.headlineLines, reduceMotion]);
+
+  const headlineWords = useMemo(() => {
+    let i = 0;
+    return content.headlineLines.map((line) =>
+      line.map((word) => ({ word, delayIndex: i++ }))
+    );
+  }, [content.headlineLines]);
+
+  const headlineAriaLabel = useMemo(
+    () => content.headlineLines.map((line) => line.join(" ")).join(" "),
+    [content.headlineLines]
+  );
 
   const [passwordOpen, setPasswordOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
@@ -76,8 +131,28 @@ export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
 
       <div className="relative z-10 flex min-h-dvh min-w-0 flex-1 flex-col font-nunito font-semibold">
         <header className="flex shrink-0 flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 pt-3 sm:px-6 sm:pt-4 md:px-10 md:pt-5">
-          <Logo variant="nav" imageClassName="h-5 w-auto sm:h-6" />
-          <div className="flex min-w-0 flex-1 basis-[10rem] justify-end sm:basis-auto">
+          <motion.div
+            className="shrink-0"
+            initial={{ opacity: reduceMotion ? 1 : 0, y: fadeUp }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: timeline.headerDur,
+              ease: fadeEase,
+              delay: 0,
+            }}
+          >
+            <Logo variant="nav" imageClassName="h-5 w-auto sm:h-6" />
+          </motion.div>
+          <motion.div
+            className="flex min-w-0 flex-1 basis-[10rem] justify-end sm:basis-auto"
+            initial={{ opacity: reduceMotion ? 1 : 0, y: fadeUp }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: timeline.headerDur,
+              ease: fadeEase,
+              delay: 0,
+            }}
+          >
             <Image
               src={gateScreenAssets.taglineSvg}
               alt={content.tagline}
@@ -86,15 +161,41 @@ export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
               className="h-[clamp(0.7rem,1.85vw+0.25rem,1.05rem)] w-auto max-w-[min(88vw,20rem)] shrink object-contain object-right"
               priority
             />
-          </div>
+          </motion.div>
         </header>
 
         <main
           className="flex min-h-0 flex-1 flex-col items-center justify-start pt-8 pb-[clamp(14rem,48vmin,26rem)] sm:justify-center sm:pt-0 px-5 sm:px-8 md:px-12"
           aria-label="Early access"
         >
-          <div className="flex w-full max-w-sm flex-wrap items-stretch justify-center gap-3 text-[#0C0B09]">
-            <button
+          <p
+            className="m-0 text-center font-nunito font-extrabold leading-[1.31] tracking-[0%] text-[#0C0B09] sm:mt-0"
+            style={{ fontSize: "clamp(2rem, 5vw, 3.85rem)" }}
+            aria-label={headlineAriaLabel}
+          >
+            {headlineWords.map((line, li) => (
+              <span key={li} className="block">
+                {line.map(({ word, delayIndex }) => (
+                  <motion.span
+                    key={delayIndex}
+                    className="inline-block me-[0.28em] last:me-0"
+                    initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: timeline.wordDur,
+                      ease: fadeEase,
+                      delay: reduceMotion ? 0 : timeline.wordDelays[delayIndex] ?? 0,
+                    }}
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </span>
+            ))}
+          </p>
+
+          <div className="mt-8 flex w-full max-w-sm flex-wrap items-stretch justify-center gap-3 text-[#0C0B09] sm:mt-10">
+            <motion.button
               type="button"
               onClick={() => {
                 setPasswordOpen(true);
@@ -106,10 +207,17 @@ export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
                 gateBtnBorderShadow,
                 "bg-[var(--gate-intro-blue)] text-[var(--text)] transition hover:brightness-[0.97] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)]",
               )}
+              initial={{ opacity: reduceMotion ? 1 : 0, y: fadeUp }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: timeline.btnDur,
+                ease: fadeEase,
+                delay: reduceMotion ? 0 : timeline.btn1Delay,
+              }}
             >
               {content.accessCta}
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               type="button"
               onClick={() => setInfoOpen(true)}
               className={cn(
@@ -118,21 +226,17 @@ export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
                 gateBtnBorderShadow,
                 "transition hover:bg-[#0C0B09]/10 active:translate-y-px active:shadow-[0_3px_0_0_var(--text)]",
               )}
+              initial={{ opacity: reduceMotion ? 1 : 0, y: fadeUp }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: timeline.btnDur,
+                ease: fadeEase,
+                delay: reduceMotion ? 0 : timeline.btn2Delay,
+              }}
             >
               {content.infoCta}
-            </button>
+            </motion.button>
           </div>
-
-          <p
-            className="mt-8 text-center font-nunito font-extrabold leading-[1.31] tracking-[0%] text-[#0C0B09] sm:mt-10"
-            style={{ fontSize: "clamp(2rem, 5vw, 3.85rem)" }}
-          >
-            Grief shouldn&apos;t feel like admin.{" "}
-            <br />
-            Let us handle the paperwork,{" "}
-            <br />
-            You handle the human stuff.
-          </p>
         </main>
       </div>
 

@@ -40,6 +40,8 @@ export interface GatePageContent {
   /** Short line under the button */
   accessButtonSubtext: string;
   accessCta: string;
+  /** Gate hero — lines of words (word-by-word reveal); each string is one word token */
+  headlineLines: string[][];
   /** Opens the explanatory modal (shown beside Early Access on first paint) */
   infoCta: string;
   /** Title on the info modal */

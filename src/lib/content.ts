@@ -40,6 +40,11 @@ export const gatePage: GatePageContent = {
   accessButtonSubtext:
     "Need credentials? Contact whoever supplied this link.",
   accessCta: "Early Access",
+  headlineLines: [
+    ["Grief", "shouldn't", "feel", "like", "admin."],
+    ["Let", "us", "handle", "the", "paperwork,"],
+    ["You", "handle", "the", "human", "stuff."],
+  ],
   infoCta: "Info",
   infoModalTitle: "About this preview",
   infoCloseCta: "Close",
