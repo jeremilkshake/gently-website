@@ -67,7 +67,10 @@ export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
   return (
     <div className="fixed inset-0 z-[200] flex min-h-0 flex-col overflow-x-hidden overflow-y-auto bg-[#FFD12B]">
       <div
-        className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-[#FFD12B] bg-[url('/gate-assets/intro.svg')] bg-contain bg-bottom bg-no-repeat"
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-[#FFD12B] bg-contain bg-bottom bg-no-repeat"
+        style={{
+          backgroundImage: `url("${gateScreenAssets.introSvg}?v=${gateScreenAssets.introVersion}")`,
+        }}
         aria-hidden
       />
 
@@ -119,6 +122,14 @@ export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
               {content.infoCta}
             </button>
           </div>
+
+          <p className="mt-6 text-center font-nunito font-extrabold leading-[1.31] tracking-[0%] text-[#0C0B09]" style={{ fontSize: "clamp(2rem, 5vw, 3.85rem)" }}>
+            Grief shouldn&apos;t feel like admin.{" "}
+            <br />
+            Let us handle the paperwork,{" "}
+            <br />
+            You handle the human stuff.
+          </p>
         </main>
       </div>
 

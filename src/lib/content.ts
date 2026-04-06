@@ -58,6 +58,9 @@ export const gatePage: GatePageContent = {
 /** Public paths for the password-gate screen header */
 export const gateScreenAssets = {
   taglineSvg: "/gate-assets/tagline-for-you.svg",
+  /** Gate background; bump `introVersion` after replacing the file to bust CDN/browser cache */
+  introSvg: "/gate-assets/intro.svg",
+  introVersion: "20260206",
 } as const;
 
 /** Nav + footer labels when the stealth gate may be active */
