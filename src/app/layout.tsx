@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { DM_Sans, Fraunces, Nunito } from "next/font/google";
 import "./globals.css";
 import { AudienceProvider } from "@/lib/audienceContext";
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body style={pageSurface}>
         <AudienceProvider>{children}</AudienceProvider>
+        <Analytics />
       </body>
     </html>
   );
