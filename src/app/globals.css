@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+/* Tailwind v4 — design tokens exposed as utilities (e.g. max-w-content) */
+@theme {
+  --max-width-content: 1060px;
+}
+
+/*
+ * Semantic tokens for components (also used in arbitrary values like bg-[var(--bg)]).
+ * Keep in :root so inline styles and JS can reference the same names.
+ */
+:root {
+  /* Light theme — warm paper, pillar colours tuned for contrast on pale backgrounds */
+  --bg: #f7f4ed;
+  --bg-2: #efeae0;
+  --bg-3: #e4dfd3;
+  --card: #fefdfb;
+  --card-active: #e8e2d6;
+  --text: #1c1914;
+  --muted: #5c574e;
+  --dim: #8a8478;
+  --accent: #8f7d4e;
+  --blue: #5a7894;
+  --green: #4f7568;
+  --destructive: #a33434;
+  --border: rgba(28, 25, 20, 0.09);
+  --border-subtle: rgba(28, 25, 20, 0.05);
+  --border-hover: rgba(28, 25, 20, 0.16);
+  --nav-glass-bg: rgba(247, 244, 237, 0.88);
+  --surface-hover: rgba(28, 25, 20, 0.05);
+  --shadow-card: 0 4px 24px rgba(28, 25, 20, 0.06), 0 12px 40px rgba(28, 25, 20, 0.05);
+  --shadow-float: 0 8px 32px rgba(28, 25, 20, 0.07), 0 24px 64px rgba(28, 25, 20, 0.06);
+  --shadow-dropdown: 0 16px 48px rgba(28, 25, 20, 0.1), 0 4px 16px rgba(28, 25, 20, 0.04);
+  --glow-wellbeing: rgba(79, 117, 104, 0.14);
+  /* Gate intro.svg — inner diamond light blue */
+  --gate-intro-blue: #2ba1fb;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    margin: 0;
+    min-height: 100%;
+  }
+  body {
+    margin: 0;
+    min-height: 100%;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-dm-sans), system-ui, sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  ::selection {
+    background: rgba(143, 125, 78, 0.22);
+    color: var(--text);
+  }
+}
+
+@layer utilities {
+  .font-serif {
+    font-family: var(--font-fraunces), Georgia, serif;
+  }
+  .font-nunito {
+    font-family: var(--font-nunito), system-ui, sans-serif;
+  }
+  .fade-up {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .marquee-track {
+    animation: slideLeft 36s linear infinite;
+  }
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+  .nav-glass {
+    background: var(--nav-glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .card-hover {
+    transition: border-color 0.25s;
+  }
+  .card-hover:hover {
+    border-color: color-mix(in srgb, var(--accent) 32%, var(--border));
+  }
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  .shadow-float {
+    box-shadow: var(--shadow-float);
+  }
+  .shadow-dropdown {
+    box-shadow: var(--shadow-dropdown);
+  }
+}
+
+@keyframes slideLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+}
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}

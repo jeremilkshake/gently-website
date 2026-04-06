@@ -1,0 +1,80 @@
+# GrieveGently — Cursor Rules
+# grievegently.com
+
+## Project
+This is the landing page for GrieveGently at grievegently.com.
+Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 · Framer Motion.
+
+## Tailwind v4
+Global styles use `@import "tailwindcss"` in src/app/globals.css — not the v3 `@tailwind base/components/utilities` directives.
+Extend the design system with `@theme { }` in that file; keep shared semantic colours in `:root` for `var(--*)` in components.
+tailwind.config.ts is content paths only.
+
+## The most important rule
+ALL copy lives in src/lib/content.ts. Never hardcode text strings in components.
+When adding new sections, add the data to content.ts first, then import it.
+
+## Design tokens
+Never hardcode hex values. Always use CSS custom properties (light theme — see src/app/globals.css :root):
+
+  var(--bg)       warm off-white page background
+  var(--bg-2)     alternate sections
+  var(--bg-3)     subtle panels / inputs
+  var(--card)     card / dropdown surfaces
+  var(--card-active)  selected pillar tab background
+  var(--text)     primary text
+  var(--muted)    secondary text
+  var(--dim)      tertiary / legal footer
+  var(--accent)   gold — Estate pillar (tuned for contrast on light)
+  var(--blue)     Admin pillar
+  var(--green)    Wellbeing pillar
+  var(--border)   default borders
+  var(--shadow-card)  var(--shadow-float)  var(--shadow-dropdown)  elevation
+  var(--surface-hover)  nav / menu hover wash
+
+## Typography
+  Headlines → font-serif → Fraunces, weight 300
+  Body      → font-sans  → DM Sans, weight 300–500
+  Never use Inter, Arial, Roboto as headline fonts.
+
+## Component rules
+  - Client components need "use client" at the top
+  - Use useAudience() from @/lib/audienceContext for audience-aware content
+  - Use cn() from @/lib/utils for conditional classes
+  - Use useScrollReveal() hook + fade-up class for scroll animations
+  - One section per file, keep components focused
+
+## Pillar colours
+  estate    → var(--accent)
+  admin     → var(--blue)
+  wellbeing → var(--green)
+
+## File paths
+  @/components/nav/        Nav.tsx, ToggleBar.tsx
+  @/components/hero/       Hero.tsx
+  @/components/solution/   Solution.tsx
+  @/components/sections/   Problem, Impact, B2BSection, Pain, Science,
+                           Testimonials, Who, Faq, Cta
+  @/components/ui/         Footer, Logo.tsx, shared primitives
+  public/images/           Brand assets (e.g. grievegently-logo.svg)
+  @/lib/content.ts         All copy and data
+  @/lib/audienceContext.tsx Audience state
+  @/lib/useScrollReveal.ts Scroll animation hook
+  @/types/index.ts         TypeScript interfaces
+
+## Domain
+  Production: grievegently.com
+  Platform:   Vercel (see README for deployment steps)
+  Region:     lhr1 (London)
+
+## Image placeholders
+  Phone mockups in Hero.tsx and Solution.tsx are currently coded UI.
+  When real screenshots are ready: use next/image, drop files in public/images/.
+  Mark all placeholders with // TODO: swap with real screenshot
+
+## When adding new sections
+  1. Add data/copy to src/lib/content.ts
+  2. Add types to src/types/index.ts if needed
+  3. Create component in appropriate folder
+  4. Import in src/app/page.tsx
+  5. Never hardcode copy in the component itself

@@ -1,0 +1,50 @@
+import type { Metadata } from "next";
+import { DM_Sans, Fraunces, Nunito } from "next/font/google";
+import "./globals.css";
+import { AudienceProvider } from "@/lib/audienceContext";
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  weight: ["300", "400", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-fraunces",
+  display: "swap",
+});
+
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-nunito",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "gently — estate, admin & wellbeing after loss",
+  description: "Estate planning, automated admin, and science-based grief support — all in one place.",
+};
+
+const pageSurface = {
+  backgroundColor: "var(--bg)",
+  color: "var(--text)",
+} as const;
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html
+      lang="en"
+      className={`${dmSans.variable} ${fraunces.variable} ${nunito.variable}`}
+      style={pageSurface}
+    >
+      <body style={pageSurface}>
+        <AudienceProvider>{children}</AudienceProvider>
+      </body>
+    </html>
+  );
+}

@@ -1,0 +1,32 @@
+"use client";
+
+import { whoCards, whoSection } from "@/lib/content";
+import { Logo } from "@/components/ui/Logo";
+
+export default function Who() {
+  return (
+    <section id="who" className="py-16 bg-[var(--bg)] scroll-mt-[120px]">
+      <div className="max-w-content mx-auto px-6">
+        <p className="text-[10px] uppercase tracking-[.14em] text-[var(--accent)] text-center mb-3">
+          {whoSection.kicker}
+        </p>
+        <h2 className="mb-11 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-center font-serif text-[clamp(22px,3vw,36px)] font-light tracking-[-0.02em] leading-tight">
+          <Logo variant="nav" className="h-[clamp(26px,3.5vw,38px)] w-auto shrink-0" />
+          <span className="max-[380px]:basis-full">{whoSection.headlineSuffix}</span>
+        </h2>
+        <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+          {whoCards.map((card, i) => (
+            <div
+              key={card.title}
+              className="bg-[var(--card)] border border-[var(--border)] rounded-[20px] p-6 card-hover fade-up visible"
+              style={{ transitionDelay: `${i * 0.07}s` }}
+            >
+              <div className="text-[15px] font-medium leading-snug text-[var(--text)] mb-2.5">{card.title}</div>
+              <p className="text-[13px] text-[var(--muted)] leading-[1.65]">{card.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
