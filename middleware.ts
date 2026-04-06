@@ -43,15 +43,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  if (isPublicPath(pathname)) {
+    return NextResponse.next();
+  }
+
   if (!secret) {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     url.searchParams.set("gate", "misconfigured");
     return NextResponse.redirect(url);
-  }
-
-  if (isPublicPath(pathname)) {
-    return NextResponse.next();
   }
 
   if (verified) {
