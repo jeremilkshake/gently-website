@@ -23,7 +23,6 @@ type Props = {
 
 export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
   const router = useRouter();
-  const from = urlFrom;
   const showMisconfigured = urlGate === "misconfigured";
 
   const [passwordOpen, setPasswordOpen] = useState(false);
@@ -33,7 +32,7 @@ export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   const destination =
-    from && from.startsWith("/") && !from.startsWith("//") ? from : "/";
+    urlFrom && urlFrom.startsWith("/") && !urlFrom.startsWith("//") ? urlFrom : "/";
 
   const submit = useCallback(async () => {
     setLoading(true);
@@ -91,7 +90,7 @@ export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
           className="flex min-h-0 flex-1 flex-col items-center justify-start px-5 pt-8 pb-[clamp(11rem,42vmin,20rem)] sm:px-8 sm:pt-12 md:px-12 md:pt-16"
           aria-label="Early access"
         >
-          <div className="flex w-full max-w-sm flex-wrap items-stretch justify-center gap-3 text-[#0C0B09]">
+          <div className="mt-[100px] flex w-full max-w-sm flex-wrap items-stretch justify-center gap-3 text-[#0C0B09]">
             <button
               type="button"
               onClick={() => {

@@ -1,11 +1,10 @@
 "use client";
 
-import { useAudience } from "@/lib/audienceContext";
+import { useIsBusiness } from "@/lib/audienceContext";
 import { bookingUrl, openExternalTab } from "@/lib/content";
 
 export default function Cta() {
-  const { audience } = useAudience();
-  const isBiz = audience === "business";
+  const isBiz = useIsBusiness();
 
   return (
     <section id="cta" className="py-24 px-6 text-center bg-[var(--bg)] relative overflow-hidden scroll-mt-[120px]">

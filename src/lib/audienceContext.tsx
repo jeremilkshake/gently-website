@@ -25,3 +25,7 @@ export function AudienceProvider({ children }: { children: ReactNode }) {
 export function useAudience() {
   return useContext(AudienceContext);
 }
+
+export function useIsBusiness(): boolean {
+  return useContext(AudienceContext).audience === "business";
+}

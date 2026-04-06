@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   // Deploy to grievegently.com via Vercel — add domain in Vercel dashboard
   
   images: {
-    domains: ["grievegently.com"],
+    remotePatterns: [{ protocol: "https", hostname: "grievegently.com" }],
     formats: ["image/avif", "image/webp"],
   },
 

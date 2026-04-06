@@ -1,11 +1,10 @@
 "use client";
 
-import { useAudience } from "@/lib/audienceContext";
+import { useIsBusiness } from "@/lib/audienceContext";
 import { bookingUrl, openExternalTab } from "@/lib/content";
 
 export default function Hero() {
-  const { audience } = useAudience();
-  const isBiz = audience === "business";
+  const isBiz = useIsBusiness();
 
   return (
     <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-36 pb-20 relative overflow-hidden">

@@ -5,22 +5,10 @@ import { pillars } from "@/lib/content";
 import { cn } from "@/lib/utils";
 import type { Pillar } from "@/types";
 
-const accentColors: Record<Pillar, string> = {
-  estate: "var(--accent)",
-  admin: "var(--blue)",
-  wellbeing: "var(--green)",
-};
-
-const pillarDotColor: Record<Pillar, string> = {
-  estate: "bg-[var(--accent)]",
-  admin: "bg-[var(--blue)]",
-  wellbeing: "bg-[var(--green)]",
-};
-
-const activeBorder: Record<Pillar, string> = {
-  estate: "border-[rgba(184,168,120,0.3)]",
-  admin: "border-[rgba(123,159,191,0.3)]",
-  wellbeing: "border-[rgba(107,155,138,0.3)]",
+const pillarStyles: Record<Pillar, { accent: string; dot: string; border: string }> = {
+  estate:    { accent: "var(--accent)", dot: "bg-[var(--accent)]",  border: "border-[rgba(184,168,120,0.3)]" },
+  admin:     { accent: "var(--blue)",   dot: "bg-[var(--blue)]",    border: "border-[rgba(123,159,191,0.3)]" },
+  wellbeing: { accent: "var(--green)",  dot: "bg-[var(--green)]",   border: "border-[rgba(107,155,138,0.3)]" },
 };
 
 function pillarFromHash(): Pillar | null {
@@ -70,7 +58,7 @@ export default function Solution() {
               className={cn(
                 "scroll-mt-[120px] bg-[var(--card)] border rounded-[20px] p-6 text-left flex items-start gap-3.5 transition-all",
                 active === p.id
-                  ? cn("bg-[var(--card-active)]", activeBorder[p.id])
+                  ? cn("bg-[var(--card-active)]", pillarStyles[p.id].border)
                   : "border-[var(--border)] hover:border-[var(--border-hover)]"
               )}
             >
@@ -79,7 +67,7 @@ export default function Solution() {
                 <div className="text-[10px] text-[var(--muted)] uppercase tracking-[.1em] mb-1">{p.num}</div>
                 <div
                   className="text-[15px] font-medium mb-1"
-                  style={{ color: active === p.id ? accentColors[p.id] : "var(--text)" }}
+                  style={{ color: active === p.id ? pillarStyles[p.id].accent : "var(--text)" }}
                 >
                   {p.name}
                 </div>
@@ -95,7 +83,7 @@ export default function Solution() {
           <div>
             <p
               className="text-[10px] uppercase tracking-[.14em] mb-2"
-              style={{ color: accentColors[active] }}
+              style={{ color: pillarStyles[active].accent }}
             >
               {pillar.name}
             </p>
@@ -110,8 +98,8 @@ export default function Solution() {
               {pillar.features.map((f) => (
                 <div key={f} className="flex items-start gap-2.5">
                   <div
-                    className={cn("w-px h-4 flex-shrink-0 mt-[2px]", pillarDotColor[active])}
-                    style={{ background: accentColors[active] }}
+                    className={cn("w-px h-4 flex-shrink-0 mt-[2px]", pillarStyles[active].dot)}
+                    style={{ background: pillarStyles[active].accent }}
                   />
                   <span className="text-[13px] text-[var(--text)] leading-[1.5]">{f}</span>
                 </div>
@@ -122,7 +110,7 @@ export default function Solution() {
             >
               <span
                 className="font-serif text-[26px] font-light"
-                style={{ color: accentColors[active] }}
+                style={{ color: pillarStyles[active].accent }}
               >
                 {pillar.impactNum}
               </span>

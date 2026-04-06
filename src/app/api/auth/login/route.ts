@@ -16,14 +16,23 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "not_configured" }, { status: 503 });
   }
 
-  let body: { password?: string };
+  let body: unknown;
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "invalid_body" }, { status: 400 });
   }
 
-  const given = body.password ?? "";
+  if (typeof body !== "object" || body === null) {
+    return NextResponse.json({ error: "invalid_body" }, { status: 400 });
+  }
+
+  const rawGiven = (body as Record<string, unknown>).password;
+  if (typeof rawGiven !== "string" || rawGiven.length > 1024) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+
+  const given = rawGiven;
   const a = Buffer.from(given, "utf8");
   const b = Buffer.from(expected, "utf8");
 
