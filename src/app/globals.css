@@ -3,6 +3,10 @@
 /* Tailwind v4 — design tokens exposed as utilities (e.g. max-w-content) */
 @theme {
   --max-width-content: 1060px;
+  /* Brand-forward: Tailwind `font-sans` matches body (Nunito) */
+  --font-sans: var(--font-nunito), system-ui, sans-serif;
+  /* `font-serif` = section headlines (Nunito); em/i → Fraunces in @layer utilities */
+  --font-serif: var(--font-nunito), system-ui, sans-serif;
 }
 
 /*
@@ -26,6 +30,18 @@
   --border: rgba(28, 25, 20, 0.09);
   --border-subtle: rgba(28, 25, 20, 0.05);
   --border-hover: rgba(28, 25, 20, 0.16);
+  /* Hero sky + top-of-page chrome (matches public/images/hero-sky.svg base) */
+  --hero-sky: #e1f4ff;
+  /* Hero headline emphasis — “handled.” / “complete” (#FDBB30) */
+  --hero-wordmark: #fdbb30;
+  /* Fixed nav + sticky audience bar — hero pulls up by this so sky sits behind transparent nav */
+  --header-nav-h: 60px;
+  /* Slightly generous so hero copy clears the audience bar */
+  --header-toggle-h: 3.5rem;
+  /* Fixed nav + sticky toggle — used for hero offset & scroll-padding */
+  --header-stack: calc(var(--header-nav-h) + var(--header-toggle-h));
+  /* Frosted bar when scrolled (same hue as hero sky) */
+  --nav-sky-glass-bg: rgba(225, 244, 255, 0.94);
   --nav-glass-bg: rgba(247, 244, 237, 0.88);
   --surface-hover: rgba(28, 25, 20, 0.05);
   --shadow-card: 0 2px 0 0 var(--border);
@@ -41,13 +57,15 @@
     scroll-behavior: auto;
     margin: 0;
     min-height: 100%;
+    /* In-page anchors land below fixed nav + audience bar (+ notch overlap on mobile) */
+    scroll-padding-top: calc(var(--header-stack) + env(safe-area-inset-top, 0px));
   }
   body {
     margin: 0;
     min-height: 100%;
     background-color: var(--bg);
     color: var(--text);
-    font-family: var(--font-dm-sans), system-ui, sans-serif;
+    font-family: var(--font-nunito), system-ui, sans-serif;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -70,16 +88,31 @@
 }
 
 @layer utilities {
-  .font-serif {
+  /* Headlines: roman via @theme --font-serif (Nunito); italic accents stay Fraunces */
+  .font-serif em,
+  .font-serif i {
     font-family: var(--font-fraunces), Georgia, serif;
+    font-weight: 600;
+    font-style: italic;
   }
+  .font-serif.italic {
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-weight: 600;
+    font-style: italic;
+  }
+  /* Brand UI / CTAs — same face as body default; prefer this name in new code */
+  .font-brand,
   .font-nunito {
     font-family: var(--font-nunito), system-ui, sans-serif;
+  }
+  /* Long-form & dense reading — DM Sans pockets */
+  .font-reading {
+    font-family: var(--font-dm-sans), system-ui, sans-serif;
   }
   .fade-up {
     opacity: 0;
     transform: translateY(18px);
-    transition: opacity 0.55s ease, transform 0.55s ease;
+    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .fade-up.visible {
     opacity: 1;
@@ -141,4 +174,9 @@
   50% {
     opacity: 0.35;
   }
+}
+
+/* Hero headline emphasis — explicit rule so colour wins over inherited h1 / Tailwind arbitrary text */
+.hero-headline em {
+  color: var(--hero-wordmark);
 }

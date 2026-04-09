@@ -15,11 +15,11 @@ export default function Problem() {
         <p className="text-[10px] uppercase tracking-[.14em] text-[var(--accent)] text-center mb-2">{copy.tag}</p>
         <h2
           ref={ref}
-          className="fade-up font-serif text-[clamp(26px,3.2vw,42px)] font-light tracking-[-0.02em] text-center mb-4 max-w-[720px] mx-auto"
+          className="fade-up font-serif text-[clamp(26px,3.2vw,42px)] font-extrabold tracking-[-0.02em] text-center mb-4 max-w-[720px] mx-auto"
         >
           {copy.headline}
         </h2>
-        <p className="fade-up visible text-[15px] text-[var(--muted)] text-center max-w-[560px] mx-auto mb-12 leading-[1.65] font-light">
+        <p className="fade-up visible font-reading text-[15px] text-[var(--muted)] text-center max-w-[560px] mx-auto mb-12 leading-[1.65] font-light">
           {copy.subhead}
         </p>
 
@@ -31,10 +31,10 @@ export default function Problem() {
               style={{ transitionDelay: `${i * 0.06}s` }}
             >
               <div className="text-[10px] text-[var(--muted)] uppercase tracking-[.12em] mb-3">0{i + 1}</div>
-              <h3 className="font-serif text-[17px] font-light text-[var(--text)] mb-2 leading-snug tracking-[-0.02em]">
+              <h3 className="font-serif text-[17px] font-extrabold text-[var(--text)] mb-2 leading-snug tracking-[-0.02em]">
                 {item.title}
               </h3>
-              <p className="text-[13px] text-[var(--muted)] leading-[1.65]">{item.body}</p>
+              <p className="font-reading text-[13px] text-[var(--muted)] leading-[1.65]">{item.body}</p>
             </div>
           ))}
         </div>

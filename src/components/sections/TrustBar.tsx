@@ -1,15 +1,27 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import { trustBar } from "@/lib/content";
 
 // Double the list once — marquee-track shifts -50% so both halves are shown seamlessly
 const ITEMS = [...trustBar.logos, ...trustBar.logos];
 
 export default function TrustBar() {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <div className="w-full border-b border-[var(--border)] bg-[var(--bg-2)] py-5 overflow-hidden">
+    <motion.div
+      className="w-full overflow-hidden border-b border-[var(--border)] bg-[var(--bg-2)] py-5"
+      initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={
+        reduceMotion
+          ? { duration: 0 }
+          : { duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 1.05 }
+      }
+    >
       <div className="max-w-content mx-auto px-6 flex items-center gap-6">
-        <p className="w-[140px] flex-shrink-0 text-left text-[11.5px] leading-[1.25] text-[var(--dim)] tracking-wide">
+        <p className="font-reading w-[140px] flex-shrink-0 text-left text-[11.5px] leading-[1.25] text-[var(--dim)] tracking-wide">
           {trustBar.label}
         </p>
 
@@ -32,6 +44,6 @@ export default function TrustBar() {
           </ul>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -2,13 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
-import { useMotionValueEvent, useScroll } from "framer-motion";
 import {
   bookingUrl,
   businessDropdown,
   gateAuthUi,
   navBusinessCta,
-  navCustomersHref,
   navLoginHref,
   openExternalTab,
   resourcesDropdown,
@@ -19,17 +17,20 @@ import { Logo } from "@/components/ui/Logo";
 import { useGateUnlock } from "@/lib/gateUnlockContext";
 import { useAudience } from "@/lib/audienceContext";
 import { cn } from "@/lib/utils";
-import type { CSSProperties, MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import type { NavDropdownItem } from "@/types";
 
 function Dropdown({
   items,
   hasCta,
   onItemClick,
+  onNavigate,
 }: {
   items: NavDropdownItem[];
   hasCta?: boolean;
   onItemClick?: (item: NavDropdownItem, e: MouseEvent<HTMLAnchorElement>) => void;
+  /** Called after any dropdown link is activated (closes the menu). */
+  onNavigate?: () => void;
 }) {
   return (
     <div
@@ -45,7 +46,10 @@ function Dropdown({
             <a
               key={item.title}
               href={item.href}
-              onClick={(e) => onItemClick?.(item, e)}
+              onClick={(e) => {
+                onItemClick?.(item, e);
+                onNavigate?.();
+              }}
               className="flex flex-col gap-0.5 rounded-[10px] px-3 py-2.5 no-underline transition-colors hover:bg-[var(--surface-hover)]"
             >
               <span
@@ -55,17 +59,18 @@ function Dropdown({
                 {item.title}
               </span>
               {item.desc && (
-                <span className="text-[11px] leading-[1.4] text-[var(--muted)]">{item.desc}</span>
+                <span className="font-reading text-[11px] leading-[1.4] text-[var(--muted)]">{item.desc}</span>
               )}
             </a>
           ))}
         </div>
         {hasCta && (
           <div className="flex min-w-[160px] flex-col justify-center gap-3 rounded-r-[12px] border-l border-[var(--border)] bg-[rgba(119,208,250,0.1)] px-[18px] py-5">
-            <p className="m-0 text-[13px] leading-[1.5] text-[var(--text)]">{navBusinessCta.body}</p>
+            <p className="font-reading m-0 text-[13px] leading-[1.5] text-[var(--text)]">{navBusinessCta.body}</p>
             <a
               href={bookingUrl}
               {...openExternalTab}
+              onClick={() => onNavigate?.()}
               className="flex items-center gap-1 text-[12px] text-[var(--accent)] no-underline transition-all hover:gap-2"
             >
               {navBusinessCta.linkLabel}
@@ -80,11 +85,9 @@ function Dropdown({
 export default function Nav() {
   const { gateEnabled, unlocked } = useGateUnlock();
   const { audience, setAudience } = useAudience();
-  const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const { scrollY } = useScroll();
 
+  /** Solid hero sky — must stay opaque so animated clouds in the hero never read through the bar */
   const handleDropdownLink = (item: NavDropdownItem, e: MouseEvent<HTMLAnchorElement>) => {
     if (item.switchAudience && item.switchAudience !== audience) {
       e.preventDefault();
@@ -99,10 +102,6 @@ export default function Nav() {
     }
   };
 
-  useMotionValueEvent(scrollY, "change", (value) => {
-    setScrolled(value > 20);
-  });
-
   useEffect(() => {
     const handleClick = (e: Event) => {
       if (!(e.target as Element).closest("[data-nav-item]")) setOpenMenu(null);
@@ -111,30 +110,7 @@ export default function Nav() {
     return () => document.removeEventListener("click", handleClick);
   }, []);
 
-  useEffect(() => {
-    const timer = window.setTimeout(() => setIsVisible(true), 5100);
-    return () => window.clearTimeout(timer);
-  }, []);
-
   const toggle = (name: string) => setOpenMenu((prev) => (prev === name ? null : name));
-
-  const navStyle: CSSProperties = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 200,
-    height: 60,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "0 24px",
-    background: scrolled ? "var(--nav-glass-bg)" : "transparent",
-    backdropFilter: scrolled ? "blur(16px)" : "none",
-    WebkitBackdropFilter: scrolled ? "blur(16px)" : "none",
-    borderBottom: scrolled ? "1px solid var(--border)" : "none",
-    transition: "background 0.3s, backdrop-filter 0.3s, border-color 0.3s",
-  };
 
   const menuBtnClass = (key: string) =>
     cn(
@@ -146,12 +122,14 @@ export default function Nav() {
 
   return (
     <nav
-      style={navStyle}
-      className={cn("transition-opacity duration-700", isVisible ? "opacity-100" : "pointer-events-none opacity-0")}
+      className={cn(
+        "relative z-[2] flex h-[60px] w-full shrink-0 items-center justify-between px-6",
+        "bg-[var(--hero-sky)] border-b border-[rgba(28,25,20,0.06)]",
+      )}
     >
       <Logo variant="nav" />
 
-      <div className="hidden items-center gap-0.5 md:flex">
+      <div className="hidden min-w-0 items-center gap-0.5 whitespace-nowrap md:flex">
         <div className="relative" data-nav-item>
           <button type="button" className={menuBtnClass("business")} onClick={() => toggle("business")}>
             Business
@@ -161,7 +139,12 @@ export default function Nav() {
             />
           </button>
           {openMenu === "business" && (
-            <Dropdown items={businessDropdown} hasCta onItemClick={handleDropdownLink} />
+            <Dropdown
+              items={businessDropdown}
+              hasCta
+              onItemClick={handleDropdownLink}
+              onNavigate={() => setOpenMenu(null)}
+            />
           )}
         </div>
 
@@ -173,15 +156,14 @@ export default function Nav() {
               className={cn("transition-transform duration-300", openMenu === "solutions" && "rotate-180")}
             />
           </button>
-          {openMenu === "solutions" && <Dropdown items={solutionsDropdown} />}
+          {openMenu === "solutions" && (
+            <Dropdown items={solutionsDropdown} onNavigate={() => setOpenMenu(null)} />
+          )}
         </div>
 
-        <a
-          href={navCustomersHref}
-          className="rounded-lg px-3 py-2 font-sans text-[13px] text-[var(--muted)] no-underline transition-colors hover:text-[var(--text)]"
-        >
+        <span className="rounded-lg px-3 py-2 font-sans text-[13px] text-[var(--muted)] cursor-default select-none">
           Customers
-        </a>
+        </span>
 
         <div className="relative" data-nav-item>
           <button type="button" className={menuBtnClass("resources")} onClick={() => toggle("resources")}>
@@ -191,7 +173,9 @@ export default function Nav() {
               className={cn("transition-transform duration-300", openMenu === "resources" && "rotate-180")}
             />
           </button>
-          {openMenu === "resources" && <Dropdown items={resourcesDropdown} />}
+          {openMenu === "resources" && (
+            <Dropdown items={resourcesDropdown} onNavigate={() => setOpenMenu(null)} />
+          )}
         </div>
       </div>
 

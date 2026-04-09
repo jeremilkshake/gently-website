@@ -13,7 +13,7 @@ export default function B2BSection() {
         <p className="text-[10px] uppercase tracking-[.14em] text-[var(--accent)] text-center mb-2">
           For Business
         </p>
-        <h2 className="font-serif text-[clamp(24px,3vw,38px)] font-light tracking-[-0.02em] text-center mb-11">
+        <h2 className="font-serif text-[clamp(24px,3vw,38px)] font-extrabold tracking-[-0.02em] text-center mb-11">
           Support your people through loss.
         </h2>
         <div className="grid grid-cols-2 gap-3.5">
@@ -26,7 +26,7 @@ export default function B2BSection() {
             >
               <div className="text-[24px] mb-3">{sol.icon}</div>
               <div className="text-[16px] font-medium text-[var(--text)] mb-1.5">{sol.title}</div>
-              <p className="text-[13px] text-[var(--muted)] leading-[1.65] mb-3.5">{sol.desc}</p>
+              <p className="font-reading text-[13px] text-[var(--muted)] leading-[1.65] mb-3.5">{sol.desc}</p>
               <a
                 href={sol.href}
                 {...openExternalTab}

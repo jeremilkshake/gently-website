@@ -1,5 +1,4 @@
 import type {
-  PillarData,
   Testimonial,
   B2BSolution,
   WhoCard,
@@ -9,6 +8,13 @@ import type {
   WhoSectionContent,
   TestimonialsSectionContent,
   GatePageContent,
+  SolutionCareSectionContent,
+  SolutionCareAccordionItem,
+  ImpactSectionContent,
+  CtaSectionVariant,
+  CompareSupportCopyVariant,
+  FooterColumn,
+  ScienceSectionContent,
 } from "@/types";
 
 /** Primary intro call — Calendly 30 min */
@@ -82,6 +88,9 @@ export const heroVisual = {
 
 export const heroBadgeText = "Made with care for people carrying something heavy.";
 
+/** Primary hero button — opens booking (Calendly) */
+export const heroBookingCta = "Book a Demo";
+
 export const bereavementIntro = {
   headline: "A modern approach to bereavement support",
   brand: "gently.",
@@ -102,14 +111,60 @@ export const trustBar = {
   ],
 } as const;
 
-export const compareSupportCopy = {
-  line1: "Personalize your grief.",
-  line2: "Reclaim your time.",
+export const compareSupportCopy: {
+  individual: CompareSupportCopyVariant;
+  business: CompareSupportCopyVariant;
+} = {
+  individual: {
+    line1: "Personalise your grief support.",
+    line2: "Reclaim your time.",
+    donePanelTitle: "Now you can focus on healing",
+    donePanelBody:
+      "The paperwork is handled. The calls are made. The plan is in place. Focus now on being human and healing.",
+  },
+  business: {
+    line1: "Care for your people—head and heart.",
+    line2: "Support your institution can stand behind.",
+    donePanelTitle: "Now you can focus on healing",
+    donePanelBody:
+      "The paperwork is handled. The calls are made. The plan is in place. Focus now on being human and healing.",
+  },
+};
+
+/** Pain section — Reddit-style social proof card */
+export const painRedditCard = {
+  metaLine: "u/anonymous · r/GriefSupport",
+  quote:
+    "Nobody told me grief would feel this physical. I just lie there at 3am waiting for morning.",
 } as const;
 
 export const navBusinessCta = {
   body: "Extend support when it is needed most",
   linkLabel: "Request a demo →",
+} as const;
+
+export const ctaSection: {
+  individual: CtaSectionVariant;
+  business: CtaSectionVariant;
+} = {
+  individual: {
+    headlineBeforeBreak: "Ready for relief",
+    headlineQuestion: "after loss?",
+    subhead:
+      "More room for what matters—tenderness, rest, memory—while gently handles the practical: clearer steps, less paperwork, fewer surprises.",
+    primaryCta: "Request a demo",
+    secondaryCta: "See how it works",
+    secondaryHref: "#solution",
+  },
+  business: {
+    headlineBeforeBreak: "Better bereavement support",
+    headlineQuestion: "for your people?",
+    subhead:
+      "Warm, dependable guidance when life gets heavy—so teams aren’t left juggling grief, logistics, and loneliness alone.",
+    primaryCta: "Request a demo",
+    secondaryCta: "View solutions",
+    secondaryHref: "#solution",
+  },
 } as const;
 
 export const problemSection: {
@@ -158,110 +213,171 @@ export const problemSection: {
   },
 };
 
-export const pillars: PillarData[] = [
+export const impactSection: ImpactSectionContent = {
+  headline: "Proven impact across all three pillars.",
+  stats: [
+    {
+      num: "< 30 min",
+      label: "to map your full estate\nwith AI visualisations",
+      color: "var(--accent)",
+    },
+    {
+      num: "300+ hrs",
+      label: "saved per family over\n18 months on average",
+      color: "var(--blue)",
+    },
+    {
+      num: "94 lessons",
+      label: "across grief, health &\nlegacy support",
+      color: "var(--green)",
+    },
+  ],
+};
+
+/** Shared accordion rows — same journeys; framing is in the section headline/subhead */
+const solutionCareAccordions: SolutionCareAccordionItem[] = [
   {
-    id: "estate",
-    icon: "🏠",
-    num: "01",
-    name: "Estate & Legacy",
-    desc: "Total clarity on what you own, what's owed, and what happens next.",
-    accentVar: "--accent",
-    headline: "Total clarity on what you own and what's next.",
-    lede:
-      "AI maps your full estate automatically — assets, debts, documents — and flags issues before they become costly.",
-    features: [
-      "AI visualises assets, debts and documents automatically",
-      "Flags potential issues before they become costly problems",
-      "Secure vault for wills, insurance policies and key files",
-      "Probate, legal and financial guidance in plain English",
-    ],
-    impactNum: "< 30 min",
-    impactLabel: "to map your full estate\nwith AI visualisations",
+    id: "funeral",
+    title: "Planning a funeral",
+    body:
+      "Thoughtful help choosing a funeral director that fits where you live, what you believe, and what your family needs—without cold calls when your head is already full.",
+    pillarAnchor: "admin",
   },
   {
-    id: "admin",
-    icon: "⚡",
-    num: "02",
-    name: "Streamlined Admin",
-    desc: "Let the AI handle the heavy lifting — no chasing, no delays.",
-    accentVar: "--blue",
-    headline: "AI acts on your behalf across every task.",
-    lede:
-      "The AI Concierge handles the bureaucracy — so you don't have to chase, repeat yourself, or manage paperwork under grief.",
-    features: [
-      "AI Concierge acts on your behalf across every task",
-      "Personalised action roadmap — always know what's next",
-      "Probate, legal and financial guidance in plain English",
-      "Benefits claims, account closures, notifications handled",
-    ],
-    impactNum: "300+ hrs",
-    impactLabel: "saved per family over\n18 months on average",
+    id: "benefits",
+    title: "Claiming benefits",
+    body:
+      "We help you spot what your family may be entitled to, in plain language, so nothing slips past in the rush of paperwork.",
   },
   {
-    id: "wellbeing",
-    icon: "🌱",
-    num: "03",
-    name: "Wellbeing Courses",
-    desc: "Expert-guided support for every stage, at your pace.",
-    accentVar: "--green",
-    headline: "Expert-guided support at your pace.",
-    lede:
-      "16 self-guided courses built by grief and wellness experts — 94 bite-size lessons with practical, real-life skills.",
-    features: [
-      "16 self-guided courses built by grief and wellness experts",
-      "94 bite-size lessons with practical, real-life skills",
-      "Covers physical health, emotional recovery and memory work",
-      "53 science-backed skills usable in real grief moments",
+    id: "accounts",
+    title: "Managing accounts",
+    body:
+      "Cancelling subscriptions, closing accounts, and stopping the small recurring jobs that pile up—we lift that off your plate so you can breathe.",
+  },
+  {
+    id: "grief",
+    title: "Getting grief support",
+    pillarAnchor: "wellbeing",
+    body:
+      "Gentle resources for hard days—short, honest, and free of jargon. Inside gently you’ll find expert-written wellbeing courses you can start, pause, and come back to: built for real life, not perfect days.",
+    bodySecondary:
+      "When you need someone beside the screen, we help connect you with professional bereavement and counselling support—people who do this work every day—matched to what you need so you’re not guessing who to call or carrying it all alone.",
+    bullets: [
+      "16 self-guided courses from grief and wellness specialists",
+      "94 bite-sized lessons with practical skills you can actually use",
+      "Topics that meet you where you are—sleep, your body, memory, and the wobbly days",
+      "53 science-informed tools for real moments—before work, after midnight, whenever you need them",
     ],
-    impactNum: "16 courses",
-    impactLabel: "across grief, health &\nlegacy support",
+  },
+  {
+    id: "house",
+    title: "Dealing with the house",
+    body:
+      "Clearer steps for the home: bills, upkeep, and decisions that can’t wait—so you’re not guessing alone with a key in your hand.",
+  },
+  {
+    id: "probate",
+    title: "Navigating probate",
+    body:
+      "Guidance through probate and closing the estate in words you can follow—at a pace you can hold, alongside professionals when you need them.",
+    pillarAnchor: "estate",
   },
 ];
 
+/** Solution — care team accordion (left headline, right grid) */
+export const solutionCareSection: {
+  individual: SolutionCareSectionContent;
+  business: SolutionCareSectionContent;
+} = {
+  individual: {
+    kicker: "The solution",
+    headline: "An entire Care Team, by your side.",
+    subhead:
+      "Practical help for the jobs nobody rehearses for—funerals, forms, the house, probate, and the days that feel too loud or too quiet. One calm place to turn.",
+    accordions: solutionCareAccordions,
+  },
+  business: {
+    kicker: "The solution",
+    headline: "An entire Care Team for each person you support.",
+    subhead:
+      "Give every colleague, member, or client facing loss a dedicated team—estate clarity, admin lifted, and gentle wellbeing alongside. So your institution shows competence and care when hearts need it most.",
+    accordions: solutionCareAccordions,
+  },
+};
+
 export const testimonialsSection: TestimonialsSectionContent = {
-  headline: "What people told us — in their own words.",
-  subhead:
-    "Bereavement groups, Reddit threads, and our earliest testers. These aren’t ad testimonials; they’re the kind of thing someone says when the kettle’s boiled and the room’s gone quiet.",
+  headline: "Kind words from people who get it.",
+  subhead: "Little messages from forums, circles, and early friends of gently — warm, rough, real.",
 };
 
 export const testimonials: Testimonial[] = [
   {
-    user: "Karen",
-    source: "In-person widowed group · Yorkshire (shared with permission)",
+    user: "Moira L.",
+    source: "Peer group · Yorkshire",
     quote:
-      "I went in cynical about ‘apps for feelings.’ Then the bit on 3am — why your body does that — I sat in my car afterwards and just breathed. It’s not magic. It’s the first thing that didn’t make me feel broken.",
+      "Didn’t think an app could feel gentle. The 3am bit about your body — I cried in the car, then breathed. I needed that.",
   },
   {
-    user: "holdingittogether_42",
+    user: "Jay H.",
     source: "r/Grief",
     quote:
-      "I’ve been ‘fine’ at work since my mum died. Air-quote fine. Reading other people describe the exact same pretending cost me something. This is the only place that names that version of grief without making it a performance.",
+      "Work thinks I’m fine. People here said the same ‘fine.’ Felt less alone, straight away.",
   },
   {
-    user: "S.",
-    source: "Alpha tester · estate mapping (anonymised)",
+    user: "Sam T.",
+    source: "Private preview",
     quote:
-      "Twenty-something minutes to map what I’d been dreading for months. I pulled over after because I couldn’t see the road. Not sad — relieved. Like someone finally laid the mess out on a table so I could see it.",
+      "Mapped the estate in one go. Walked away lighter — like someone laid the mess out without judging.",
   },
   {
-    user: "Dave",
-    source: "Men’s bereavement drop-in · London",
+    user: "Rob M.",
+    source: "Men’s circle · London",
     quote:
-      "I’m not a ‘talk about emotions’ person. The science framing gave me permission to look at it without feeling like I was dramatising. I get what my nervous system is doing now. That alone made the last month easier.",
+      "Rubbish at feelings talk. The science bits felt safe — no drama, just truth. That helped.",
   },
   {
-    user: "executor_throwaway",
-    source: "r/UKPersonalFinance (post about probate overwhelm)",
+    user: "Amina K.",
+    source: "Forum thread",
     quote:
-      "Everyone jokes about ‘death admin’ until you’re the one with the folders. Having something draft letters and remember what comes next — I stopped waking up with a punch list in my head. That’s not a small thing.",
+      "Probate was eating my evenings. Drafts and a clear next step — I slept again. Thank you.",
   },
   {
-    user: "A. & L.",
-    source: "In-person young widowed group · London (early testers)",
+    user: "The Okonkwo family",
+    source: "Young loss meet-up",
     quote:
-      "We’re not the Instagram version of loss. We’re tired, we’re snappy with each other sometimes, and we still have to book the plumber. A tool that gets both the practical and the 2am stuff — we’ve been waiting for that.",
+      "We’re messy and tired together. One place for tears and forms — we didn’t have that before.",
   },
 ];
+
+export const scienceSection: ScienceSectionContent = {
+  kicker: "The research",
+  headline: "Evidence-led care—not guesswork.",
+  subheadLines: [
+    "gently is shaped by published grief and resilience science.",
+    "These voices show the thinking behind it.",
+  ],
+  researchers: [
+    {
+      name: "Mary-Frances O'Connor",
+      role: "Grief researcher · University of Arizona",
+      quote:
+        "Grieving is a form of learning. And learning takes time and experience, and our brain is doing its best to help us. But it’s going to take some time.",
+    },
+    {
+      name: "George Bonanno",
+      role: "Resilience researcher · Columbia University",
+      quote:
+        "Grief does not require prolonged impairment. Most bereaved individuals show resilience — stable function alongside periods of difficulty.",
+    },
+    {
+      name: "Kristin Neff",
+      role: "Self-compassion researcher · UT Austin",
+      quote:
+        "People who treat themselves with care process grief more effectively. Self-compassion is one of the most evidence-supported predictors of healthy grief adjustment.",
+    },
+  ],
+};
 
 export const b2bSolutions: B2BSolution[] = [
   {
@@ -295,12 +411,60 @@ export const b2bSolutions: B2BSolution[] = [
 ];
 
 /** Primary in-page targets for plain nav links */
-export const navCustomersHref = "#testimonials";
 export const navLoginHref = "#cta";
 
-export const whoSection: WhoSectionContent = {
-  kicker: "Who it's for",
-  headlineSuffix: "is for.",
+/** Footer link grid — hrefs match section ids on the home page */
+export const footerColumns: FooterColumn[] = [
+  {
+    heading: "Solutions",
+    links: [
+      { label: "Care Team", href: "#solution" },
+      { label: "Estate & legacy", href: "#pillar-estate" },
+      { label: "Admin & logistics", href: "#pillar-admin" },
+      { label: "Grief & wellbeing", href: "#pillar-wellbeing" },
+    ],
+  },
+  {
+    heading: "Business",
+    links: [
+      { label: "Overview", href: "#b2b", switchAudience: "business" },
+      { label: "For employers", href: "#b2b-employers", switchAudience: "business" },
+      { label: "For consultants", href: "#b2b-consultants", switchAudience: "business" },
+      { label: "Financial institutions", href: "#b2b-financial", switchAudience: "business" },
+      { label: "Health plans", href: "#b2b-health-plans", switchAudience: "business" },
+    ],
+  },
+  {
+    heading: "Company",
+    links: [
+      { label: "About gently", href: "#bereavement-intro" },
+      { label: "The problem", href: "#problem" },
+      { label: "The difference", href: "#compare" },
+      { label: "FAQ", href: "#faq" },
+    ],
+  },
+  {
+    heading: "Legal",
+    links: [
+      { label: "Privacy", href: "#cta" },
+      { label: "Terms", href: "#cta" },
+      { label: "Crisis resources", href: "#faq" },
+    ],
+  },
+];
+
+export const whoSection: {
+  individual: WhoSectionContent;
+  business: WhoSectionContent;
+} = {
+  individual: {
+    kicker: "Who it's for",
+    headlineSuffix: "is for you, when your heart feels blue",
+  },
+  business: {
+    kicker: "Who it's for",
+    headlineSuffix: "is for your people.",
+  },
 };
 
 export const whoCards: WhoCard[] = [
@@ -366,28 +530,34 @@ export const businessDropdown: NavDropdownItem[] = [
 
 export const solutionsDropdown: NavDropdownItem[] = [
   {
-    title: "🏠 Estate & Legacy",
-    desc: "Total clarity on what you own, what's owed, and what happens next",
+    title: "Care Team overview",
+    desc: "Estate, admin, and grief support in one calm place",
+    href: "#solution",
+  },
+  {
+    title: "🏠 Estate & legacy",
+    desc: "Probate, the home, and closing the estate—with guidance in plain English",
     href: "#pillar-estate",
     color: "var(--accent)",
   },
   {
-    title: "⚡ Streamlined Admin",
-    desc: "AI handles the heavy lifting — no chasing, no delays",
+    title: "⚡ Admin & logistics",
+    desc: "Funerals, benefits, accounts, and the jobs that pile up on day one",
     href: "#pillar-admin",
     color: "var(--blue)",
   },
   {
-    title: "🌱 Wellbeing Courses",
-    desc: "16 expert-guided courses for grief, health and recovery",
+    title: "🌱 Grief & wellbeing",
+    desc: "Courses, tools, and help connecting with professional support",
     href: "#pillar-wellbeing",
     color: "var(--green)",
   },
 ];
 
 export const resourcesDropdown: NavDropdownItem[] = [
-  { title: "Blog", href: "#who" },
-  { title: "Research", href: "#science" },
+  { title: "About gently", href: "#bereavement-intro" },
+  { title: "Science & research", href: "#science" },
+  { title: "Who it's for", href: "#who" },
   { title: "FAQ", href: "#faq" },
-  { title: "Press", href: "#testimonials" },
+  { title: "What people say", href: "#testimonials" },
 ];

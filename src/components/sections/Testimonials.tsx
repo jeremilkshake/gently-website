@@ -8,10 +8,10 @@ export default function Testimonials() {
   return (
     <section id="testimonials" className="py-16 bg-[var(--bg-2)] overflow-hidden scroll-mt-[120px]">
       <div className="max-w-content mx-auto px-6 mb-4 text-center">
-        <h2 className="font-serif text-[clamp(22px,2.5vw,34px)] font-light tracking-[-0.02em] mb-3">
+        <h2 className="font-serif text-[clamp(22px,2.5vw,34px)] font-extrabold tracking-[-0.02em] mb-3">
           {testimonialsSection.headline}
         </h2>
-        <p className="mx-auto max-w-[640px] text-[13px] leading-[1.6] text-[var(--muted)] font-light">
+        <p className="font-reading mx-auto max-w-[28rem] text-sm leading-relaxed text-[var(--muted)] font-light">
           {testimonialsSection.subhead}
         </p>
       </div>
@@ -34,9 +34,9 @@ export default function Testimonials() {
             >
               <div className="mb-3 border-l-2 border-[var(--accent)] pl-3">
                 <div className="text-[13px] font-medium text-[var(--text)]">{t.user}</div>
-                <div className="text-[10px] leading-[1.4] text-[var(--muted)] mt-0.5">{t.source}</div>
+                <div className="text-[10px] leading-snug text-[var(--dim)] mt-0.5">{t.source}</div>
               </div>
-              <p className="text-[13px] text-[var(--muted)] leading-[1.65]">{t.quote}</p>
+              <p className="font-reading text-[13px] text-[var(--muted)] leading-snug">{t.quote}</p>
             </div>
           ))}
         </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import { painRedditCard } from "@/lib/content";
 import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const painPoints = [
@@ -19,20 +21,26 @@ export default function Pain() {
       <div className="max-w-content mx-auto px-6">
         <h2
           ref={ref}
-          className="fade-up font-serif text-[clamp(26px,3vw,40px)] font-light tracking-[-0.02em] text-center mb-9"
+          className="fade-up font-serif text-[clamp(26px,3vw,40px)] font-extrabold tracking-[-0.02em] text-center mb-9"
         >
           Does any of this feel true right now?
         </h2>
 
         {/* Reddit card */}
         <div className="bg-[var(--card)] border-2 border-[var(--border)] rounded-[20px] p-5 max-w-[580px] mx-auto mb-11 flex gap-3.5 items-start fade-up visible shadow-card">
-          <div className="w-7 h-7 rounded-full bg-[#FF4500] flex-shrink-0 flex items-center justify-center text-[13px] font-bold text-white">
-            r
+          <div className="relative h-7 w-7 flex-shrink-0 overflow-hidden rounded-full">
+            <Image
+              src="/images/reddit-icon.png"
+              alt="Reddit"
+              width={28}
+              height={28}
+              className="h-full w-full object-cover"
+            />
           </div>
           <div>
-            <div className="text-[11px] text-[var(--muted)] mb-1.5">u/anonymous · r/grief</div>
-            <p className="text-[14px] text-[var(--text)] italic leading-[1.55]">
-              "Nobody told me grief would feel this physical. I just lie there at 3am waiting for morning."
+            <div className="text-[11px] text-[var(--muted)] mb-1.5">{painRedditCard.metaLine}</div>
+            <p className="font-reading text-[14px] text-[var(--text)] italic leading-[1.55]">
+              &ldquo;{painRedditCard.quote}&rdquo;
             </p>
           </div>
         </div>
@@ -48,7 +56,7 @@ export default function Pain() {
               <div
                 className="w-4 h-px bg-[var(--accent)] flex-shrink-0 mt-[10px]"
               />
-              <span className="text-[14px] text-[var(--text)] leading-[1.5]">{point}</span>
+              <span className="font-reading text-[14px] text-[var(--text)] leading-[1.5]">{point}</span>
             </div>
           ))}
         </div>

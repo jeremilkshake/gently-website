@@ -75,7 +75,7 @@ export default function HowItWorks() {
           <p className="text-[10px] uppercase tracking-[.14em] text-[var(--accent)] mb-2">
             How it works
           </p>
-          <h2 className="font-serif text-[clamp(26px,3.2vw,42px)] font-light tracking-[-0.02em] text-[var(--text)]">
+          <h2 className="font-serif text-[clamp(26px,3.2vw,42px)] font-extrabold tracking-[-0.02em] text-[var(--text)]">
             Six steps to{" "}
             <em className="italic text-[var(--accent)]">peace of mind.</em>
           </h2>
@@ -129,7 +129,7 @@ export default function HowItWorks() {
                   <p className="text-[16px] font-semibold text-[var(--text)] leading-snug mb-2">
                     {STEPS[activeStep].title}
                   </p>
-                  <p className="text-[14px] text-[var(--muted)] leading-[1.68]">
+                  <p className="font-reading text-[14px] text-[var(--muted)] leading-[1.68]">
                     {STEPS[activeStep].body}
                   </p>
                 </div>

@@ -1,9 +1,10 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { useScroll, motion, AnimatePresence } from "framer-motion";
+import { useMotionValueEvent, useScroll, motion, AnimatePresence } from "framer-motion";
 import { Logo } from "@/components/ui/Logo";
 import { Clock } from "lucide-react";
+import { useIsBusiness } from "@/lib/audienceContext";
 import { compareSupportCopy } from "@/lib/content";
 
 // ─── Content ────────────────────────────────────────────────────────────────
@@ -58,6 +59,19 @@ const END_HOLD_STEPS = 6;    // extra linger at final state
 // → user then scrolls through 20 more painful left steps while right shows "Done"
 const RIGHT_DONE_STEP = R; // leftStep index at which right is considered complete
 
+/** Title block scrolls away first; step progress stays 0 until past this (matches intro min-height). */
+const COMPARE_TITLE_SCROLL_PX = 300;
+
+function compareScrollProgress(rect: DOMRect) {
+  const viewportH = window.innerHeight;
+  const scrollable = Math.max(1, rect.height - viewportH);
+  const y = -rect.top;
+  if (y <= COMPARE_TITLE_SCROLL_PX) return 0;
+  const denom = scrollable - COMPARE_TITLE_SCROLL_PX;
+  if (denom <= 1) return 1;
+  return Math.min(1, Math.max(0, (y - COMPARE_TITLE_SCROLL_PX) / denom));
+}
+
 // ─── Icons ───────────────────────────────────────────────────────────────────
 
 function CheckFilled({ color = "#1c1914" }: { color?: string }) {
@@ -88,50 +102,25 @@ function HeartIcon() {
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export default function CompareScroll() {
+  const isBiz = useIsBusiness();
+  const compareLines = isBiz ? compareSupportCopy.business : compareSupportCopy.individual;
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
-  const [isFastScrolling, setIsFastScrolling] = useState(false);
-  const lastSampleRef = useRef({ progress: 0, t: 0 });
-  const blurTimeoutRef = useRef<number | null>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", () => {
+    const el = containerRef.current;
+    if (!el) return;
+    setProgress(compareScrollProgress(el.getBoundingClientRect()));
   });
 
   useEffect(() => {
-    const unsubscribe = scrollYProgress.on("change", (next) => {
-      setProgress(next);
-
-      const now = performance.now();
-      const prev = lastSampleRef.current;
-      if (prev.t !== 0) {
-        const dp = Math.abs(next - prev.progress);
-        const dt = now - prev.t;
-        const speed = dt > 0 ? dp / dt : 0;
-
-        // High-speed scroll: briefly blur the "Without Gently" stream.
-        if (speed > 0.0012) {
-          setIsFastScrolling(true);
-          if (blurTimeoutRef.current) window.clearTimeout(blurTimeoutRef.current);
-          blurTimeoutRef.current = window.setTimeout(() => {
-            setIsFastScrolling(false);
-            blurTimeoutRef.current = null;
-          }, 140);
-        }
-      }
-
-      lastSampleRef.current = { progress: next, t: now };
-    });
-
-    return () => {
-      unsubscribe();
-      if (blurTimeoutRef.current) {
-        window.clearTimeout(blurTimeoutRef.current);
-        blurTimeoutRef.current = null;
-      }
-    };
-  }, [scrollYProgress]);
+    const el = containerRef.current;
+    if (!el) return;
+    setProgress(compareScrollProgress(el.getBoundingClientRect()));
+  }, []);
 
   // Both driven by the same virtual timeline; include an end hold.
   const totalSteps  = L + END_HOLD_STEPS;
@@ -161,31 +150,34 @@ export default function CompareScroll() {
     <section
       id="compare"
       ref={containerRef}
-      className="relative bg-[var(--bg-2)]"
-      /* steps × 220px (plus end hold) + 100vh so sticky enters/exits cleanly */
-      style={{ height: `calc(${totalSteps * 220}px + 100vh)` }}
+      className="relative scroll-mt-[120px] bg-[var(--bg-2)]"
+      /* Title block + scroll track (+100vh so sticky exits cleanly) */
+      style={{
+        height: `calc(${COMPARE_TITLE_SCROLL_PX}px + ${totalSteps * 280}px + 100vh)`,
+      }}
     >
-      <div className="sticky top-0 h-screen flex flex-col overflow-hidden py-8 px-6">
+      {/* Intro — scrolls away; not inside sticky so compare can use full viewport */}
+      <div
+        className="mx-auto flex max-w-content flex-col justify-center px-6 pb-6 pt-14 text-center"
+        style={{ minHeight: COMPARE_TITLE_SCROLL_PX }}
+      >
+        <p className="mb-2 text-[10px] uppercase tracking-[0.14em] text-[var(--accent)]">The difference</p>
+        <h2 className="font-serif text-[clamp(22px,2.8vw,38px)] font-extrabold leading-[1.25] tracking-[-0.02em] text-[var(--text)]">
+          {compareLines.line1}
+          <br />
+          {compareLines.line2}
+        </h2>
+        <p className="font-reading mt-2 text-[14px] leading-[1.6] text-[var(--muted)]">
+          Before and after <em className="italic text-[var(--accent)]">gently.</em>
+        </p>
+      </div>
 
-        {/* ── Section header ── */}
-        <div className="max-w-content mx-auto w-full mb-5 text-center flex-shrink-0">
-          <p className="text-[10px] uppercase tracking-[.14em] text-[var(--accent)] mb-2">The difference</p>
-          <h2 className="font-serif text-[clamp(22px,2.8vw,38px)] font-light tracking-[-0.02em] text-[var(--text)] leading-[1.25]">
-            {compareSupportCopy.line1}
-            <br />
-            {compareSupportCopy.line2}
-          </h2>
-          <p className="mt-2 text-[14px] leading-[1.6] text-[var(--muted)]">
-            Before and after{" "}
-            <em className="italic text-[var(--accent)]">gently.</em>
-          </p>
-        </div>
-
-        {/* ── Two columns ── */}
-        <div className="max-w-content mx-auto w-full grid grid-cols-2 gap-4 flex-1 min-h-0">
+      {/* Sticky — cards + progress only; fills viewport while scrolling the compare track */}
+      <div className="sticky top-0 flex h-[100dvh] max-h-[100dvh] min-h-0 flex-col overflow-hidden px-6 pb-4 pt-2">
+        <div className="mx-auto grid min-h-0 w-full max-w-content flex-1 grid-cols-2 gap-4">
 
           {/* ════ LEFT — Without Gently ════ */}
-          <div className="flex flex-col min-h-0 rounded-[18px] overflow-hidden border-2 border-[rgba(28,25,20,0.14)] shadow-[0_2px_0_0_rgba(28,25,20,0.14)]">
+          <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-[18px] border-2 border-[rgba(28,25,20,0.14)] shadow-[0_2px_0_0_rgba(28,25,20,0.14)]">
 
             {/* Header bar */}
             <div
@@ -215,12 +207,8 @@ export default function CompareScroll() {
               </div>
             </div>
 
-            {/* Step list */}
-            <div
-              className={`flex-1 bg-white flex flex-col overflow-hidden px-3 py-3 transition-[filter,opacity] duration-150 ${
-                isFastScrolling ? "blur-[1.8px] opacity-85" : "blur-0 opacity-100"
-              }`}
-            >
+            {/* Step list — scroll so long steps / “done” copy never clip */}
+            <div className="font-reading flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden bg-white px-3 py-3">
 
               {/* Hidden count */}
               {lHidden > 0 && (
@@ -229,37 +217,29 @@ export default function CompareScroll() {
                 </div>
               )}
 
-              {/* Condensed past rows */}
-              <AnimatePresence initial={false}>
-                {WITHOUT.slice(lPastStart, lPastEnd).map((item, idx) => (
-                  <motion.div
-                    key={lPastStart + idx}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 0.45, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.22, ease: EASE }}
-                    className="overflow-hidden"
-                  >
-                    <div className="flex items-center gap-2.5 px-2 py-[9px] border-b border-[var(--border-subtle)]">
-                      <Clock size={11} className="text-[var(--dim)] flex-shrink-0" />
-                      <span className="text-[12.5px] text-[var(--dim)] font-medium flex-1 truncate">
-                        {lPastStart + idx + 1}. {item.title}
-                      </span>
-                      <CheckFilled color="#1c1914" />
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+              {/* Condensed past rows — no height animation (avoids layout jank) */}
+              {WITHOUT.slice(lPastStart, lPastEnd).map((item, idx) => (
+                <div
+                  key={`${lPastStart + idx}-${item.title}`}
+                  className="flex items-center gap-2.5 border-b border-[var(--border-subtle)] px-2 py-[9px] opacity-45"
+                >
+                  <Clock size={11} className="flex-shrink-0 text-[var(--dim)]" />
+                  <span className="flex-1 truncate text-[12.5px] font-medium text-[var(--dim)]">
+                    {lPastStart + idx + 1}. {item.title}
+                  </span>
+                  <CheckFilled color="#1c1914" />
+                </div>
+              ))}
 
               {/* Active step card */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={leftActive}
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.28, ease: EASE }}
-                  className="mx-0.5 mt-2 mb-1 rounded-[12px] border-2 border-[rgba(28,25,20,0.12)] bg-white shadow-[0_2px_0_0_rgba(28,25,20,0.12)] flex-1 flex flex-col"
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.34, ease: EASE }}
+                  className="mx-0.5 mt-2 mb-1 flex min-h-[12rem] flex-1 flex-col rounded-[12px] border-2 border-[rgba(28,25,20,0.12)] bg-white shadow-[0_2px_0_0_rgba(28,25,20,0.12)] sm:min-h-[14rem]"
                 >
                   <div className="flex items-center gap-2.5 px-4 pt-5 pb-3">
                     <Clock size={14} className="text-[var(--muted)] flex-shrink-0" />
@@ -296,7 +276,7 @@ export default function CompareScroll() {
           </div>
 
           {/* ════ RIGHT — With Gently ════ */}
-          <div className="flex flex-col min-h-0 rounded-[18px] overflow-hidden border-2 border-[#7BC9EF] shadow-[0_2px_0_0_#7BC9EF]">
+          <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-[18px] border-2 border-[#7BC9EF] shadow-[0_2px_0_0_#7BC9EF]">
 
             {/* Header bar */}
             <div
@@ -331,61 +311,61 @@ export default function CompareScroll() {
               </div>
             </div>
 
-            {/* Step list */}
-            <div className="flex-1 bg-white flex flex-col overflow-hidden px-3 py-3">
+            {/* Step list — scroll so 6 completed rows + “done” panel stay readable */}
+            <div className="font-reading flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden bg-white px-3 py-3">
 
-              {/* Condensed past steps (all visible — max 5) */}
-              <AnimatePresence initial={false}>
-                {WITH.slice(rPastStart, rPastEnd).map((step, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 0.55, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.28, ease: EASE }}
-                    className="overflow-hidden"
-                  >
-                    <div className="flex items-center gap-2.5 px-2 py-[9px] border-b border-[var(--border-subtle)]">
-                      <HeartIcon />
-                      <span className="text-[12.5px] text-[var(--dim)] font-medium flex-1 truncate">
-                        {step.num}. {step.title}
-                      </span>
-                      <CheckFilled color="#1CB0F6" />
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+              {/* Condensed past steps — stable keys, no height animation */}
+              {WITH.slice(rPastStart, rPastEnd).map((step) => (
+                <div
+                  key={step.num}
+                  className="flex items-center gap-2.5 border-b border-[var(--border-subtle)] px-2 py-[9px] opacity-55"
+                >
+                  <HeartIcon />
+                  <span className="flex-1 truncate text-[12.5px] font-medium text-[var(--dim)]">
+                    {step.num}. {step.title}
+                  </span>
+                  <CheckFilled color="#1CB0F6" />
+                </div>
+              ))}
 
               {/* Active step card or "All Done" state */}
               <AnimatePresence mode="wait">
                 {rightDone ? (
                   <motion.div
                     key="done"
-                    initial={{ opacity: 0, scale: 0.96 }}
+                    initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4, ease: EASE }}
-                    className="mx-0.5 mt-2 rounded-[12px] flex-1 flex flex-col justify-center p-6"
-                    style={{ background: "rgba(43,161,251,0.05)", border: "1.5px solid #BBE9FF" }}
+                    transition={{ duration: 0.36, ease: EASE }}
+                    className="mx-0.5 mt-2 mb-1 flex shrink-0 flex-col overflow-hidden rounded-[12px] shadow-[0_2px_8px_rgba(43,161,251,0.1)]"
+                    style={{ background: "rgba(43,161,251,0.04)", border: "1.5px solid #BBE9FF" }}
                   >
-                    <HeartIcon />
-                    <p className="text-[17px] font-semibold text-[var(--text)] mt-4 mb-3 leading-snug">
-                      Now you can focus on healing.
+                    <div className="flex items-center gap-2.5 px-4 pt-5 pb-3">
+                      <span
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[12px] font-bold text-white"
+                        style={{ background: "#2BA1FB" }}
+                      >
+                        {R + 1}
+                      </span>
+                      <span className="flex-1 text-[15px] font-semibold leading-snug text-[var(--text)]">
+                        {compareLines.donePanelTitle}
+                      </span>
+                      <CheckFilled color="#1CB0F6" />
+                    </div>
+                    <p
+                      className="flex-1 px-4 pb-5 text-[13px] leading-[1.7] text-[var(--muted)]"
+                      style={{ paddingLeft: "47px" }}
+                    >
+                      {compareLines.donePanelBody}
                     </p>
-                    <ul className="text-[13px] text-[var(--muted)] leading-[1.65] space-y-1.5 list-none p-0 m-0">
-                      <li>The paperwork is handled.</li>
-                      <li>The calls are made.</li>
-                      <li>The plan is in place.</li>
-                      <li className="pt-1 text-[var(--text)]">You don&apos;t have to carry the admin alone.</li>
-                    </ul>
                   </motion.div>
                 ) : (
                   <motion.div
                     key={rightActive}
-                    initial={{ opacity: 0, y: 8 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    transition={{ duration: 0.28, ease: EASE }}
-                    className="mx-0.5 mt-2 mb-1 rounded-[12px] flex-1 flex flex-col overflow-hidden shadow-[0_2px_8px_rgba(43,161,251,0.1)]"
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.34, ease: EASE }}
+                    className="mx-0.5 mt-2 mb-1 flex min-h-[12rem] flex-1 flex-col overflow-hidden rounded-[12px] shadow-[0_2px_8px_rgba(43,161,251,0.1)] sm:min-h-[14rem]"
                     style={{ background: "rgba(43,161,251,0.04)", border: "1.5px solid #BBE9FF" }}
                   >
                     <div className="flex items-center gap-2.5 px-4 pt-5 pb-3">

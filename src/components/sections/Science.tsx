@@ -1,53 +1,53 @@
 "use client";
 
+import { scienceSection } from "@/lib/content";
 import { useScrollReveal } from "@/lib/useScrollReveal";
-
-const researchers = [
-  {
-    name: "Mary-Frances O'Connor",
-    role: "Grief Researcher · University of Arizona",
-    quote:
-      '"The bereaved brain is doing exactly what a brain does when it has lost something it tracked closely — running old predictions and finding nothing there."',
-  },
-  {
-    name: "George Bonanno",
-    role: "Resilience Researcher · Columbia University",
-    quote:
-      '"Most bereaved individuals show resilience — stable function alongside periods of difficulty. Grief does not require prolonged impairment."',
-  },
-  {
-    name: "Kristin Neff",
-    role: "Self-Compassion Researcher · UT Austin",
-    quote:
-      '"Self-compassion is one of the most evidence-supported predictors of healthy grief adjustment. People who treat themselves with care process grief more effectively."',
-  },
-];
 
 export default function Science() {
   const ref = useScrollReveal();
+  const { kicker, headline, subheadLines, researchers } = scienceSection;
 
   return (
-    <section id="science" className="py-16 bg-[var(--bg)] scroll-mt-[120px]">
-      <div className="max-w-content mx-auto px-6">
-        <p className="text-[10px] uppercase tracking-[.14em] text-[var(--accent)] text-center mb-2">
-          The research
+    <section id="science" className="scroll-mt-[120px] bg-[var(--bg)] py-16">
+      <div className="mx-auto max-w-content px-6">
+        <p className="mb-3 text-center text-[10px] uppercase tracking-[0.14em] text-[var(--accent)]">
+          {kicker}
         </p>
         <h2
           ref={ref}
-          className="fade-up font-serif text-[clamp(24px,3vw,38px)] font-light tracking-[-0.02em] text-center mb-11"
+          className="fade-up mx-auto mb-3 max-w-[720px] text-center font-serif text-[clamp(22px,2.5vw,34px)] font-extrabold tracking-[-0.02em]"
         >
-          Built on real published science.
+          {headline}
         </h2>
-        <div className="grid grid-cols-3 gap-3.5">
+        <div className="fade-up visible mx-auto mb-10 max-w-[22rem] space-y-2 text-center">
+          {subheadLines.map((line, i) => (
+            <p
+              key={i}
+              className={
+                i === 0
+                  ? "font-reading text-[15px] font-medium leading-snug text-[var(--text)]"
+                  : "font-reading text-[13px] font-light leading-snug text-[var(--muted)]"
+              }
+            >
+              {line}
+            </p>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 gap-3.5 md:grid-cols-3">
           {researchers.map((r, i) => (
             <div
               key={r.name}
-              className="bg-[var(--card)] border-2 border-[var(--border)] rounded-[20px] p-6 fade-up visible shadow-card"
-              style={{ transitionDelay: `${i * 0.1}s` }}
+              className="card-hover fade-up visible rounded-[20px] border-2 border-[var(--border)] bg-[var(--card)] p-5 shadow-card"
+              style={{ transitionDelay: `${i * 0.06}s` }}
             >
-              <div className="text-[15px] font-medium text-[var(--text)] mb-0.5">{r.name}</div>
-              <div className="text-[10px] uppercase tracking-[.09em] text-[var(--accent)] mb-3">{r.role}</div>
-              <p className="text-[13px] text-[var(--muted)] leading-[1.6] italic">{r.quote}</p>
+              <div className="mb-3 border-l-2 border-[var(--accent)] pl-3">
+                <div className="text-[13px] font-medium text-[var(--text)]">{r.name}</div>
+                <div className="mt-0.5 text-[10px] leading-snug text-[var(--dim)]">{r.role}</div>
+              </div>
+              <p className="font-reading text-[13px] leading-snug text-[var(--muted)]">
+                &ldquo;{r.quote}&rdquo;
+              </p>
             </div>
           ))}
         </div>

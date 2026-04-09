@@ -1,24 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useScroll, useMotionValueEvent } from "framer-motion";
 import { useAudience } from "@/lib/audienceContext";
 import { cn } from "@/lib/utils";
 
 export default function ToggleBar() {
   const { audience, setAudience } = useAudience();
-  const [isVisible, setIsVisible] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
 
-  useEffect(() => {
-    const timer = window.setTimeout(() => setIsVisible(true), 5100);
-    return () => window.clearTimeout(timer);
-  }, []);
+  useMotionValueEvent(scrollY, "change", (value) => {
+    setScrolled(value > 20);
+  });
 
   return (
     <div
       id="toggle-bar"
       className={cn(
-        "sticky top-[60px] z-[100] border-b border-[var(--border)] bg-[var(--nav-glass-bg)] backdrop-blur-md transition-opacity duration-700",
-        isVisible ? "opacity-100" : "pointer-events-none opacity-0",
+        "relative z-[1] w-full shrink-0 border-b border-[var(--border)] backdrop-blur-md transition-colors duration-300",
+        scrolled ? "bg-[var(--nav-sky-glass-bg)]" : "bg-[var(--hero-sky)]",
       )}
     >
       <div className="max-w-content mx-auto px-6 flex items-center">

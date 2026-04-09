@@ -1,10 +1,11 @@
 "use client";
 
 import { useIsBusiness } from "@/lib/audienceContext";
-import { bookingUrl, openExternalTab } from "@/lib/content";
+import { bookingUrl, ctaSection, openExternalTab } from "@/lib/content";
 
 export default function Cta() {
   const isBiz = useIsBusiness();
+  const copy = isBiz ? ctaSection.business : ctaSection.individual;
 
   return (
     <section id="cta" className="py-24 px-6 text-center bg-[var(--bg)] relative overflow-hidden scroll-mt-[120px]">
@@ -19,56 +20,30 @@ export default function Cta() {
         }}
       />
 
-      <div className="relative">
-        {isBiz ? (
-          <>
-            <h2 className="font-serif text-[clamp(28px,4vw,52px)] font-light tracking-[-0.025em] mb-3">
-              Bring gently<br />to your organisation.
-            </h2>
-            <p className="text-[15px] text-[var(--muted)] max-w-[360px] mx-auto mb-9">
-              Everyone deserves support after loss. Let&apos;s talk about bringing it to your people.
-            </p>
-            <div className="flex gap-2.5 justify-center flex-wrap">
-              <a
-                href={bookingUrl}
-                {...openExternalTab}
-                className="font-nunito font-extrabold min-h-[3rem] min-w-[9.5rem] flex-1 rounded-xl px-5 py-3 text-sm sm:min-w-[10.5rem] border-2 border-[var(--text)] shadow-[0_4px_0_0_var(--text)] bg-[var(--gate-intro-blue)] text-[var(--text)] transition hover:brightness-[0.97] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)]"
-              >
-                Book a demo
-              </a>
-              <a
-                href="#"
-                className="bg-transparent text-[var(--text)] border-2 border-[var(--text)] px-6 py-3 rounded-[9px] text-[14px] shadow-[0_4px_0_0_var(--text)] hover:bg-[var(--surface-hover)] transition-all active:translate-y-px active:shadow-[0_3px_0_0_var(--text)]"
-              >
-                View solutions
-              </a>
-            </div>
-          </>
-        ) : (
-          <>
-            <h2 className="font-serif text-[clamp(28px,4vw,52px)] font-light tracking-[-0.025em] mb-3">
-              Everything that comes after loss,<br />in one place.
-            </h2>
-            <p className="text-[15px] text-[var(--muted)] max-w-[360px] mx-auto mb-9">
-              Estate mapping. Admin handled. Grief supported. Start today.
-            </p>
-            <div className="flex gap-2.5 justify-center flex-wrap">
-              <a
-                href={bookingUrl}
-                {...openExternalTab}
-                className="font-nunito font-extrabold min-h-[3rem] min-w-[9.5rem] flex-1 rounded-xl px-5 py-3 text-sm sm:min-w-[10.5rem] border-2 border-[var(--text)] shadow-[0_4px_0_0_var(--text)] bg-[var(--gate-intro-blue)] text-[var(--text)] transition hover:brightness-[0.97] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)]"
-              >
-                Get early access
-              </a>
-              <a
-                href="#"
-                className="bg-transparent text-[var(--text)] border-2 border-[var(--text)] px-6 py-3 rounded-[9px] text-[14px] shadow-[0_4px_0_0_var(--text)] hover:bg-[var(--surface-hover)] transition-all active:translate-y-px active:shadow-[0_3px_0_0_var(--text)]"
-              >
-                Learn more
-              </a>
-            </div>
-          </>
-        )}
+      <div className="relative max-w-3xl mx-auto">
+        <h2 className="font-serif text-[clamp(28px,4vw,52px)] font-extrabold tracking-[-0.025em] mb-4 leading-[1.12]">
+          {copy.headlineBeforeBreak}
+          <br />
+          {copy.headlineQuestion}
+        </h2>
+        <p className="font-reading text-[15px] sm:text-base text-[var(--muted)] max-w-2xl mx-auto mb-10 leading-relaxed">
+          {copy.subhead}
+        </p>
+        <div className="flex gap-2.5 justify-center flex-wrap">
+          <a
+            href={bookingUrl}
+            {...openExternalTab}
+            className="font-nunito font-extrabold min-h-[3rem] min-w-[9.5rem] flex-1 rounded-xl px-5 py-3 uppercase tracking-[0.1em] text-xs sm:text-sm sm:min-w-[11rem] border-2 border-[var(--text)] shadow-[0_4px_0_0_var(--text)] bg-[var(--gate-intro-blue)] text-[var(--text)] transition hover:brightness-[0.97] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)]"
+          >
+            {copy.primaryCta}
+          </a>
+          <a
+            href={copy.secondaryHref}
+            className="bg-transparent text-[var(--text)] border-2 border-[var(--text)] px-6 py-3 rounded-[9px] text-[14px] shadow-[0_4px_0_0_var(--text)] hover:bg-[var(--surface-hover)] transition-all active:translate-y-px active:shadow-[0_3px_0_0_var(--text)]"
+          >
+            {copy.secondaryCta}
+          </a>
+        </div>
       </div>
     </section>
   );

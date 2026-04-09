@@ -262,7 +262,7 @@ export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
                 {content.infoModalTitle}
               </h2>
             </div>
-            <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4 text-left">
+            <div className="font-reading min-h-0 flex-1 overflow-y-auto px-5 py-4 text-left">
               <p className="m-0 text-[10px] uppercase tracking-[0.14em] text-[#0C0B09]/65">
                 {content.earlyAccessKicker}
               </p>

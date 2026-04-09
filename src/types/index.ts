@@ -1,19 +1,55 @@
 export type Audience = "individual" | "business";
 
-export type Pillar = "estate" | "admin" | "wellbeing";
+/** Nav deep links in Solution — `id="pillar-{anchor}"` on one row each */
+export type SolutionPillarAnchor = "estate" | "admin" | "wellbeing";
 
-export interface PillarData {
-  id: Pillar;
-  icon: string;
-  num: string;
-  name: string;
-  desc: string;
-  accentVar: string;
+export interface SolutionCareAccordionItem {
+  id: string;
+  title: string;
+  body: string;
+  /** Optional second paragraph (e.g. professional support) */
+  bodySecondary?: string;
+  /** Optional bullet list under the body */
+  bullets?: string[];
+  pillarAnchor?: SolutionPillarAnchor;
+}
+
+export interface SolutionCareSectionContent {
+  kicker: string;
   headline: string;
-  lede: string;
-  features: string[];
-  impactNum: string;
-  impactLabel: string;
+  subhead: string;
+  accordions: SolutionCareAccordionItem[];
+}
+
+/** Compare / “The difference” headline (two lines) + right column “all done” panel */
+export interface CompareSupportCopyVariant {
+  line1: string;
+  line2: string;
+  /** Same role as WITH[].title — headline row in the final panel */
+  donePanelTitle: string;
+  /** Body under the title when the With Gently column reaches “Done” */
+  donePanelBody: string;
+}
+
+export interface ImpactStat {
+  num: string;
+  label: string;
+  color: string;
+}
+
+export interface ImpactSectionContent {
+  headline: string;
+  stats: ImpactStat[];
+}
+
+/** Closing CTA — question headline + delight subhead + links */
+export interface CtaSectionVariant {
+  headlineBeforeBreak: string;
+  headlineQuestion: string;
+  subhead: string;
+  primaryCta: string;
+  secondaryCta: string;
+  secondaryHref: string;
 }
 
 export interface Testimonial {
@@ -25,6 +61,20 @@ export interface Testimonial {
 export interface TestimonialsSectionContent {
   headline: string;
   subhead: string;
+}
+
+export interface ScienceResearcher {
+  name: string;
+  role: string;
+  quote: string;
+}
+
+export interface ScienceSectionContent {
+  kicker: string;
+  headline: string;
+  /** 1–2 very short lines — easy to skim */
+  subheadLines: string[];
+  researchers: ScienceResearcher[];
 }
 
 export interface GatePageContent {
@@ -67,6 +117,17 @@ export interface NavDropdownItem {
   color?: string;
   /** If set, clicking the link switches audience before scrolling (e.g. B2B anchors). */
   switchAudience?: Audience;
+}
+
+export interface FooterLink {
+  label: string;
+  href: string;
+  switchAudience?: Audience;
+}
+
+export interface FooterColumn {
+  heading: string;
+  links: FooterLink[];
 }
 
 export interface B2BSolution {

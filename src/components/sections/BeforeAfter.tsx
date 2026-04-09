@@ -35,7 +35,7 @@ export default function BeforeAfter() {
           <p className="text-[10px] uppercase tracking-[.14em] text-[var(--accent)] mb-2">
             The difference
           </p>
-          <h2 className="font-serif text-[clamp(28px,3.4vw,44px)] font-light tracking-[-0.02em] text-[var(--text)]">
+          <h2 className="font-serif text-[clamp(28px,3.4vw,44px)] font-extrabold tracking-[-0.02em] text-[var(--text)]">
             Before and after{" "}
             <em className="italic text-[var(--accent)]">gently.</em>
           </h2>
@@ -47,7 +47,7 @@ export default function BeforeAfter() {
           <div className="relative rounded-[24px] bg-[var(--bg-3)] overflow-hidden min-h-[540px] p-8 flex flex-col">
 
             <p className="text-[9px] uppercase tracking-[.18em] text-[var(--dim)] mb-1.5">Before</p>
-            <h3 className="font-serif text-[32px] font-medium text-[var(--text)] leading-[1.05]">
+            <h3 className="font-serif text-[32px] font-extrabold text-[var(--text)] leading-[1.05]">
               Overwhelmed.
             </h3>
             <p className="text-[15px] text-[var(--dim)] mt-0.5 mb-6">Alone. Confused.</p>
@@ -139,7 +139,7 @@ export default function BeforeAfter() {
               <Logo variant="nav" imageClassName="h-7 w-auto" />
             </div>
 
-            <h3 className="font-serif text-[32px] font-medium text-[var(--text)] leading-[1.05] relative">
+            <h3 className="font-serif text-[32px] font-extrabold text-[var(--text)] leading-[1.05] relative">
               At peace.
             </h3>
             <p className="text-[15px] text-[var(--dim)] mt-0.5 mb-6 relative">

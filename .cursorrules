@@ -33,8 +33,9 @@ Never hardcode hex values. Always use CSS custom properties (light theme — see
   var(--surface-hover)  nav / menu hover wash
 
 ## Typography
-  Headlines → font-serif → Fraunces, weight 300
-  Body      → font-sans  → DM Sans, weight 300–500
+  Default → body + Tailwind `font-sans` → Nunito (`@theme --font-sans`). Use `font-brand` for explicit brand UI (alias of legacy `font-nunito`).
+  Headlines → `font-serif` + `font-extrabold` → Nunito 800; `em`/`i` → Fraunces semibold italic.
+  Long / dense reading → `font-reading` → DM Sans (hero lede, section paragraphs, cards’ body copy, FAQ answers, testimonials, compare-scroll step bodies, footer, nav dropdown descriptions, etc.).
   Never use Inter, Arial, Roboto as headline fonts.
 
 ## Component rules
@@ -44,10 +45,10 @@ Never hardcode hex values. Always use CSS custom properties (light theme — see
   - Use useScrollReveal() hook + fade-up class for scroll animations
   - One section per file, keep components focused
 
-## Pillar colours
-  estate    → var(--accent)
-  admin     → var(--blue)
-  wellbeing → var(--green)
+## Pillar colours (nav + accents)
+  estate    → var(--accent)   — `#pillar-estate` on probate row in Solution
+  admin     → var(--blue)    — `#pillar-admin` on funeral-planning row
+  wellbeing → var(--green)   — `#pillar-wellbeing` on “Getting grief support” accordion row
 
 ## File paths
   @/components/nav/        Nav.tsx, ToggleBar.tsx
@@ -57,7 +58,7 @@ Never hardcode hex values. Always use CSS custom properties (light theme — see
                            Testimonials, Who, Faq, Cta
   @/components/ui/         Footer, Logo.tsx, shared primitives
   public/images/           Brand assets (e.g. grievegently-logo.svg)
-  @/lib/content.ts         All copy and data
+  @/lib/content.ts         All copy and data (`solutionCareSection`, `impactSection`, …)
   @/lib/audienceContext.tsx Audience state
   @/lib/useScrollReveal.ts Scroll animation hook
   @/types/index.ts         TypeScript interfaces

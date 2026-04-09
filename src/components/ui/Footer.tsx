@@ -1,28 +1,29 @@
+"use client";
+
 import { Logo } from "@/components/ui/Logo";
 import { FooterGateLogout } from "@/components/ui/FooterGateLogout";
+import { footerColumns } from "@/lib/content";
+import { useAudience } from "@/lib/audienceContext";
+import type { FooterLink } from "@/types";
+import type { MouseEvent } from "react";
 
 export default function Footer() {
-  const cols = [
-    {
-      heading: "Solutions",
-      links: ["Estate & Legacy", "Streamlined Admin", "Wellbeing Courses"],
-    },
-    {
-      heading: "Business",
-      links: ["For Employers", "For Consultants", "Financial Institutions", "Health Plans"],
-    },
-    {
-      heading: "Company",
-      links: ["About", "Blog", "Press", "Careers"],
-    },
-    {
-      heading: "Legal",
-      links: ["Privacy", "Terms", "Crisis Resources"],
-    },
-  ];
+  const { audience, setAudience } = useAudience();
+
+  const handleLink = (link: FooterLink, e: MouseEvent<HTMLAnchorElement>) => {
+    if (link.switchAudience && link.switchAudience !== audience) {
+      e.preventDefault();
+      const id = link.href.startsWith("#") ? link.href.slice(1) : "";
+      setAudience(link.switchAudience);
+      const scrollToTarget = () => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      requestAnimationFrame(() => {
+        requestAnimationFrame(scrollToTarget);
+      });
+    }
+  };
 
   return (
-    <footer className="bg-[var(--bg)] border-t border-[var(--border)] pt-10 pb-8 px-6">
+    <footer className="font-reading bg-[var(--bg)] border-t border-[var(--border)] pt-10 pb-8 px-6">
       <div className="max-w-content mx-auto flex justify-between items-start flex-wrap gap-6">
         <div>
           <Logo variant="footer" className="mb-1 block" />
@@ -30,18 +31,17 @@ export default function Footer() {
         </div>
 
         <div className="flex gap-9 flex-wrap">
-          {cols.map((col) => (
+          {footerColumns.map((col) => (
             <div key={col.heading}>
-              <h4 className="text-[10px] uppercase tracking-[.1em] text-[var(--muted)] mb-3">
-                {col.heading}
-              </h4>
+              <h4 className="text-[10px] uppercase tracking-[.1em] text-[var(--muted)] mb-3">{col.heading}</h4>
               {col.links.map((link) => (
                 <a
-                  key={link}
-                  href="#"
+                  key={link.label}
+                  href={link.href}
+                  onClick={(e) => handleLink(link, e)}
                   className="block text-[12px] text-[var(--dim)] mb-1.5 hover:text-[var(--text)] transition-colors no-underline"
                 >
-                  {link}
+                  {link.label}
                 </a>
               ))}
             </div>

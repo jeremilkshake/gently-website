@@ -1,5 +1,4 @@
-import Nav from "@/components/nav/Nav";
-import ToggleBar from "@/components/nav/ToggleBar";
+import SiteHeader from "@/components/nav/SiteHeader";
 import { GateHome } from "@/app/GateHome";
 import { GateUnlockProvider } from "@/lib/gateUnlockContext";
 import { gateIsEnabled } from "@/lib/gate";
@@ -10,7 +9,6 @@ import BereavementIntro from "@/components/sections/BereavementIntro";
 import CompareScroll from "@/components/sections/CompareScroll";
 import Problem from "@/components/sections/Problem";
 import Solution from "@/components/solution/Solution";
-import Impact from "@/components/sections/Impact";
 import B2BSection from "@/components/sections/B2BSection";
 import Pain from "@/components/sections/Pain";
 import Science from "@/components/sections/Science";
@@ -44,8 +42,7 @@ export default async function Home({
 
   return (
     <GateUnlockProvider gateEnabled={gateOn} initialUnlocked={gateOn ? true : undefined}>
-      <Nav />
-      <ToggleBar />
+      <SiteHeader />
       <main>
         <Hero />
         <TrustBar />
@@ -53,7 +50,6 @@ export default async function Home({
         <BereavementIntro />
         <CompareScroll />
         <Solution />
-        <Impact />
         <B2BSection />
         <Pain />
         <Testimonials />

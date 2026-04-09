@@ -13,7 +13,7 @@ export default function Faq() {
         <p className="text-[10px] uppercase tracking-[.14em] text-[var(--accent)] text-center mb-2">
           FAQ
         </p>
-        <h2 className="font-serif text-[clamp(24px,3vw,38px)] font-light tracking-[-0.02em] text-center mb-11">
+        <h2 className="font-serif text-[clamp(24px,3vw,38px)] font-extrabold tracking-[-0.02em] text-center mb-11">
           Common questions.
         </h2>
 
@@ -36,7 +36,7 @@ export default function Faq() {
               </button>
               <div
                 className={cn(
-                  "overflow-hidden text-[13px] text-[var(--muted)] leading-[1.75] transition-all duration-300",
+                  "font-reading overflow-hidden text-[13px] text-[var(--muted)] leading-[1.75] transition-all duration-300",
                   open === i ? "max-h-[300px] pb-5" : "max-h-0"
                 )}
               >
