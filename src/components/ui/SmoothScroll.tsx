@@ -12,7 +12,6 @@ export function SmoothScroll() {
       duration: 1.45,
       lerp: 0.075,
       smoothWheel: true,
-      smoothTouch: false,
     });
 
     let rafId = 0;
