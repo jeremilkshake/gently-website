@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
+import { useMotionValueEvent, useScroll } from "framer-motion";
 import {
   bookingUrl,
   businessDropdown,
@@ -82,6 +83,7 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const { scrollY } = useScroll();
 
   const handleDropdownLink = (item: NavDropdownItem, e: MouseEvent<HTMLAnchorElement>) => {
     if (item.switchAudience && item.switchAudience !== audience) {
@@ -90,18 +92,16 @@ export default function Nav() {
       setAudience(item.switchAudience);
       const id = item.href.startsWith("#") ? item.href.slice(1) : "";
       if (!id) return;
-      const scrollToTarget = () => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      const scrollToTarget = () => document.getElementById(id)?.scrollIntoView({ behavior: "auto", block: "start" });
       requestAnimationFrame(() => {
         requestAnimationFrame(scrollToTarget);
       });
     }
   };
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  useMotionValueEvent(scrollY, "change", (value) => {
+    setScrolled(value > 20);
+  });
 
   useEffect(() => {
     const handleClick = (e: Event) => {

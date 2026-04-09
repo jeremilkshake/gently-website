@@ -1,25 +1,30 @@
 "use client";
 
 import Image from "next/image";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { useIsBusiness } from "@/lib/audienceContext";
 import { bookingUrl, heroBadgeText, heroVisual, openExternalTab } from "@/lib/content";
 
 export default function Hero() {
   const isBiz = useIsBusiness();
+  const { scrollYProgress } = useScroll();
+  const glowY = useSpring(useTransform(scrollYProgress, [0, 0.28], [0, -36]), { stiffness: 60, damping: 20 });
+  const imageY = useSpring(useTransform(scrollYProgress, [0, 0.35], [0, 64]), { stiffness: 60, damping: 20 });
+  const textY = useSpring(useTransform(scrollYProgress, [0, 0.3], [0, -18]), { stiffness: 70, damping: 22 });
 
   return (
     <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-36 pb-20 relative overflow-hidden">
       {/* Ambient glow */}
-      <div
-        className="hero-glow absolute w-[700px] h-[400px] pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse, var(--glow-wellbeing) 0%, transparent 70%)",
-          top: "45%",
-          left: "50%",
-        }}
-      />
+      <motion.div className="absolute pointer-events-none" style={{ y: glowY, top: "45%", left: "50%" }}>
+        <div
+          className="hero-glow w-[700px] h-[400px]"
+          style={{
+            background: "radial-gradient(ellipse, var(--glow-wellbeing) 0%, transparent 70%)",
+          }}
+        />
+      </motion.div>
 
-      <div className="relative">
+      <motion.div className="relative" style={{ y: textY }}>
         {/* Badge */}
         <div
           className="hero-badge inline-flex items-center gap-2 bg-[var(--bg-3)] border border-[var(--border)] rounded-full px-3.5 py-1.5 mb-6"
@@ -91,8 +96,9 @@ export default function Hero() {
           </>
         )}
 
-        <div
+        <motion.div
           className="hero-image mt-28 mx-auto w-[80%] max-w-[784px] overflow-hidden"
+          style={{ y: imageY }}
         >
           {/* TODO: swap with real screenshot */}
           <Image
@@ -103,8 +109,8 @@ export default function Hero() {
             className="w-full h-auto"
             priority
           />
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       <style jsx>{`
         .hero-glow { animation: breathe 7s ease-in-out infinite; }

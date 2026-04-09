@@ -4,6 +4,7 @@ import { DM_Sans, Fraunces, Nunito } from "next/font/google";
 import "./globals.css";
 import { AudienceProvider } from "@/lib/audienceContext";
 import { ScrollReset } from "@/components/ui/ScrollReset";
+import { SmoothScroll } from "@/components/ui/SmoothScroll";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       style={pageSurface}
     >
       <body style={pageSurface}>
+        <SmoothScroll />
         <ScrollReset />
         <AudienceProvider>{children}</AudienceProvider>
         <Analytics />
