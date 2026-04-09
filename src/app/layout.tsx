@@ -30,6 +30,11 @@ const nunito = Nunito({
 export const metadata: Metadata = {
   title: "gently",
   description: "gently",
+  robots: {
+    index: true,
+    follow: false,
+    nosnippet: true,
+  },
   icons: {
     icon: "/icon.svg",
     shortcut: "/icon.svg",
