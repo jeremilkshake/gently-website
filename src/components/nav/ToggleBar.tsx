@@ -1,15 +1,25 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useAudience } from "@/lib/audienceContext";
 import { cn } from "@/lib/utils";
 
 export default function ToggleBar() {
   const { audience, setAudience } = useAudience();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setIsVisible(true), 5100);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   return (
     <div
       id="toggle-bar"
-      className="sticky top-[60px] z-[100] bg-[var(--nav-glass-bg)] backdrop-blur-md border-b border-[var(--border)]"
+      className={cn(
+        "sticky top-[60px] z-[100] border-b border-[var(--border)] bg-[var(--nav-glass-bg)] backdrop-blur-md transition-opacity duration-700",
+        isVisible ? "opacity-100" : "pointer-events-none opacity-0",
+      )}
     >
       <div className="max-w-content mx-auto px-6 flex items-center">
         <button

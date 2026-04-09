@@ -10,7 +10,7 @@ export default function Problem() {
   const copy = audience === "business" ? problemSection.business : problemSection.individual;
 
   return (
-    <section id="problem" className="py-20 bg-[var(--bg-2)] scroll-mt-[120px]">
+    <section id="problem" className="py-20 bg-[var(--bg)] scroll-mt-[120px]">
       <div className="max-w-content mx-auto px-6">
         <p className="text-[10px] uppercase tracking-[.14em] text-[var(--accent)] text-center mb-2">{copy.tag}</p>
         <h2
@@ -27,7 +27,7 @@ export default function Problem() {
           {copy.items.map((item, i) => (
             <div
               key={item.title}
-              className="bg-[var(--card)] border border-[var(--border)] rounded-[20px] p-7 card-hover fade-up visible"
+              className="bg-[var(--card)] border-2 border-[var(--border)] rounded-[20px] p-7 card-hover fade-up visible shadow-card"
               style={{ transitionDelay: `${i * 0.06}s` }}
             >
               <div className="text-[10px] text-[var(--muted)] uppercase tracking-[.12em] mb-3">0{i + 1}</div>

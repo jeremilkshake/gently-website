@@ -30,7 +30,7 @@ export default function Testimonials() {
           {doubled.map((t, i) => (
             <div
               key={`${t.user}-${i}`}
-              className="bg-[var(--card)] border border-[var(--border)] rounded-[20px] p-5 w-[min(100vw-3rem,300px)] sm:w-[300px] flex-shrink-0"
+              className="bg-[var(--card)] border-2 border-[var(--border)] rounded-[20px] p-5 w-[min(100vw-3rem,300px)] sm:w-[300px] flex-shrink-0 shadow-card"
             >
               <div className="mb-3 border-l-2 border-[var(--accent)] pl-3">
                 <div className="text-[13px] font-medium text-[var(--text)]">{t.user}</div>

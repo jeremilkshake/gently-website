@@ -74,6 +74,39 @@ export const gateAuthUi = {
   logout: "Logout",
 } as const;
 
+/** Hero visual asset */
+export const heroVisual = {
+  src: "/images/hero-support-collage.svg",
+  alt: "Platform preview showing estate overview, guided support, and admin task progress.",
+} as const;
+
+export const heroBadgeText = "Made with care for people carrying something heavy.";
+
+export const bereavementIntro = {
+  headline: "A modern approach to bereavement support",
+  brand: "gently.",
+  body: "is a new kind of bereavement support. Modern, professional, and grounded in personalised care. We’re by your side — every step of the way. We handle the admin, so you can handle your heart.",
+} as const;
+
+export const trustBar = {
+  label: "Trusted by industry leaders",
+  logos: [
+    "Funeral Homes",
+    "Insurance Providers",
+    "Legal Partners",
+    "Probate Services",
+    "Estate Planning Firms",
+    "Employee Benefits Teams",
+    "Bereavement Charities",
+    "Financial Advisors",
+  ],
+} as const;
+
+export const compareSupportCopy = {
+  line1: "Personalize your grief.",
+  line2: "Reclaim your time.",
+} as const;
+
 export const navBusinessCta = {
   body: "Extend support when it is needed most",
   linkLabel: "Request a demo →",
@@ -161,7 +194,7 @@ export const pillars: PillarData[] = [
       "Probate, legal and financial guidance in plain English",
       "Benefits claims, account closures, notifications handled",
     ],
-    impactNum: "400+ hrs",
+    impactNum: "300+ hrs",
     impactLabel: "saved per family over\n18 months on average",
   },
   {

@@ -3,7 +3,7 @@
 export default function Impact() {
   const stats = [
     { num: "< 30 min", label: "to map your full estate\nwith AI visualisations", color: "var(--accent)" },
-    { num: "400+ hrs", label: "saved per family over\n18 months on average", color: "var(--blue)" },
+    { num: "300+ hrs", label: "saved per family over\n18 months on average", color: "var(--blue)" },
     { num: "94 lessons", label: "across grief, health &\nlegacy support", color: "var(--green)" },
   ];
 

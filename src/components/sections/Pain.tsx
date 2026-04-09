@@ -25,7 +25,7 @@ export default function Pain() {
         </h2>
 
         {/* Reddit card */}
-        <div className="bg-[var(--card)] border border-[var(--border)] rounded-[20px] p-5 max-w-[580px] mx-auto mb-11 flex gap-3.5 items-start fade-up visible">
+        <div className="bg-[var(--card)] border-2 border-[var(--border)] rounded-[20px] p-5 max-w-[580px] mx-auto mb-11 flex gap-3.5 items-start fade-up visible shadow-card">
           <div className="w-7 h-7 rounded-full bg-[#FF4500] flex-shrink-0 flex items-center justify-center text-[13px] font-bold text-white">
             r
           </div>
@@ -42,7 +42,7 @@ export default function Pain() {
           {painPoints.map((point, i) => (
             <div
               key={point}
-              className="bg-[var(--card)] border border-[var(--border)] rounded-[12px] px-5 py-4 flex items-start gap-3 card-hover fade-up visible"
+              className="bg-[var(--card)] border-2 border-[var(--border)] rounded-[12px] px-5 py-4 flex items-start gap-3 card-hover fade-up visible shadow-card"
               style={{ transitionDelay: `${i * 0.05}s` }}
             >
               <div

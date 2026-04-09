@@ -8,7 +8,7 @@ export default function B2BSection() {
   if (audience !== "business") return null;
 
   return (
-    <section id="b2b" className="py-16 bg-[var(--bg-2)] scroll-mt-[120px]">
+    <section id="b2b" className="py-16 bg-[var(--bg)] scroll-mt-[120px]">
       <div className="max-w-content mx-auto px-6">
         <p className="text-[10px] uppercase tracking-[.14em] text-[var(--accent)] text-center mb-2">
           For Business
@@ -21,7 +21,7 @@ export default function B2BSection() {
             <div
               key={sol.title}
               id={sol.anchorId}
-              className="bg-[var(--card)] border border-[var(--border)] rounded-[20px] p-7 card-hover scroll-mt-[120px]"
+              className="bg-[var(--card)] border-2 border-[var(--border)] rounded-[20px] p-7 card-hover scroll-mt-[120px] shadow-card"
               style={{ transitionDelay: `${i * 0.06}s` }}
             >
               <div className="text-[24px] mb-3">{sol.icon}</div>

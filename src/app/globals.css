@@ -19,7 +19,7 @@
   --text: #1c1914;
   --muted: #5c574e;
   --dim: #8a8478;
-  --accent: #8f7d4e;
+  --accent: #2D37E7;
   --blue: #5a7894;
   --green: #4f7568;
   --destructive: #a33434;
@@ -28,7 +28,7 @@
   --border-hover: rgba(28, 25, 20, 0.16);
   --nav-glass-bg: rgba(247, 244, 237, 0.88);
   --surface-hover: rgba(28, 25, 20, 0.05);
-  --shadow-card: 0 4px 24px rgba(28, 25, 20, 0.06), 0 12px 40px rgba(28, 25, 20, 0.05);
+  --shadow-card: 0 2px 0 0 var(--border);
   --shadow-float: 0 8px 32px rgba(28, 25, 20, 0.07), 0 24px 64px rgba(28, 25, 20, 0.06);
   --shadow-dropdown: 0 16px 48px rgba(28, 25, 20, 0.1), 0 4px 16px rgba(28, 25, 20, 0.04);
   --glow-wellbeing: rgba(79, 117, 104, 0.14);
@@ -39,6 +39,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
     margin: 0;
     min-height: 100%;
   }
@@ -58,8 +59,20 @@
     box-sizing: border-box;
   }
   ::selection {
-    background: rgba(143, 125, 78, 0.22);
+    background: rgba(45, 55, 231, 0.22);
     color: var(--text);
+  }
+
+  main > section {
+    scroll-snap-align: start;
+    scroll-margin-top: 110px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+      scroll-snap-type: none;
+    }
   }
 }
 

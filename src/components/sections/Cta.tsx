@@ -32,13 +32,13 @@ export default function Cta() {
               <a
                 href={bookingUrl}
                 {...openExternalTab}
-                className="bg-[var(--text)] text-[var(--bg)] px-6 py-3 rounded-[9px] text-[14px] font-medium hover:opacity-90 hover:-translate-y-0.5 transition-all"
+                className="font-nunito font-extrabold min-h-[3rem] min-w-[9.5rem] flex-1 rounded-xl px-5 py-3 text-sm sm:min-w-[10.5rem] border-2 border-[var(--text)] shadow-[0_4px_0_0_var(--text)] bg-[var(--gate-intro-blue)] text-[var(--text)] transition hover:brightness-[0.97] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)]"
               >
                 Book a demo
               </a>
               <a
                 href="#"
-                className="bg-transparent text-[var(--text)] border border-[var(--border)] px-6 py-3 rounded-[9px] text-[14px] hover:border-[var(--muted)] hover:-translate-y-0.5 transition-all"
+                className="bg-transparent text-[var(--text)] border-2 border-[var(--text)] px-6 py-3 rounded-[9px] text-[14px] shadow-[0_4px_0_0_var(--text)] hover:bg-[var(--surface-hover)] transition-all active:translate-y-px active:shadow-[0_3px_0_0_var(--text)]"
               >
                 View solutions
               </a>
@@ -56,13 +56,13 @@ export default function Cta() {
               <a
                 href={bookingUrl}
                 {...openExternalTab}
-                className="bg-[var(--text)] text-[var(--bg)] px-6 py-3 rounded-[9px] text-[14px] font-medium hover:opacity-90 hover:-translate-y-0.5 transition-all"
+                className="font-nunito font-extrabold min-h-[3rem] min-w-[9.5rem] flex-1 rounded-xl px-5 py-3 text-sm sm:min-w-[10.5rem] border-2 border-[var(--text)] shadow-[0_4px_0_0_var(--text)] bg-[var(--gate-intro-blue)] text-[var(--text)] transition hover:brightness-[0.97] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)]"
               >
                 Get early access
               </a>
               <a
                 href="#"
-                className="bg-transparent text-[var(--text)] border border-[var(--border)] px-6 py-3 rounded-[9px] text-[14px] hover:border-[var(--muted)] hover:-translate-y-0.5 transition-all"
+                className="bg-transparent text-[var(--text)] border-2 border-[var(--text)] px-6 py-3 rounded-[9px] text-[14px] shadow-[0_4px_0_0_var(--text)] hover:bg-[var(--surface-hover)] transition-all active:translate-y-px active:shadow-[0_3px_0_0_var(--text)]"
               >
                 Learn more
               </a>

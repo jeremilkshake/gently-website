@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { DM_Sans, Fraunces, Nunito } from "next/font/google";
 import "./globals.css";
 import { AudienceProvider } from "@/lib/audienceContext";
+import { ScrollReset } from "@/components/ui/ScrollReset";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -27,8 +28,12 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "gently — estate, admin & wellbeing after loss",
-  description: "Estate planning, automated admin, and science-based grief support — all in one place.",
+  title: "gently",
+  description: "gently",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+  },
 };
 
 const pageSurface = {
@@ -44,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       style={pageSurface}
     >
       <body style={pageSurface}>
+        <ScrollReset />
         <AudienceProvider>{children}</AudienceProvider>
         <Analytics />
       </body>

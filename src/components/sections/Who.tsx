@@ -18,7 +18,7 @@ export default function Who() {
           {whoCards.map((card, i) => (
             <div
               key={card.title}
-              className="bg-[var(--card)] border border-[var(--border)] rounded-[20px] p-6 card-hover fade-up visible"
+              className="bg-[var(--card)] border-2 border-[var(--border)] rounded-[20px] p-6 card-hover fade-up visible shadow-card"
               style={{ transitionDelay: `${i * 0.07}s` }}
             >
               <div className="text-[15px] font-medium leading-snug text-[var(--text)] mb-2.5">{card.title}</div>

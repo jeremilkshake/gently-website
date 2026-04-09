@@ -5,6 +5,9 @@ import { GateUnlockProvider } from "@/lib/gateUnlockContext";
 import { gateIsEnabled } from "@/lib/gate";
 import { verifyGateCookie } from "@/lib/verifyGateCookie";
 import Hero from "@/components/hero/Hero";
+import TrustBar from "@/components/sections/TrustBar";
+import BereavementIntro from "@/components/sections/BereavementIntro";
+import CompareScroll from "@/components/sections/CompareScroll";
 import Problem from "@/components/sections/Problem";
 import Solution from "@/components/solution/Solution";
 import Impact from "@/components/sections/Impact";
@@ -45,13 +48,16 @@ export default async function Home({
       <ToggleBar />
       <main>
         <Hero />
+        <TrustBar />
         <Problem />
+        <BereavementIntro />
+        <CompareScroll />
         <Solution />
         <Impact />
         <B2BSection />
         <Pain />
-        <Science />
         <Testimonials />
+        <Science />
         <Who />
         <Faq />
         <Cta />

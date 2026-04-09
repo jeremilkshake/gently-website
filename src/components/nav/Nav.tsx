@@ -32,7 +32,7 @@ function Dropdown({
 }) {
   return (
     <div
-      className="absolute left-0 z-[999] rounded-[20px] border border-[var(--border)] bg-[var(--card)] p-2 shadow-dropdown"
+      className="absolute left-0 z-[999] rounded-[20px] border-2 border-[var(--border)] bg-[var(--card)] p-2 shadow-[0_2px_0_0_var(--border)]"
       style={{
         top: "calc(100% + 8px)",
         minWidth: hasCta ? 380 : 260,
@@ -60,7 +60,7 @@ function Dropdown({
           ))}
         </div>
         {hasCta && (
-          <div className="flex min-w-[160px] flex-col justify-center gap-3 rounded-r-[12px] border-l border-[var(--border)] bg-[rgba(143,125,78,0.1)] px-[18px] py-5">
+          <div className="flex min-w-[160px] flex-col justify-center gap-3 rounded-r-[12px] border-l border-[var(--border)] bg-[rgba(119,208,250,0.1)] px-[18px] py-5">
             <p className="m-0 text-[13px] leading-[1.5] text-[var(--text)]">{navBusinessCta.body}</p>
             <a
               href={bookingUrl}
@@ -81,6 +81,7 @@ export default function Nav() {
   const { audience, setAudience } = useAudience();
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   const handleDropdownLink = (item: NavDropdownItem, e: MouseEvent<HTMLAnchorElement>) => {
     if (item.switchAudience && item.switchAudience !== audience) {
@@ -108,6 +109,11 @@ export default function Nav() {
     };
     document.addEventListener("click", handleClick);
     return () => document.removeEventListener("click", handleClick);
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setIsVisible(true), 5100);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const toggle = (name: string) => setOpenMenu((prev) => (prev === name ? null : name));
@@ -139,7 +145,10 @@ export default function Nav() {
     );
 
   return (
-    <nav style={navStyle}>
+    <nav
+      style={navStyle}
+      className={cn("transition-opacity duration-700", isVisible ? "opacity-100" : "pointer-events-none opacity-0")}
+    >
       <Logo variant="nav" />
 
       <div className="hidden items-center gap-0.5 md:flex">
@@ -204,7 +213,7 @@ export default function Nav() {
         <a
           href={bookingUrl}
           {...openExternalTab}
-          className="rounded-lg bg-[var(--text)] px-[18px] py-2 font-sans text-[13px] font-medium text-[var(--bg)] no-underline transition-opacity hover:opacity-[0.88]"
+          className="inline-flex min-h-[3rem] items-center rounded-xl border-2 border-[var(--text)] bg-[var(--gate-intro-blue)] px-5 py-2 text-sm font-nunito font-extrabold text-[var(--text)] no-underline shadow-[0_4px_0_0_var(--text)] transition hover:brightness-[0.97] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)]"
         >
           Book a Demo
         </a>

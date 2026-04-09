@@ -42,7 +42,7 @@ export default function Science() {
           {researchers.map((r, i) => (
             <div
               key={r.name}
-              className="bg-[var(--card)] border border-[var(--border)] rounded-[20px] p-6 fade-up visible"
+              className="bg-[var(--card)] border-2 border-[var(--border)] rounded-[20px] p-6 fade-up visible shadow-card"
               style={{ transitionDelay: `${i * 0.1}s` }}
             >
               <div className="text-[15px] font-medium text-[var(--text)] mb-0.5">{r.name}</div>

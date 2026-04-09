@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import type { Pillar } from "@/types";
 
 const pillarStyles: Record<Pillar, { accent: string; dot: string; border: string }> = {
-  estate:    { accent: "var(--accent)", dot: "bg-[var(--accent)]",  border: "border-[rgba(184,168,120,0.3)]" },
+  estate:    { accent: "var(--accent)", dot: "bg-[var(--accent)]",  border: "border-[rgba(119,208,250,0.3)]" },
   admin:     { accent: "var(--blue)",   dot: "bg-[var(--blue)]",    border: "border-[rgba(123,159,191,0.3)]" },
   wellbeing: { accent: "var(--green)",  dot: "bg-[var(--green)]",   border: "border-[rgba(107,155,138,0.3)]" },
 };
@@ -56,7 +56,7 @@ export default function Solution() {
               type="button"
               onClick={() => setActive(p.id)}
               className={cn(
-                "scroll-mt-[120px] bg-[var(--card)] border rounded-[20px] p-6 text-left flex items-start gap-3.5 transition-all",
+                "scroll-mt-[120px] bg-[var(--card)] border-2 rounded-[20px] p-6 text-left flex items-start gap-3.5 transition-all shadow-card",
                 active === p.id
                   ? cn("bg-[var(--card-active)]", pillarStyles[p.id].border)
                   : "border-[var(--border)] hover:border-[var(--border-hover)]"
@@ -131,10 +131,10 @@ export default function Solution() {
 function PillarMock({ pillar }: { pillar: Pillar }) {
   if (pillar === "estate") {
     return (
-      <div className="bg-[var(--card)] border border-[var(--border)] rounded-[20px] p-5 shadow-card">
+      <div className="bg-[var(--card)] border-2 border-[var(--border)] rounded-[20px] p-5 shadow-card">
         <div className="flex justify-between items-center mb-4">
           <span className="text-[13px] font-medium">Estate Overview</span>
-          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[rgba(184,168,120,0.15)] text-[var(--accent)]">AI mapped</span>
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[rgba(119,208,250,0.15)] text-[var(--accent)]">AI mapped</span>
         </div>
         {[
           { label: "Property", val: "£380,000", w: "85%" },
@@ -160,7 +160,7 @@ function PillarMock({ pillar }: { pillar: Pillar }) {
         <div className="text-[11px] text-[var(--muted)] mb-2">Documents vault</div>
         <div className="flex flex-wrap gap-1.5">
           {["✓ Will uploaded", "✓ Life policy", "⚠ Probate pending"].map((tag, i) => (
-            <span key={tag} className={cn("text-[11px] px-2.5 py-0.5 rounded-full", i < 2 ? "bg-[rgba(184,168,120,0.1)] text-[var(--accent)]" : "bg-[var(--bg-3)] text-[var(--muted)]")}>
+            <span key={tag} className={cn("text-[11px] px-2.5 py-0.5 rounded-full", i < 2 ? "bg-[rgba(119,208,250,0.1)] text-[var(--accent)]" : "bg-[var(--bg-3)] text-[var(--muted)]")}>
               {tag}
             </span>
           ))}
@@ -171,7 +171,7 @@ function PillarMock({ pillar }: { pillar: Pillar }) {
 
   if (pillar === "admin") {
     return (
-      <div className="bg-[var(--card)] border border-[var(--border)] rounded-[20px] p-5 shadow-card">
+      <div className="bg-[var(--card)] border-2 border-[var(--border)] rounded-[20px] p-5 shadow-card">
         <div className="flex justify-between items-center mb-4">
           <span className="text-[13px] font-medium">Your action plan</span>
           <span className="text-[10px] px-2 py-0.5 rounded-full bg-[rgba(123,159,191,0.15)] text-[var(--blue)]">7 tasks active</span>
@@ -206,7 +206,7 @@ function PillarMock({ pillar }: { pillar: Pillar }) {
   }
 
   return (
-    <div className="bg-[var(--card)] border border-[var(--border)] rounded-[20px] p-5 shadow-card">
+    <div className="bg-[var(--card)] border-2 border-[var(--border)] rounded-[20px] p-5 shadow-card">
       <div className="flex justify-between items-center mb-4">
         <span className="text-[13px] font-medium">Your courses</span>
         <span className="text-[10px] px-2 py-0.5 rounded-full bg-[rgba(107,155,138,0.15)] text-[var(--green)]">3 active</span>
