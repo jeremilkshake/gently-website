@@ -324,28 +324,16 @@ export const whoCards: WhoCard[] = [
 
 export const faqItems: FaqItem[] = [
   {
-    q: "What are the three pillars?",
-    a: "gently brings together three integrated products: Estate & Legacy (AI maps your assets, debts, and documents and handles probate), Streamlined Admin (AI Concierge acts on your behalf for HMRC, pension claims, account closures, and more), and Wellbeing Courses (16 expert-guided grief and recovery courses, 94 lessons, 53 science-backed skills).",
+    q: "What is gently?",
+    a: "gently is one platform that combines estate support, admin help, and grief wellbeing guidance after loss.",
   },
   {
-    q: "How long does the estate mapping take?",
-    a: "Under 30 minutes for a complete initial map. The AI automatically organises assets, liabilities, and documents and flags any issues or missing items.",
+    q: "How does it help me day to day?",
+    a: "It helps you organise estate and admin tasks, shows what to do next, and gives practical grief support in one place.",
   },
   {
-    q: "Is the grief curriculum actually evidence-based?",
-    a: "Yes. Every lesson cites real published research — author, title, year, URL — including O'Connor, Bonanno, Neff, Walker, and van der Kolk. The science is the foundation, not decoration.",
-  },
-  {
-    q: "How long are the wellbeing lessons?",
-    a: "Each lesson is approximately 15 minutes. Designed for real moments — before work, during a break, at night. You need 15 minutes, not a clear hour.",
-  },
-  {
-    q: "Is this for individuals or businesses?",
-    a: "Both. Individuals access the full platform directly. Businesses can license the platform as a benefit or white-label solution. Use the toggle at the top of the page to switch views.",
-  },
-  {
-    q: "Is this a substitute for legal or therapy services?",
-    a: "No. gently is a support platform — not legal advice, not therapy. We work alongside professionals. The wellbeing courses are self-directed, not clinical treatment.",
+    q: "Is this legal advice or therapy?",
+    a: "No. gently is a support platform, not legal advice and not therapy. It is designed to work alongside professionals.",
   },
 ];
 
