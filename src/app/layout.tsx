@@ -29,12 +29,11 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "gently",
-  description: "gently",
+  title: "gently.",
+  description: "Care for when it matters most.",
   robots: {
     index: true,
     follow: false,
-    nosnippet: true,
   },
   icons: {
     icon: "/icon.svg",
