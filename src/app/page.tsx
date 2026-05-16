@@ -8,9 +8,16 @@ import TrustBar from "@/components/sections/TrustBar";
 import BereavementIntro from "@/components/sections/BereavementIntro";
 import CompareScroll from "@/components/sections/CompareScroll";
 import Problem from "@/components/sections/Problem";
+import NotAlone from "@/components/sections/NotAlone";
 import Solution from "@/components/solution/Solution";
 import B2BSection from "@/components/sections/B2BSection";
+import BusinessStatStrip from "@/components/sections/BusinessStatStrip";
+import BusinessWhyPartner from "@/components/sections/BusinessWhyPartner";
+import BusinessPartnership from "@/components/sections/BusinessPartnership";
+import BusinessCompareTable from "@/components/sections/BusinessCompareTable";
+import BusinessPricingModel from "@/components/sections/BusinessPricingModel";
 import Pain from "@/components/sections/Pain";
+import IndividualCompareTable from "@/components/sections/IndividualCompareTable";
 import Science from "@/components/sections/Science";
 import Testimonials from "@/components/sections/Testimonials";
 import Who from "@/components/sections/Who";
@@ -47,11 +54,18 @@ export default async function Home({
         <Hero />
         <TrustBar />
         <Problem />
+        <NotAlone />
         <BereavementIntro />
         <CompareScroll />
         <Solution />
+        <BusinessWhyPartner />
+        <BusinessStatStrip />
         <B2BSection />
+        <BusinessPartnership />
+        <BusinessCompareTable />
+        <BusinessPricingModel />
         <Pain />
+        <IndividualCompareTable />
         <Testimonials />
         <Science />
         <Who />

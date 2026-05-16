@@ -11,14 +11,23 @@ import {
   type MotionValue,
   type Variants,
 } from "framer-motion";
+import { Heart, ShieldCheck } from "lucide-react";
 import { useIsBusiness } from "@/lib/audienceContext";
 import {
   bookingUrl,
   heroBadgeText,
   heroBookingCta,
+  heroBusinessBookingCta,
+  heroBusinessLede,
+  heroBusinessTrustBadges,
   heroVisual,
   openExternalTab,
 } from "@/lib/content";
+
+const HERO_TRUST_ICONS = {
+  heart: Heart,
+  shield: ShieldCheck,
+} as const;
 
 /** Max horizontal travel (px) at full progress — tuned for visible, responsive parallax */
 const CLOUD_SCROLL_MAX_PX = 168;
@@ -180,16 +189,17 @@ export default function Hero() {
                 variants={itemVariants}
                 className="hero-headline font-serif mx-auto mb-4 max-w-[780px] text-[clamp(36px,5.5vw,66px)] font-extrabold leading-[1.08] tracking-[-0.025em]"
               >
-                Give your people{" "}
-                <em className="italic text-[var(--hero-wordmark)]">complete</em>
-                <br />
-                support after loss.
+                Give your people the{" "}
+                <em className="italic text-[var(--hero-wordmark)]">gift</em>{" "}
+                of{" "}
+                <em className="italic text-[var(--hero-wordmark)]">complete support</em>{" "}
+                after loss.
               </motion.h1>
               <motion.p
                 variants={itemVariants}
-                className="font-reading mx-auto mb-9 max-w-[460px] text-[clamp(15px,1.8vw,18px)] font-light text-[var(--muted)]"
+                className="font-reading mx-auto mb-9 max-w-[520px] text-[clamp(15px,1.8vw,18px)] font-light text-[var(--muted)]"
               >
-                The only platform covering estate, admin, and grief wellbeing — built for employers and institutions.
+                {heroBusinessLede}
               </motion.p>
               <motion.div
                 variants={itemVariants}
@@ -200,7 +210,7 @@ export default function Hero() {
                   {...openExternalTab}
                   className="inline-flex min-h-[3rem] flex-1 items-center justify-center rounded-xl border-2 border-[var(--text)] bg-[var(--gate-intro-blue)] px-5 py-3 font-nunito text-sm font-extrabold text-[var(--text)] shadow-[0_4px_0_0_var(--text)] transition hover:brightness-[0.97] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)] sm:flex-initial"
                 >
-                  {heroBookingCta}
+                  {heroBusinessBookingCta}
                 </a>
                 <a
                   href="#b2b"
@@ -208,6 +218,23 @@ export default function Hero() {
                 >
                   See solutions
                 </a>
+              </motion.div>
+              <motion.div
+                variants={itemVariants}
+                className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
+              >
+                {heroBusinessTrustBadges.map((badge) => {
+                  const Icon = HERO_TRUST_ICONS[badge.icon];
+                  return (
+                    <span
+                      key={badge.label}
+                      className="font-reading inline-flex items-center gap-1.5 text-[12.5px] text-[var(--muted)]"
+                    >
+                      <Icon size={14} strokeWidth={1.6} aria-hidden="true" />
+                      {badge.label}
+                    </span>
+                  );
+                })}
               </motion.div>
             </>
           ) : (
@@ -224,7 +251,7 @@ export default function Hero() {
                 variants={itemVariants}
                 className="font-reading mx-auto mb-9 max-w-[460px] text-[clamp(15px,1.8vw,18px)] font-light text-[var(--muted)]"
               >
-                Estate planning, automated admin, and science-based grief support — in one place.
+                Estate planning, automated admin, and science-based grief support, in one place.
               </motion.p>
               <motion.div
                 variants={itemVariants}

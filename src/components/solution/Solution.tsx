@@ -44,8 +44,8 @@ export default function Solution() {
   };
 
   return (
-    <section id="solution" className="py-20 bg-[var(--bg)] scroll-mt-[120px]">
-      <div className="max-w-content mx-auto px-6">
+    <section id="solution" className="min-h-screen flex items-center py-20 bg-[var(--bg)] scroll-mt-[120px]">
+      <div className="max-w-content mx-auto px-6 w-full">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-x-14 lg:gap-y-0 items-start">
           {/* Left — headline stack */}
           <div className="lg:col-span-5 lg:sticky lg:top-28">

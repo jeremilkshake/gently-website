@@ -7,6 +7,7 @@ import {
   businessDropdown,
   gateAuthUi,
   navBusinessCta,
+  navPartnersMenu,
   navLoginHref,
   openExternalTab,
   resourcesDropdown,
@@ -132,7 +133,7 @@ export default function Nav() {
       <div className="hidden min-w-0 items-center gap-0.5 whitespace-nowrap md:flex">
         <div className="relative" data-nav-item>
           <button type="button" className={menuBtnClass("business")} onClick={() => toggle("business")}>
-            Business
+            {navPartnersMenu}
             <ChevronDown
               size={12}
               className={cn("transition-transform duration-300", openMenu === "business" && "rotate-180")}

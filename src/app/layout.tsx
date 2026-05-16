@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { DM_Sans, Fraunces, Nunito } from "next/font/google";
 import "./globals.css";
 import { AudienceProvider } from "@/lib/audienceContext";
+import ChatWidget from "@/components/chat/ChatWidget";
 import { ScrollReset } from "@/components/ui/ScrollReset";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
 
@@ -56,7 +57,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body style={pageSurface}>
         <SmoothScroll />
         <ScrollReset />
-        <AudienceProvider>{children}</AudienceProvider>
+        <AudienceProvider>
+          {children}
+          <ChatWidget />
+        </AudienceProvider>
         <Analytics />
       </body>
     </html>

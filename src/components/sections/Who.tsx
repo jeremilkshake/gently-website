@@ -9,8 +9,8 @@ export default function Who() {
   const who = isBiz ? whoSection.business : whoSection.individual;
 
   return (
-    <section id="who" className="py-16 bg-[var(--bg)] scroll-mt-[120px]">
-      <div className="max-w-content mx-auto px-6">
+    <section id="who" className="min-h-screen flex items-center py-16 bg-[var(--bg)] scroll-mt-[120px]">
+      <div className="max-w-content mx-auto px-6 w-full">
         <p className="text-[10px] uppercase tracking-[.14em] text-[var(--accent)] text-center mb-3">
           {who.kicker}
         </p>

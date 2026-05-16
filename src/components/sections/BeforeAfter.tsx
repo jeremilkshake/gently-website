@@ -189,7 +189,7 @@ export default function BeforeAfter() {
             <div className="mt-6 relative">
               <p className="text-[12px] text-[var(--dim)] leading-snug">
                 Modern, professional, and grounded in personalised care.<br />
-                We&apos;re by your side — every step of the way.
+                We&apos;re by your side, every step of the way.
               </p>
               <span
                 className="mt-4 inline-block rounded-full px-4 py-2 text-[12px] font-semibold"

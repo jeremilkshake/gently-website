@@ -6,7 +6,7 @@ export default function Testimonials() {
   const doubled = [...testimonials, ...testimonials];
 
   return (
-    <section id="testimonials" className="py-16 bg-[var(--bg-2)] overflow-hidden scroll-mt-[120px]">
+    <section id="testimonials" className="min-h-screen flex flex-col justify-center py-16 bg-[var(--bg-2)] overflow-hidden scroll-mt-[120px]">
       <div className="max-w-content mx-auto px-6 mb-4 text-center">
         <h2 className="font-serif text-[clamp(22px,2.5vw,34px)] font-extrabold tracking-[-0.02em] mb-3">
           {testimonialsSection.headline}

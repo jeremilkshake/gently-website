@@ -12,17 +12,17 @@ const STEPS = [
   {
     num: 2,
     title: "Get a step-by-step plan",
-    body: "Your Care Manager maps out exactly what needs to happen — from registering the death to closing accounts. You always know what's next, and nothing falls through the cracks.",
+    body: "Your Care Manager maps out exactly what needs to happen, from registering the death to closing accounts. You always know what's next, and nothing falls through the cracks.",
   },
   {
     num: 3,
     title: "Handle the logistics",
-    body: "We coordinate with banks, solicitors, HMRC, and utility providers on your behalf. Letters get drafted, calls get made, and paperwork gets filed — without you chasing anyone.",
+    body: "We coordinate with banks, solicitors, HMRC, and utility providers on your behalf. Letters get drafted, calls get made, and paperwork gets filed, without you chasing anyone.",
   },
   {
     num: 4,
     title: "Delegate and share tasks",
-    body: "Bring in family members or a trusted friend. Assign tasks, track progress, and keep everyone aligned — no group chats, no confusion, no one asking 'who's doing what'.",
+    body: "Bring in family members or a trusted friend. Assign tasks, track progress, and keep everyone aligned, with no group chats, no confusion, no one asking 'who's doing what'.",
   },
   {
     num: 5,
@@ -32,7 +32,7 @@ const STEPS = [
   {
     num: 6,
     title: "Access ongoing support",
-    body: "Your Care Manager stays with you for as long as you need. Whether that's a week or eighteen months — gently is there for the long tail of loss.",
+    body: "Your Care Manager stays with you for as long as you need. Whether that's a week or eighteen months, gently is there for the long tail of loss.",
   },
 ];
 

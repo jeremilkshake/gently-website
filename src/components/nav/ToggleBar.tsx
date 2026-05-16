@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useScroll, useMotionValueEvent } from "framer-motion";
 import { useAudience } from "@/lib/audienceContext";
+import { audienceToggle } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
 export default function ToggleBar() {
@@ -24,18 +25,6 @@ export default function ToggleBar() {
     >
       <div className="max-w-content mx-auto px-6 flex items-center">
         <button
-          onClick={() => setAudience("individual")}
-          className={cn(
-            "px-5 py-3.5 text-[13px] border-b-2 transition-all",
-            audience === "individual"
-              ? "text-[var(--text)] border-[var(--accent)]"
-              : "text-[var(--muted)] border-transparent hover:text-[var(--text)]"
-          )}
-        >
-          For Individuals
-        </button>
-        <div className="w-px h-5 bg-[var(--border)] mx-1" />
-        <button
           onClick={() => setAudience("business")}
           className={cn(
             "px-5 py-3.5 text-[13px] border-b-2 transition-all",
@@ -44,7 +33,19 @@ export default function ToggleBar() {
               : "text-[var(--muted)] border-transparent hover:text-[var(--text)]"
           )}
         >
-          For Business
+          {audienceToggle.partners}
+        </button>
+        <div className="w-px h-5 bg-[var(--border)] mx-1" />
+        <button
+          onClick={() => setAudience("individual")}
+          className={cn(
+            "px-5 py-3.5 text-[13px] border-b-2 transition-all",
+            audience === "individual"
+              ? "text-[var(--text)] border-[var(--accent)]"
+              : "text-[var(--muted)] border-transparent hover:text-[var(--text)]"
+          )}
+        >
+          {audienceToggle.families}
         </button>
       </div>
     </div>

@@ -6,10 +6,10 @@ import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const painPoints = [
   "You don't know what you own, what's owed, or what happens next",
-  "You're managing paperwork while trying to grieve — at the same time",
+  "You're managing paperwork while trying to grieve, at the same time",
   "You say you're fine and it costs you every time",
   "Nobody told you loss would also mean hundreds of hours of admin",
-  "Sleep doesn't fix the exhaustion — you wake carrying it again",
+  "Sleep doesn't fix the exhaustion, you wake carrying it again",
   "You want to understand what's happening, not just be told it gets better",
 ];
 
@@ -17,8 +17,8 @@ export default function Pain() {
   const ref = useScrollReveal();
 
   return (
-    <section id="pain" className="py-20 bg-[var(--bg-2)] scroll-mt-[120px]">
-      <div className="max-w-content mx-auto px-6">
+    <section id="pain" className="min-h-screen flex items-center py-20 bg-[var(--bg-2)] scroll-mt-[120px]">
+      <div className="max-w-content mx-auto px-6 w-full">
         <h2
           ref={ref}
           className="fade-up font-serif text-[clamp(26px,3vw,40px)] font-extrabold tracking-[-0.02em] text-center mb-9"

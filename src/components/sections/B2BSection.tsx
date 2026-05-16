@@ -1,20 +1,20 @@
 "use client";
 
 import { useAudience } from "@/lib/audienceContext";
-import { b2bSolutions, openExternalTab } from "@/lib/content";
+import { b2bSection, b2bSolutions, openExternalTab } from "@/lib/content";
 
 export default function B2BSection() {
   const { audience } = useAudience();
   if (audience !== "business") return null;
 
   return (
-    <section id="b2b" className="py-16 bg-[var(--bg)] scroll-mt-[120px]">
-      <div className="max-w-content mx-auto px-6">
+    <section id="b2b" className="min-h-screen flex items-center py-16 bg-[var(--bg)] scroll-mt-[120px]">
+      <div className="max-w-content mx-auto px-6 w-full">
         <p className="text-[10px] uppercase tracking-[.14em] text-[var(--accent)] text-center mb-2">
-          For Business
+          {b2bSection.kicker}
         </p>
         <h2 className="font-serif text-[clamp(24px,3vw,38px)] font-extrabold tracking-[-0.02em] text-center mb-11">
-          Support your people through loss.
+          {b2bSection.headline}
         </h2>
         <div className="grid grid-cols-2 gap-3.5">
           {b2bSolutions.map((sol, i) => (
