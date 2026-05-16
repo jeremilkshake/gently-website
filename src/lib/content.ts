@@ -473,7 +473,7 @@ export const businessDropdown: NavDropdownItem[] = b2bSolutions.map((s) => ({
 
 /** Business-only — short stat strip under the partnership intro. */
 export const businessStatStrip: BusinessStatStripContent = {
-  kicker: "At a glance",
+  kicker: "Why partner with Gently",
   headline: "One platform. Three pillars. Zero integration burden.",
   subhead:
     "Gently is the only platform that covers the full bereavement journey — estate, admin, and grief wellbeing — under a single contract.",
@@ -487,7 +487,7 @@ export const businessStatStrip: BusinessStatStripContent = {
 
 /** Business-only — "Why partner with Gently" feature carousel. */
 export const businessWhyPartner: BusinessWhyPartnerContent = {
-  kicker: "Why partner with Gently",
+  kicker: "What families get",
   headline: "Empower families to prepare while they still can.",
   subhead:
     "Gently acts as a knowledge base for families — so they know what to do, store what matters, and find clarity when they need it most. When a loss happens, families don’t have to search. Everything is already organised and ready.",
@@ -540,32 +540,32 @@ export const businessWhyPartner: BusinessWhyPartnerContent = {
   ],
 };
 
-/** Business-only — 4-step "how partnership works" block. */
+/** Business-only — 4-step "how it works" block. */
 export const businessPartnership: BusinessPartnershipContent = {
-  kicker: "How partnership works",
-  headline: "A simple rollout that fits the way you already work.",
+  kicker: "How it works",
+  headline: "From signed partnership to a family that doesn’t have to search.",
   subhead:
-    "No technical lift. No procurement marathon. Most partners are live with their people in under 30 days.",
+    "Four steps from the day you partner with Gently to the day a family inherits a fully organised estate. No technical integration. Most partners are live with their people in under 30 days.",
   steps: [
     {
       num: 1,
       title: "Partner with Gently",
-      body: "Your organisation signs as a partner. We provide co-branded materials, manager training, and a rollout plan tailored to your workforce or member base.",
+      body: "Your organisation signs as a partner. We provide co-branded materials, manager training, and a rollout plan tailored to your workforce, members, or clients.",
     },
     {
       num: 2,
-      title: "Introduce to your people",
-      body: "HR, benefits leads, or care coordinators introduce Gently to employees, members, or clients. We provide the language and the assets.",
+      title: "Introduce",
+      body: "HR, benefits leads, or care coordinators introduce Gently to the people you support. We provide the language, the assets, and the warm hand-off.",
     },
     {
       num: 3,
-      title: "Your people get a Care Team",
-      body: "Every person facing loss is matched with a dedicated Care Manager and full access to all three pillars — estate, admin, and wellbeing — at their own pace.",
+      title: "Individual prepares",
+      body: "The person you support uses Gently at their own pace — building a secure vault, mapping their estate, organising documents, and tending to wellbeing alongside.",
     },
     {
       num: 4,
-      title: "You see the impact",
-      body: "Quarterly reporting on usage, satisfaction, and outcomes. You see exactly how Gently is showing up for your people, and where the load is being lifted.",
+      title: "Family benefit",
+      body: "When loss happens, family members, executors, and advisors inherit a fully organised estate. The Care Team continues alongside them through admin, probate, and grief.",
     },
   ],
 };

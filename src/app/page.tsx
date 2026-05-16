@@ -53,15 +53,15 @@ export default async function Home({
       <main>
         <Hero />
         <TrustBar />
+        <BusinessWhyPartner />
+        <BusinessStatStrip />
+        <BusinessPartnership />
         <Problem />
         <NotAlone />
         <BereavementIntro />
         <CompareScroll />
         <Solution />
-        <BusinessWhyPartner />
-        <BusinessStatStrip />
         <B2BSection />
-        <BusinessPartnership />
         <BusinessCompareTable />
         <BusinessPricingModel />
         <Pain />
