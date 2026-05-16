@@ -102,7 +102,7 @@ export const heroVisual = {
   alt: "Platform preview showing estate overview, guided support, and admin task progress.",
 } as const;
 
-export const heroBadgeText = "The UK's most trusted end-of-life support service.";
+export const heroBadgeText = "Made with care for people carrying something heavy.";
 
 /** Business hero — inline trust pills under the CTAs (icon + short label). */
 export const heroBusinessTrustBadges = [
@@ -487,7 +487,9 @@ export const businessStatStrip: BusinessStatStripContent = {
 
 /** Business-only — "Why partner with us" feature carousel. */
 export const businessWhyPartner: BusinessWhyPartnerContent = {
+  heading: "A new standard for bereavement support.",
   kicker: "Why partner with us",
+  tagline: "The UK's trusted bereavement partner.",
   headline: "Empower families to prepare while they still can.",
   subhead:
     "Gently helps patients and families navigate funeral planning, estate settlement, and everything that comes after a loss. It acts as a secure digital vault where families can store important information and documents — so when loss happens, they don’t have to search. Everything is already organised and ready.",

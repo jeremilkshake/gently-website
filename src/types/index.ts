@@ -241,7 +241,9 @@ export interface BusinessWhyPartnerCard {
 }
 
 export interface BusinessWhyPartnerContent {
+  heading?: string;
   kicker: string;
+  tagline?: string;
   headline: string;
   subhead: string;
   cards: BusinessWhyPartnerCard[];

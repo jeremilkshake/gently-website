@@ -33,24 +33,30 @@ export default function BusinessWhyPartner() {
   const ref = useScrollReveal();
   if (audience !== "business") return null;
 
-  const { kicker, headline, subhead, cards } = businessWhyPartner;
+  const { heading, kicker, tagline, subhead, cards } = businessWhyPartner;
+  const primaryHeading = heading ?? businessWhyPartner.headline;
 
   return (
     <section
       id="b2b-why-partner"
       className="py-24 bg-[var(--bg)] scroll-mt-[120px]"
     >
-      <div className="max-w-content mx-auto px-6">
-        <p className="text-[10px] uppercase tracking-[.14em] text-[var(--accent)] text-center mb-2">
+      <div className="max-w-content mx-auto px-6 text-center">
+        <p className="font-reading text-[11px] font-semibold uppercase tracking-[.18em] text-[var(--accent)] mb-4">
           {kicker}
         </p>
         <h2
           ref={ref}
-          className="fade-up font-serif text-[clamp(26px,3.2vw,42px)] font-extrabold tracking-[-0.02em] text-center mb-4 max-w-[720px] mx-auto"
+          className="fade-up font-serif text-[clamp(30px,3.8vw,48px)] font-extrabold leading-[1.1] tracking-[-0.02em] mb-4 max-w-[760px] mx-auto"
         >
-          {headline}
+          {primaryHeading}
         </h2>
-        <p className="fade-up visible font-reading text-[15px] text-[var(--muted)] text-center max-w-[680px] mx-auto mb-12 leading-[1.65] font-light">
+        {tagline ? (
+          <p className="font-reading text-[14px] italic text-[var(--muted)] mb-6">
+            {tagline}
+          </p>
+        ) : null}
+        <p className="fade-up visible font-reading text-[15px] text-[var(--muted)] max-w-[680px] mx-auto mb-12 leading-[1.65] font-light">
           {subhead}
         </p>
       </div>
