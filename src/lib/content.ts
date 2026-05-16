@@ -102,7 +102,7 @@ export const heroVisual = {
   alt: "Platform preview showing estate overview, guided support, and admin task progress.",
 } as const;
 
-export const heroBadgeText = "Made with care for people carrying something heavy.";
+export const heroBadgeText = "The UK's most trusted end-of-life support service.";
 
 /** Business hero — inline trust pills under the CTAs (icon + short label). */
 export const heroBusinessTrustBadges = [
@@ -473,7 +473,7 @@ export const businessDropdown: NavDropdownItem[] = b2bSolutions.map((s) => ({
 
 /** Business-only — short stat strip under the partnership intro. */
 export const businessStatStrip: BusinessStatStripContent = {
-  kicker: "Why partner with Gently",
+  kicker: "The Gently difference",
   headline: "One platform. Three pillars. Zero integration burden.",
   subhead:
     "Gently is the only platform that covers the full bereavement journey — estate, admin, and grief wellbeing — under a single contract.",
@@ -485,42 +485,42 @@ export const businessStatStrip: BusinessStatStripContent = {
   ],
 };
 
-/** Business-only — "Why partner with Gently" feature carousel. */
+/** Business-only — "Why partner with us" feature carousel. */
 export const businessWhyPartner: BusinessWhyPartnerContent = {
-  kicker: "What families get",
+  kicker: "Why partner with us",
   headline: "Empower families to prepare while they still can.",
   subhead:
-    "Gently acts as a knowledge base for families — so they know what to do, store what matters, and find clarity when they need it most. When a loss happens, families don’t have to search. Everything is already organised and ready.",
+    "Gently helps patients and families navigate funeral planning, estate settlement, and everything that comes after a loss. It acts as a secure digital vault where families can store important information and documents — so when loss happens, they don’t have to search. Everything is already organised and ready.",
   cards: [
     {
       icon: "lock",
       title: "Secure Digital Vault",
-      body: "Bank-level encryption for wills, deeds, insurance policies, and personal instructions — all in one private vault.",
+      body: "Families securely store wills, deeds, insurance policies, account information, and personal instructions — all in one encrypted place.",
     },
     {
       icon: "network",
       title: "Estate Visualisation",
-      body: "An interactive map of the full estate: assets, debts, accounts, and beneficiaries, so nothing is hidden and nothing forgotten.",
+      body: "An interactive map of the full estate: assets, debts, accounts, and beneficiaries. Everything in one view, so nothing is hidden and nothing forgotten.",
     },
     {
       icon: "folder",
       title: "Document Organisation",
-      body: "Upload, categorise, and store every critical document. Families have instant access the moment they need it.",
+      body: "Upload and categorise every critical document. When the time comes, family members have instant access to everything they need.",
     },
     {
       icon: "share",
       title: "Share Documents",
-      body: "Securely share specific documents with executors, solicitors, or family members, with granular permissions and a clear audit trail.",
+      body: "Securely share specific documents with executors, solicitors, or family members. Granular permissions, a clear audit trail, no email attachments to chase.",
     },
     {
       icon: "checklist",
       title: "Guided Care Plan",
-      body: "A step-by-step plan covering every task: registering the death, closing accounts, navigating probate, and the long tail after.",
+      body: "A step-by-step plan that walks patients and families through every task: registering the death, closing accounts, navigating probate, and the long tail after.",
     },
     {
       icon: "handoff",
       title: "Seamless Family Handoff",
-      body: "When loss happens, families inherit a fully organised estate. No searching, no guessing, just a clear path forward.",
+      body: "All stored information is pre-filled for the family. They continue on the platform for estate settlement with minimal friction — no searching, no guessing.",
     },
     {
       icon: "heart",
@@ -530,12 +530,12 @@ export const businessWhyPartner: BusinessWhyPartnerContent = {
     {
       icon: "free",
       title: "100% Free for Families",
-      body: "Your organisation pays. Families never pay a cent. Full access for as long as they need it.",
+      body: "Your organisation pays. Families never pay a cent. Full access for as long as they need it — no subscription, no upsell.",
     },
     {
       icon: "book",
       title: "Increased Grief Awareness",
-      body: "16 expert-led courses and 94 science-backed lessons on grief, sleep, and resilience, built into the platform for the moments after loss.",
+      body: "16 expert-led courses and 94 science-backed lessons on grief, sleep, and resilience — built into the platform for the moments after loss.",
     },
   ],
 };
