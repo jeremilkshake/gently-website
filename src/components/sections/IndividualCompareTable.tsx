@@ -84,7 +84,7 @@ export default function IndividualCompareTable() {
                   <th
                     className="text-left text-[11px] uppercase tracking-[0.12em] text-[var(--muted)] font-medium px-5 py-4 bg-[var(--bg-2)] border-b border-[var(--border)]"
                   >
-                    What's included
+                    What&apos;s included
                   </th>
                   {columns.map((col) => (
                     <th

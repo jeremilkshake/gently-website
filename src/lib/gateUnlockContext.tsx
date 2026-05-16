@@ -27,14 +27,9 @@ export function GateUnlockProvider({
     return null;
   });
 
-  const runSessionCheck = useCallback(() => {
-    if (!gateEnabled) {
-      setUnlocked(true);
-      return;
-    }
-    if (initialUnlocked === true) {
-      return () => {};
-    }
+  useEffect(() => {
+    if (!gateEnabled || initialUnlocked === true) return;
+
     let cancelled = false;
     fetch("/api/auth/session")
       .then((r) => r.json())
@@ -48,11 +43,6 @@ export function GateUnlockProvider({
       cancelled = true;
     };
   }, [gateEnabled, initialUnlocked]);
-
-  useEffect(() => {
-    const cleanup = runSessionCheck();
-    return () => cleanup?.();
-  }, [runSessionCheck]);
 
   const refresh = useCallback(() => {
     if (!gateEnabled) {

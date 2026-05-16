@@ -73,7 +73,7 @@ export default function BeforeAfter() {
 
               {/* Sticky note */}
               <div className="absolute top-[105px] left-1 bg-[#fef4c0] rounded-[10px] p-3 w-[132px] shadow-sm rotate-[1deg] z-20">
-                <p className="text-[11px] font-semibold text-[#7a5500] leading-snug">"Please hold…"</p>
+                <p className="text-[11px] font-semibold text-[#7a5500] leading-snug">&ldquo;Please hold…&rdquo;</p>
                 <p className="text-[9px] text-[#7a5500]/70 mt-1 leading-snug">
                   Call back tomorrow.<br />Try a different dept.
                 </p>
