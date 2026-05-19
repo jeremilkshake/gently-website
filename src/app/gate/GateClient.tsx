@@ -80,7 +80,7 @@ export function GateClient({ content, urlFrom = null, urlGate = null }: Props) {
     [content.headlineLines]
   );
 
-  const [passwordOpen, setPasswordOpen] = useState(false);
+  const [passwordOpen, setPasswordOpen] = useState(urlGate === "reauth");
   const [infoOpen, setInfoOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);

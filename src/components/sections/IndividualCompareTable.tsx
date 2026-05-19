@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useAudience } from "@/lib/audienceContext";
 import { individualCompareTable } from "@/lib/content";
 import { useScrollReveal } from "@/lib/useScrollReveal";
 
@@ -51,10 +50,7 @@ function renderCell(value: boolean | string, highlight: boolean) {
 }
 
 export default function IndividualCompareTable() {
-  const { audience } = useAudience();
   const ref = useScrollReveal();
-  if (audience === "business") return null;
-
   const { kicker, headline, subhead, columns, rows, footnote } = individualCompareTable;
 
   return (

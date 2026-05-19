@@ -42,9 +42,14 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Send to home gate; preserve destination so login can return the user there.
   const url = request.nextUrl.clone();
   url.pathname = "/";
   url.search = "";
+  const returnPath = `${pathname}${request.nextUrl.search}`;
+  if (returnPath !== "/") {
+    url.searchParams.set("from", returnPath);
+  }
   return NextResponse.redirect(url);
 }
 

@@ -3,7 +3,6 @@
 import {
   BookOpen,
   FolderOpen,
-  Heart,
   ListChecks,
   Lock,
   Network,
@@ -12,7 +11,7 @@ import {
   Users,
   type LucideIcon,
 } from "lucide-react";
-import { useAudience } from "@/lib/audienceContext";
+import Image from "next/image";
 import { businessWhyPartner } from "@/lib/content";
 import { useScrollReveal } from "@/lib/useScrollReveal";
 
@@ -23,79 +22,80 @@ const ICONS: Record<string, LucideIcon> = {
   share: Share2,
   checklist: ListChecks,
   handoff: Users,
-  heart: Heart,
   free: Sparkles,
   book: BookOpen,
 };
 
 export default function BusinessWhyPartner() {
-  const { audience } = useAudience();
   const ref = useScrollReveal();
-  if (audience !== "business") return null;
-
   const { heading, kicker, tagline, subhead, cards } = businessWhyPartner;
   const primaryHeading = heading ?? businessWhyPartner.headline;
 
   return (
     <section
       id="b2b-why-partner"
-      className="py-24 bg-[var(--bg)] scroll-mt-[120px]"
+      className="scroll-mt-[120px] bg-[var(--bg)] py-24"
     >
-      <div className="max-w-content mx-auto px-6 text-center">
-        <p className="font-reading text-[11px] font-semibold uppercase tracking-[.18em] text-[var(--accent)] mb-4">
-          {kicker}
-        </p>
-        <h2
-          ref={ref}
-          className="fade-up font-serif text-[clamp(30px,3.8vw,48px)] font-extrabold leading-[1.1] tracking-[-0.02em] mb-4 max-w-[760px] mx-auto"
-        >
-          {primaryHeading}
-        </h2>
-        {tagline ? (
-          <p className="font-reading text-[14px] italic text-[var(--muted)] mb-6">
-            {tagline}
+      <div className="mx-auto max-w-content px-6">
+        <div className="text-center">
+          <p className="mb-4 font-reading text-[11px] font-semibold uppercase tracking-[.18em] text-[var(--accent)]">
+            {kicker}
           </p>
-        ) : null}
-        <p className="fade-up visible font-reading text-[15px] text-[var(--muted)] max-w-[680px] mx-auto mb-12 leading-[1.65] font-light">
-          {subhead}
-        </p>
-      </div>
+          <h2
+            ref={ref}
+            className="fade-up mx-auto mb-4 max-w-[760px] font-serif text-[clamp(30px,3.8vw,48px)] font-extrabold leading-[1.1] tracking-[-0.02em]"
+          >
+            {primaryHeading}
+          </h2>
+          {tagline ? (
+            <p className="mb-6 font-reading text-[14px] italic text-[var(--muted)]">
+              {tagline}
+            </p>
+          ) : null}
+          <p className="fade-up visible mx-auto mb-12 max-w-[680px] font-reading text-[15px] font-light leading-[1.65] text-[var(--muted)]">
+            {subhead}
+          </p>
+        </div>
 
-      {/* Carousel — full bleed so cards can peek past the content edge */}
-      <div className="relative mt-2">
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-[var(--bg)] to-transparent z-10" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[var(--bg)] to-transparent z-10" />
-
-        <ul
-          className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-px-6 px-6 pb-3 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
-        >
-          {cards.map((card) => {
+        <ul className="m-0 grid list-none grid-cols-1 gap-3.5 p-0 sm:grid-cols-2 md:gap-4 lg:grid-cols-3">
+          {cards.map((card, i) => {
             const Icon = ICONS[card.icon] ?? Sparkles;
+            const brandIconSize = Math.round(40 * (card.iconScale ?? 1));
             return (
               <li
                 key={card.title}
-                className="snap-start flex-shrink-0 w-[280px] sm:w-[300px] bg-[var(--card)] border-2 border-[var(--border)] rounded-[20px] p-6 shadow-card flex flex-col"
+                className="card-hover fade-up visible flex flex-col rounded-[20px] border-2 border-[var(--border)] bg-[var(--card)] p-5 shadow-card md:p-6"
+                style={{ transitionDelay: `${i * 0.05}s` }}
               >
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center mb-4 flex-shrink-0"
-                  style={{ background: "var(--accent)" }}
-                >
-                  <Icon size={18} strokeWidth={2} className="text-white" />
-                </div>
-                <h3 className="font-serif text-[16px] font-extrabold text-[var(--text)] mb-2 leading-snug tracking-[-0.02em]">
+                {card.iconSrc ? (
+                  <Image
+                    src={card.iconSrc}
+                    alt=""
+                    width={brandIconSize}
+                    height={brandIconSize}
+                    unoptimized
+                    className="mb-4 shrink-0 object-contain"
+                    style={{ width: brandIconSize, height: brandIconSize }}
+                    aria-hidden
+                  />
+                ) : (
+                  <div
+                    className="mb-4 flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full"
+                    style={{ background: "var(--accent)" }}
+                  >
+                    <Icon size={18} strokeWidth={2} className="text-white" />
+                  </div>
+                )}
+                <h3 className="mb-2 font-serif text-[16px] font-extrabold leading-snug tracking-[-0.02em] text-[var(--text)]">
                   {card.title}
                 </h3>
-                <p className="font-reading text-[13px] text-[var(--muted)] leading-[1.65] flex-1">
+                <p className="m-0 flex-1 font-reading text-[13px] leading-[1.65] text-[var(--muted)]">
                   {card.body}
                 </p>
               </li>
             );
           })}
         </ul>
-
-        <p className="font-reading text-[11px] text-[var(--muted)] text-center mt-4 opacity-60">
-          Scroll or swipe to explore →
-        </p>
       </div>
     </section>
   );

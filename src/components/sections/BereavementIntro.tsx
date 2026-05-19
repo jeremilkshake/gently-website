@@ -6,7 +6,7 @@ export default function BereavementIntro() {
   return (
     <section
       id="bereavement-intro"
-      className="min-h-screen flex items-center bg-[var(--bg)] py-16 border-y border-[var(--border)] scroll-mt-[120px]"
+      className="bg-[var(--bg)] py-20 md:py-28 border-y border-[var(--border)] scroll-mt-[120px]"
     >
       <div className="max-w-content mx-auto px-6 text-center w-full">
         <h2 className="font-serif text-[clamp(28px,3.4vw,44px)] font-extrabold tracking-[-0.02em] text-[var(--text)] mb-4">

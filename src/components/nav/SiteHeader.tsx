@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Nav from "@/components/nav/Nav";
-import ToggleBar from "@/components/nav/ToggleBar";
 import { cn } from "@/lib/utils";
 
 /** Near-zero so the bar reacts on the first meaningful tick of scroll direction */
@@ -45,7 +44,7 @@ export default function SiteHeader() {
   return (
     <motion.div
       className={cn(
-        "fixed top-0 left-0 right-0 z-[200] flex flex-col will-change-transform",
+        "fixed top-0 left-0 right-0 z-[200] flex flex-col overflow-visible will-change-transform",
         (!introVisible || headerHidden) && "pointer-events-none",
       )}
       initial={false}
@@ -62,7 +61,6 @@ export default function SiteHeader() {
       }}
     >
       <Nav />
-      <ToggleBar />
     </motion.div>
   );
 }

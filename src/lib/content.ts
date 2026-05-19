@@ -13,6 +13,7 @@ import type {
   ImpactSectionContent,
   CtaSectionVariant,
   CompareSupportCopyVariant,
+  CompareScrollAudienceContent,
   FooterColumn,
   ScienceSectionContent,
   BusinessStatStripContent,
@@ -20,11 +21,32 @@ import type {
   BusinessCompareTableContent,
   BusinessPricingModelContent,
   BusinessWhyPartnerContent,
+  PartnerLeaderQuoteContent,
   ChatWidgetContent,
-  AudienceToggleContent,
+  HomeChooserContent,
+  MissionPageContent,
+  ContactPageContent,
+  PartnerPageContent,
+  PartnerSlug,
+  CustomApproachSectionContent,
 } from "@/types";
+import { ROUTES, partnerPath, sectionHref } from "@/lib/routes";
+import { COMPARE_COLUMNS } from "@/lib/compareScrollSteps";
 
-/** Primary intro call — Calendly 30 min */
+const compareScrollWithoutSteps = COMPARE_COLUMNS[0].cards.map((card) => ({
+  title: card.title,
+  body: card.description,
+}));
+
+const compareScrollWithSteps = COMPARE_COLUMNS[1].cards
+  .filter((card) => !card.isSpacer)
+  .map((card) => ({
+    num: card.index + 1,
+    title: card.title,
+    body: card.description,
+  }));
+
+/** Primary intro call, Calendly 30 min */
 export const bookingUrl = "https://calendly.com/jeremy-grievegently/30min";
 
 /** Spread onto `<a href={bookingUrl} {...openExternalTab}>` for external booking links */
@@ -33,14 +55,95 @@ export const openExternalTab = {
   rel: "noopener noreferrer" as const,
 };
 
-/** Sticky audience toggle — inclusive labels (maps to business / individual in code). */
-export const audienceToggle: AudienceToggleContent = {
-  partners: "For Partners",
-  families: "For Families",
+/** Top nav, Partners dropdown trigger label */
+export const navPartnersMenu = "Partners";
+
+export const navFamiliesLabel = "For You";
+
+export const navCompanyMenu = "Company";
+
+export const navSolutionsMenu = "Solutions";
+
+export const navResourcesMenu = "Resources";
+
+export const navContactLabel = "Contact us";
+
+export const navContactDesc = "Demo requests & partnership inquiries";
+
+export const navMobileMenuOpenAria = "Open menu";
+
+export const navMobileMenuCloseAria = "Close menu";
+
+/** Neutral `/` chooser, individuals vs partners */
+export const homeChooser: HomeChooserContent = {
+  headline: "Support after loss, done gently.",
+  subhead: "Whether you're carrying this yourself or supporting others at scale.",
+  intro:
+    "No heart should grieve alone. That's what we're here for. Choose how you'd like to use gently.",
+  families: {
+    label: "For You",
+    body: "Not sure where to start after loss? Estate? Probate? Inheritance? The Will? Funeral planning? Finding benefits? Government paperwork? Closing accounts?",
+    closing: "That's exactly what we're here for.",
+    href: ROUTES.forYou,
+  },
+  partners: {
+    label: "For Partners",
+    body: "Not sure how to support your people after a loss? Hospice and hospitals? Education institutions? Employers? Financial institutions? Funeral homes?",
+    closing: "Full support for all your people. Become a gently partner.",
+    href: ROUTES.partners,
+  },
 };
 
-/** Top nav — Partners dropdown trigger label */
-export const navPartnersMenu = "Partners";
+/** `/company/mission` */
+export const missionPage: MissionPageContent = {
+  kicker: "Company",
+  headline: "Our mission",
+  subhead: "Care that meets people where they are, after loss, without the scramble.",
+  paragraphs: [
+    "Gently exists because bereavement is never just one thing. Estate, admin, and grief land together, yet most people are left to stitch it alone, or organisations offer a fragment of what families actually need.",
+    "We build one calm platform that covers the full journey: practical estate and admin help, and evidence-led grief wellbeing. Free for families when offered through a partner; straightforward for organisations to deploy without a heavy integration.",
+    "Our north star is simple: when loss happens, people should have clarity, dignity, and support, not a pile of tabs, cold calls, and guesswork.",
+  ],
+  ctaLabel: "Partner with gently",
+  ctaHref: ROUTES.partners,
+};
+
+/** `/company/contact` */
+export const contactPage: ContactPageContent = {
+  kicker: "Contact / demo request + partnership inquiry",
+  headline: "Interested in bringing gently to your organisation?",
+  quote: {
+    text: "gently is the first platform I've seen that families and employers can actually rely on, long after the funeral.",
+    attribution: "HSBC Ex Head of HR",
+  },
+  form: {
+    firstName: { label: "First name", placeholder: "First name" },
+    lastName: { label: "Last name", placeholder: "Last name" },
+    email: { label: "Business email address", placeholder: "Business email address" },
+    phone: { label: "Phone", placeholder: "Phone" },
+    country: { label: "Country", placeholder: "Country" },
+    company: { label: "Company / institution", placeholder: "Company / institution" },
+    title: { label: "Title", placeholder: "Title" },
+    message: {
+      label: "Message",
+      placeholder:
+        "Tell us about your organisation. A little context helps us connect you to the right person faster.",
+    },
+    privacyPrefix: "I agree to the gently",
+    privacyLinkLabel: "Privacy Policy",
+    privacyHref: sectionHref(ROUTES.forYou, "cta"),
+    submitLabel: "Request contact",
+    submittingLabel: "Sending…",
+    consentRequired: "Please confirm you agree to our privacy policy.",
+    invalidEmail: "Please enter a valid business email address.",
+    messageRequired: "Please add a short message so we know how to help.",
+    successTitle: "Thank you",
+    successBody:
+      "We've received your message. Someone from the gently team will be in touch shortly.",
+    errorMessage: "We couldn't send that. Please try again in a moment.",
+    networkError: "Something went wrong. Check your connection and try again.",
+  },
+};
 
 /** Full-screen access layer on the marketing home when the gate is enabled */
 export const marketingAccessGate = {
@@ -49,7 +152,7 @@ export const marketingAccessGate = {
     "Gate is not configured. Set GATE_JWT_SECRET and SITE_ACCESS_PASSWORD on the server.",
 } as const;
 
-/** Stealth gate UI — legacy /gate route (redirects to home) */
+/** Stealth gate UI, legacy /gate route (redirects to home) */
 export const gatePage: GatePageContent = {
   brand: "gently",
   tagline: "Estate, admin & wellbeing after loss",
@@ -96,6 +199,9 @@ export const gateAuthUi = {
   logout: "Logout",
 } as const;
 
+/** After logout, returns to the yellow Early Access landing (Early Access + Info) */
+export const gateLogoutHref = ROUTES.home;
+
 /** Hero visual asset */
 export const heroVisual = {
   src: "/images/hero-support-collage.svg",
@@ -104,27 +210,105 @@ export const heroVisual = {
 
 export const heroBadgeText = "Made with care for people carrying something heavy.";
 
-/** Business hero — inline trust pills under the CTAs (icon + short label). */
+/** Business hero, inline trust pills under the CTAs (icon + short label). */
 export const heroBusinessTrustBadges = [
   { icon: "heart", label: "Free for your people" },
   { icon: "shield", label: "Secure & Private" },
 ] as const;
 
-/** Primary hero button — opens booking (Calendly) */
-export const heroBookingCta = "Book a Demo";
+/** Primary hero button on For You, opens booking (Calendly) */
+export const heroBookingCta = "Get Support Now";
 
-/** Primary hero button on the business tab — opens booking (Calendly) */
+/** Nav booking button on partner / hub routes */
+export const navBookingCta = "Book a Demo";
+
+/** Primary hero button on the business tab, opens booking (Calendly) */
 export const heroBusinessBookingCta = "Become a Partner";
 
-/** Business hero — lede under the headline */
+/** Business hero, lede under the headline */
 export const heroBusinessLede =
   "Gently helps standardise bereavement support across your organisation. Families get one secure pathway for estate, admin, and grief wellbeing, completely free for them. When loss happens, they have everything in one place.";
+
+/** For You page hero (`/for-you`) */
+export const heroIndividual = {
+  headlineBefore: "Everything that comes after loss, ",
+  headlineEmphasis: "handled.",
+  lede:
+    "Gently guides you through every step of the process. Get the clarity and confidence of professional support, with fees settled from the estate when funds are available, not charged to you upfront.",
+  primaryCta: heroBookingCta,
+  secondaryCta: "See how it works",
+  secondaryHref: sectionHref(ROUTES.forYou, "solution"),
+} as const;
+
+/** For All Partners (`/partners`) hero, same layout as For You */
+export const heroPartnersHub = {
+  headlineSegments: [
+    { text: "Give your people the " },
+    { text: "gift", highlight: true },
+    { text: " of " },
+    { text: "complete support", highlight: true },
+    { text: " after loss." },
+  ],
+  lede:
+    "Gently helps standardise bereavement support across your organisation. Families get one secure pathway for estate, admin, and grief wellbeing, completely free for them. When loss happens, they have everything in one place.",
+  primaryCta: heroBusinessBookingCta,
+  secondaryCta: "Explore partner types",
+  secondaryHref: sectionHref(ROUTES.partners, "b2b"),
+  forYouPrompt: "Looking for support after a loss?",
+  forYouLinkLabel: "Go to For You",
+  forYouHref: ROUTES.forYou,
+} as const;
 
 export const bereavementIntro = {
   headline: "A modern approach to bereavement support",
   brand: "gently.",
   body: "is a new kind of bereavement support. Modern, professional, and grounded in personalised care. We’re by your side, every step of the way. We handle the admin, so you can handle your heart.",
 } as const;
+
+/** For You — vertical care journey timeline (`#custom-approach`) */
+export const customApproachSection: CustomApproachSectionContent = {
+  kicker: "How it works",
+  headline: "A custom approach to care",
+  appDownloadLabel: "Download the gently grief support app",
+  appDownloadHref: sectionHref(ROUTES.forYou, "cta"),
+  steps: [
+    {
+      num: 1,
+      title: "Match with a Gently Care Manager",
+    },
+    {
+      num: 2,
+      title: "Get a step-by-step Plan",
+    },
+    {
+      num: 3,
+      title: "Handle logistics",
+      body: "Our custom Care Plans are designed to meet each family’s unique needs, with personalised guidance to get through even the hardest tasks.",
+      bodySecondary:
+        "Whether it’s finding a funeral home, closing your loved one’s accounts, or navigating probate, our time-saving tools will do the work for you.",
+    },
+    {
+      num: 4,
+      title: "Tend to emotional needs",
+      body: "Through daily journaling, guided meditations, and breathing exercises, our compassionate approach helps cope with the many faces of grief.",
+    },
+    {
+      num: 5,
+      title: "Access ongoing support",
+      body: "Our extensive library hosts in-depth articles and audio guides that cover the full spectrum of loss, from funeral planning and taxes to managing family dynamics.",
+    },
+    {
+      num: 6,
+      title: "Join the gently Community",
+      body: "Grief can feel isolating, but you’re not alone. Interact with others in the Community to find comfort, support, and sense of belonging that come from shared experiences.",
+      footnote: {
+        beforeLink: "Join us for gently grief retreat 2027. ",
+        linkLabel: "Sign up here",
+        href: bookingUrl,
+      },
+    },
+  ],
+};
 
 export const trustBar = {
   label: "Trusted by industry leaders",
@@ -147,9 +331,23 @@ export const trustBarBadges = [
   { icon: "users", label: "100+ families helped" },
 ] as const;
 
-export const compareSupportCopy: {
-  individual: CompareSupportCopyVariant;
-  business: CompareSupportCopyVariant;
+const compareScrollSharedLabels = {
+  kicker: "The difference",
+  beforeAfterEmphasis: "gently.",
+  withoutTitle: "Without Gently",
+  withTitle: "With Gently",
+  withoutDoneBadge: "Finally Done",
+  withoutHoursUnit: "hrs",
+  withSavePrefix: "Save",
+  withHoursUnit: "hrs",
+  withDoneBadge: "⚡ Done",
+  mobileWithoutTab: "Without gently",
+  mobileWithTab: "With gently",
+} as const;
+
+export const compareScrollSection: {
+  individual: CompareScrollAudienceContent;
+  business: CompareScrollAudienceContent;
 } = {
   individual: {
     line1: "Personalise your grief support.",
@@ -157,6 +355,11 @@ export const compareSupportCopy: {
     donePanelTitle: "Now you can focus on healing",
     donePanelBody:
       "The paperwork is handled. The calls are made. The plan is in place. Focus now on being human and healing.",
+    labels: { ...compareScrollSharedLabels },
+    withoutSteps: compareScrollWithoutSteps,
+    withSteps: compareScrollWithSteps,
+    maxWithoutHours: 14,
+    maxSavedHours: 3,
   },
   business: {
     line1: "Complete coverage. Measurable impact.",
@@ -164,10 +367,24 @@ export const compareSupportCopy: {
     donePanelTitle: "Your people return ready, not wrecked",
     donePanelBody:
       "The estate is handled. The admin is closed out. Grief support is in place. Your employees come back to work with capacity, not chaos.",
+    labels: { ...compareScrollSharedLabels },
+    withoutSteps: compareScrollWithoutSteps,
+    withSteps: compareScrollWithSteps,
+    maxWithoutHours: 14,
+    maxSavedHours: 3,
   },
 };
 
-/** Pain section — Reddit-style social proof card */
+/** @deprecated Use compareScrollSection — kept for any legacy imports */
+export const compareSupportCopy: {
+  individual: CompareSupportCopyVariant;
+  business: CompareSupportCopyVariant;
+} = {
+  individual: compareScrollSection.individual,
+  business: compareScrollSection.business,
+};
+
+/** Pain section, Reddit-style social proof card */
 export const painRedditCard = {
   metaLine: "u/anonymous · r/GriefSupport",
   quote:
@@ -199,7 +416,7 @@ export const ctaSection: {
       "One platform. Three pillars. No technical integration. Book a 30-minute partnership call to see Gently in action and get a quote tailored to your organisation.",
     primaryCta: "Become a Partner",
     secondaryCta: "View solutions",
-    secondaryHref: "#b2b",
+    secondaryHref: ROUTES.partners,
   },
 } as const;
 
@@ -208,44 +425,342 @@ export const problemSection: {
   business: ProblemSectionContent;
 } = {
   individual: {
+    familiar: {
+      eyebrow: "Does any of this feel familiar?",
+      narrative: {
+        prefix: "You have to grieve — whilst also managing your loved one's",
+      },
+      panelSubtitle: "After a loss",
+      panelStatus: "We're here to help",
+      panelGroups: [
+        {
+          label: "Where to begin",
+          points: ["Not sure where to start", "What to do", "How to do it"],
+          imageSrc: "/images/estate-visualisation.png",
+          imageAlt: "Estate split across uncertain pieces",
+        },
+        {
+          label: "The paperwork",
+          points: ["Where paperwork is", "What to fill in", "When to fill it in"],
+          imageSrc: "/images/document-organisation-folder.png",
+          imageAlt: "Documents and forms to organise",
+        },
+        {
+          label: "While you grieve",
+          points: ["All whilst trying to grieve"],
+          imageSrc: "/images/guided-care-plan.png",
+          imageAlt: "Steps and deadlines on a long timeline",
+        },
+      ],
+      topics: [
+        {
+          id: "estate",
+          title: "Estate",
+          slotLabel: "estate",
+          body: "Property, assets, and who handles what rarely come with a clear map, especially when you are grieving.",
+          imageSrc: "/images/problem-topic-estate.png",
+          imageAlt: "Estate split into pieces with no clear map",
+        },
+        {
+          id: "probate",
+          title: "Probate",
+          slotLabel: "probate",
+          body: "Forms, thresholds, and legal steps that are hard to parse when all you want is a straight answer.",
+          imageSrc: "/images/problem-topic-probate.png",
+          imageAlt: "Probate forms and legal steps that feel unclear",
+        },
+        {
+          id: "inheritance",
+          title: "Inheritance",
+          slotLabel: "inheritance",
+          body: "Who receives what, and when, often stays unclear until you are already deep in admin.",
+          imageSrc: "/images/problem-topic-inheritance.png",
+          imageAlt: "Inheritance with uncertain who gets what and when",
+        },
+        {
+          id: "will",
+          title: "The will",
+          slotLabel: "will",
+          body: "Finding it, reading it, and knowing what it means in practice, often without a solicitor on speed dial.",
+          imageSrc: "/images/problem-topic-will.png",
+          imageAlt: "A will that is hard to find and understand",
+        },
+        {
+          id: "funeral",
+          title: "Funeral planning",
+          slotLabel: "funeral",
+          body: "Decisions that feel urgent and emotional, with prices and choices that are hard to compare calmly.",
+          imageSrc: "/images/problem-topic-funeral.png",
+          imageAlt: "Funeral choices and costs that are hard to compare",
+        },
+        {
+          id: "benefits",
+          title: "Benefits",
+          slotLabel: "benefits",
+          body: "Entitlements you may not know exist, buried in government sites and letters that arrive too late.",
+          imageSrc: "/images/problem-topic-benefits.png",
+          imageAlt: "Benefits and entitlements that are easy to miss",
+        },
+        {
+          id: "government",
+          title: "Government paperwork",
+          slotLabel: "paperwork",
+          body: "Registers, notifications, and departments that do not talk to each other, while deadlines keep moving.",
+          imageSrc: "/images/problem-topic-government.png",
+          imageAlt: "Government departments and deadlines that do not align",
+        },
+        {
+          id: "accounts",
+          title: "Closing accounts",
+          slotLabel: "accounts",
+          body: "Banks, utilities, and subscriptions. Each with its own process, proof, and hold music.",
+          imageSrc: "/images/problem-topic-accounts.png",
+          imageAlt: "Many accounts each with a different closing process",
+        },
+      ],
+      accordionClipAfterId: "will",
+      topicIntervalMs: 5000,
+      reassurance: "That's exactly what we're here for.",
+    },
     tag: "The problem",
-    headline: "Loss doesn't arrive in neat boxes.",
-    subhead:
-      "Estate, admin, and grief land together, yet most people are left to stitch it all together on their own.",
     items: [
       {
         title: "Everything lives in different places",
         body: "Spreadsheets, solicitor emails, bank portals, and late-night searches, and nothing talks to anything else.",
+        icon: "layers",
       },
       {
         title: "The admin doesn't pause for grief",
         body: "Notifications, deadlines, and paperwork keep coming when your mind is somewhere else entirely.",
+        icon: "clock",
       },
       {
         title: "You're told to cope, not equipped to",
         body: "Platitudes don't explain 3am wakeups or form fatigue. You need clarity and practical support, not silence.",
+        icon: "heart",
       },
     ],
   },
   business: {
     tag: "The problem",
-    headline: "The hidden cost of bereavement at work.",
+    headline: "Bereavement support is fragmented, for organisations and families alike.",
     subhead:
-      "Most employers offer 3–5 days of leave and an EAP link. The estate, admin, and emotional load run for 12–18 months. The gap is where productivity, retention, and trust quietly erode.",
+      "Most programmes stop at a few days of leave or a single vendor. The estate, admin, and emotional load run for 12–18 months. Families and your teams are left filling the gaps.",
     items: [
       {
-        title: "Invisible Productivity Loss",
-        body: "Grieving employees return on day six and operate at a fraction of capacity for months. The cost is real — and currently unmeasured on your dashboard.",
+        title: "Fragmented support stack",
+        body: "Legal benefits don’t touch grief. Wellbeing apps don’t touch probate. People end up coordinating their own care during the worst weeks of their lives.",
+        icon: "layers",
       },
       {
-        title: "Fragmented Support Stack",
-        body: "Legal benefits don’t touch grief. Wellbeing apps don’t touch probate. Employees end up coordinating their own care during the worst weeks of their lives.",
+        title: "Invisible strain on people",
+        body: "Grieving employees, patients’ families, or members return to daily life while the practical and emotional load continues, often without a single place to turn.",
+        icon: "users",
       },
       {
-        title: "Retention & Trust Risk",
-        body: "When people feel abandoned after loss, engagement scores drop and quiet quitting begins. The exit interview rarely names bereavement, but the timing does.",
+        title: "Trust erodes quietly",
+        body: "When organisations can’t meet people after loss, loyalty and confidence suffer. The story is rarely named as bereavement, but the timing is.",
+        icon: "heart",
       },
     ],
+  },
+};
+
+export const partnerSlugs: PartnerSlug[] = [
+  "hospice-hospitals",
+  "education-institutions",
+  "employers",
+  "financial-institutions",
+  "funeral-homes",
+  "consultants",
+];
+
+export const partnerPages: Record<PartnerSlug, PartnerPageContent> = {
+  "hospice-hospitals": {
+    slug: "hospice-hospitals",
+    hero: {
+      kicker: "For hospice & hospitals",
+      headline: "Extend dignified bereavement care beyond the bedside.",
+      lede: "Give families one calm pathway for estate, admin, and grief support, while clinical teams stay focused on care.",
+      primaryCta: heroBusinessBookingCta,
+      secondaryCta: "See how it works",
+      secondaryHref: sectionHref(partnerPath("hospice-hospitals"), "solution"),
+    },
+    problem: {
+      tag: "The problem",
+      headline: "Families leave clinical care into a maze of admin.",
+      subhead:
+        "Discharge folders and sympathy cards don’t cover probate, accounts, or grief. Teams want to help, but the long tail falls outside the ward.",
+      items: [
+        {
+          title: "Care ends, complexity doesn’t",
+          body: "Families face funerals, benefits, and estate tasks without a guide, often while your staff field ad hoc questions they can’t fully answer.",
+        },
+        {
+          title: "Referral paths are fragmented",
+          body: "Chaplains, social workers, and bereavement teams patch together leaflets and helplines. Nothing connects estate, admin, and wellbeing in one place.",
+        },
+        {
+          title: "Reputation follows the whole journey",
+          body: "How families feel months after loss shapes trust in your organisation. Gaps in practical support can overshadow excellent clinical care.",
+        },
+      ],
+    },
+  },
+  employers: {
+    slug: "employers",
+    hero: {
+      kicker: "For employers",
+      headline: "Give your people complete support after loss.",
+      lede: "Estate, admin, and grief wellbeing as a benefit, free for employees, straightforward for HR to deploy.",
+      primaryCta: heroBusinessBookingCta,
+      secondaryCta: "See how it works",
+      secondaryHref: sectionHref(partnerPath("employers"), "solution"),
+    },
+    problem: {
+      tag: "The problem",
+      headline: "Most bereavement benefits stop too soon.",
+      subhead:
+        "A few days of leave and an EAP link don’t cover 12–18 months of estate, admin, and grief. The gap shows up in absence, performance, and retention.",
+      items: [
+        {
+          title: "Leave ends, the load doesn’t",
+          body: "Employees return while probate, accounts, and grief still demand attention, often without a single trusted resource from work.",
+        },
+        {
+          title: "Fragmented vendor stack",
+          body: "Legal, EAP, and insurance benefits rarely connect. HR becomes the coordinator when people are least able to advocate for themselves.",
+        },
+        {
+          title: "Trust and retention risk",
+          body: "When people feel abandoned after loss, engagement suffers. Exit interviews rarely name bereavement, but the timing often does.",
+        },
+      ],
+    },
+  },
+  consultants: {
+    slug: "consultants",
+    hero: {
+      kicker: "For consultants",
+      headline: "Differentiate with the only complete bereavement platform.",
+      lede: "White-label or integrate estate, admin, and grief wellbeing to win retention with a product clients can’t patch together elsewhere.",
+      primaryCta: heroBusinessBookingCta,
+      secondaryCta: "See how it works",
+      secondaryHref: sectionHref(partnerPath("consultants"), "solution"),
+    },
+    problem: {
+      tag: "The problem",
+      headline: "Clients ask for bereavement support you can’t fully deliver today.",
+      subhead:
+        "Point solutions cover one slice: probate, EAP, or grief apps. Your clients need a single, credible answer across the full journey.",
+      items: [
+        {
+          title: "Partial answers lose deals",
+          body: "Referring families to disconnected vendors weakens your role as trusted advisor and opens the door to competitors with a fuller story.",
+        },
+        {
+          title: "Implementation fear",
+          body: "Clients assume bereavement platforms mean heavy IT. They need proof of fast rollout and low lift, or they won’t sign.",
+        },
+        {
+          title: "Brand matters",
+          body: "Whether white-label or co-branded, the experience must feel premium and calm, matching the standard you set in every other benefit.",
+        },
+      ],
+    },
+  },
+  "financial-institutions": {
+    slug: "financial-institutions",
+    hero: {
+      kicker: "For financial institutions",
+      headline: "Deepen client trust through the full estate journey.",
+      lede: "From planning through bereavement: one secure platform for legacy, admin, and family support under your brand.",
+      primaryCta: heroBusinessBookingCta,
+      secondaryCta: "See how it works",
+      secondaryHref: sectionHref(partnerPath("financial-institutions"), "solution"),
+    },
+    problem: {
+      tag: "The problem",
+      headline: "Planning relationships fray when families are left alone after loss.",
+      subhead:
+        "Advisors build trust over years. Then bereavement scatters families across solicitors, insurers, and guesswork. The institution that stays present wins loyalty.",
+      items: [
+        {
+          title: "The long tail is unmanaged",
+          body: "Probate, property, and account closure run for months. Without guided support, families feel your firm disappeared when it mattered most.",
+        },
+        {
+          title: "Compliance and care must align",
+          body: "You need secure document handling and clear boundaries, not informal advice over email. Families need structure, not more confusion.",
+        },
+        {
+          title: "Referral networks fragment",
+          body: "Solicitors, planners, and internal teams each hold a piece. Nobody owns the family’s single calm pathway through estate and admin.",
+        },
+      ],
+    },
+  },
+  "funeral-homes": {
+    slug: "funeral-homes",
+    hero: {
+      kicker: "For funeral homes",
+      headline: "Support families well beyond the service.",
+      lede: "Give every family you serve one calm platform for estate, admin, and grief support, free for them and straightforward for your team to offer.",
+      primaryCta: heroBusinessBookingCta,
+      secondaryCta: "See how it works",
+      secondaryHref: sectionHref(partnerPath("funeral-homes"), "solution"),
+    },
+    problem: {
+      tag: "The problem",
+      headline: "Families still face the long tail alone after the ceremony.",
+      subhead:
+        "You deliver dignity on the day. Then probate, accounts, benefits, and grief run for months, often without a single trusted guide families can return to.",
+      items: [
+        {
+          title: "Care stops at the chapel door",
+          body: "Families leave with paperwork piles and no clear next steps. Staff want to help further, but estate and admin fall outside what most directors can sustainably cover.",
+        },
+        {
+          title: "Referrals don’t connect",
+          body: "Solicitors, insurers, and helplines each hold a piece. Nothing joins estate, admin, and wellbeing in one calm place families already trust.",
+        },
+        {
+          title: "Reputation follows the whole journey",
+          body: "How families feel months after the service shapes word of mouth. Practical support after the funeral can deepen loyalty as much as the day itself.",
+        },
+      ],
+    },
+  },
+  "education-institutions": {
+    slug: "education-institutions",
+    hero: {
+      kicker: "For education institutions",
+      headline: "Support students and staff through loss, without overloading campus services.",
+      lede: "One calm pathway for estate, admin, and grief wellbeing — free for your community, straightforward for student services and HR to offer.",
+      primaryCta: heroBusinessBookingCta,
+      secondaryCta: "See how it works",
+      secondaryHref: sectionHref(partnerPath("education-institutions"), "solution"),
+    },
+    problem: {
+      tag: "The problem",
+      headline: "Campus bereavement support rarely covers what happens after the funeral.",
+      subhead:
+        "Counselling teams, chaplaincy, and student services do vital work — but probate, benefits, housing, and months of admin fall outside what most education institutions can sustainably provide.",
+      items: [
+        {
+          title: "Students navigate alone",
+          body: "International students, first-in-family learners, and young adults often face estate and admin tasks without family nearby or clear guidance from the institution.",
+        },
+        {
+          title: "Staff carry hidden load",
+          body: "Faculty and professional services staff return to work while grief and practical tasks still demand attention, with no employer-grade bereavement pathway.",
+        },
+        {
+          title: "Referral paths don’t connect",
+          body: "Leaflets, EAP links, and one-off workshops don’t join estate, admin, and wellbeing. Families and students bounce between offices and external vendors.",
+        },
+      ],
+    },
   },
 };
 
@@ -270,7 +785,7 @@ export const impactSection: ImpactSectionContent = {
   ],
 };
 
-/** Shared accordion rows — same journeys; framing is in the section headline/subhead */
+/** Shared accordion rows, same journeys; framing is in the section headline/subhead */
 const solutionCareAccordions: SolutionCareAccordionItem[] = [
   {
     id: "funeral",
@@ -321,7 +836,7 @@ const solutionCareAccordions: SolutionCareAccordionItem[] = [
   },
 ];
 
-/** Solution — care team accordion (left headline, right grid) */
+/** Solution, care team accordion (left headline, right grid) */
 export const solutionCareSection: {
   individual: SolutionCareSectionContent;
   business: SolutionCareSectionContent;
@@ -337,7 +852,7 @@ export const solutionCareSection: {
     kicker: "How it works",
     headline: "A complete Care Team, deployed as a benefit.",
     subhead:
-      "Every employee, member, or client facing loss gets a dedicated team across all three pillars — estate, admin, and wellbeing. One contract. One platform. No technical integration required.",
+      "Every employee, member, or client facing loss gets a dedicated team across all three pillars: estate, admin, and wellbeing. One contract. One platform. No technical integration required.",
     accordions: solutionCareAccordions,
   },
 };
@@ -416,67 +931,97 @@ export const scienceSection: ScienceSectionContent = {
 };
 
 export const b2bSection = {
-  kicker: audienceToggle.partners,
-  headline: "Support your people through loss.",
+  kicker: navPartnersMenu,
+  intro: "Find the right fit for your organisation",
+  headline: "Who we partner with",
 } as const;
 
 export const b2bSolutions: B2BSolution[] = [
   {
     icon: "🕊️",
+    iconSrc: "/images/partner-hospice-hospitals.png?v=3",
     title: "For Hospice and Hospitals",
     dropdownDesc: "Support patients and families through loss with dignity",
-    desc: "Extend bereavement care beyond the bedside. Give families one calm place for estate, admin, and grief support — while your teams stay focused on clinical care.",
-    href: bookingUrl,
+    desc: "Extend bereavement care beyond the bedside. Give families one calm place for estate, admin, and grief support, while your teams stay focused on clinical care.",
+    slug: "hospice-hospitals",
+    href: partnerPath("hospice-hospitals"),
     anchorId: "b2b-hospice-hospitals",
   },
   {
+    icon: "🎓",
+    iconSrc: "/images/partner-education-institutions.png?v=3",
+    title: "For Education Institutions",
+    dropdownDesc: "Support students and staff through loss across your institution",
+    desc: "Give your community one calm place for estate, admin, and grief wellbeing — free for students and staff, while counselling and student services stay focused on care.",
+    slug: "education-institutions",
+    href: partnerPath("education-institutions"),
+    anchorId: "b2b-education-institutions",
+  },
+  {
     icon: "🏢",
+    iconSrc: "/images/partner-employers.png?v=3",
     title: "For Employers",
     dropdownDesc: "Help employees bring their whole selves back to work",
-    desc: "Reduce bereavement-related absence and turnover. Offer complete estate, admin, and grief support as an employee benefit — free for your people, paid by the organisation.",
-    href: bookingUrl,
+    desc: "Reduce bereavement-related absence and turnover. Offer complete estate, admin, and grief support as an employee benefit, free for your people, paid by the organisation.",
+    slug: "employers",
+    href: partnerPath("employers"),
     anchorId: "b2b-employers",
   },
   {
-    icon: "💼",
-    title: "For Consultants",
-    dropdownDesc: "Proven solutions to meet your clients' needs",
-    desc: "White-label the full platform or integrate a single pillar. Win retention and differentiate your offering with the only complete bereavement product on the market.",
-    href: bookingUrl,
-    anchorId: "b2b-consultants",
-  },
-  {
     icon: "🏦",
+    iconSrc: "/images/partner-financial-institutions.png?v=3",
     title: "For Financial Institutions",
     dropdownDesc: "Deepen client trust through full-circle support",
-    desc: "Deepen client trust through full-circle estate and legacy support. From planning through bereavement — one platform, your brand.",
-    href: bookingUrl,
+    desc: "Deepen client trust through full-circle estate and legacy support. From planning through bereavement, one platform, your brand.",
+    slug: "financial-institutions",
+    href: partnerPath("financial-institutions"),
     anchorId: "b2b-financial",
   },
   {
-    icon: "🏥",
-    title: "For Health Plans",
-    dropdownDesc: "Give your members the care they deserve",
-    desc: "Member-facing grief wellbeing as a covered benefit. Evidence-based, expert-designed, measurably effective — no integration burden.",
-    href: bookingUrl,
-    anchorId: "b2b-health-plans",
+    icon: "🕯️",
+    iconSrc: "/images/partner-funeral-homes.png?v=3",
+    title: "For Funeral Homes",
+    dropdownDesc: "Support families beyond the service with dignity",
+    desc: "Extend care after the ceremony with one calm platform for estate, admin, and grief support, free for families you serve.",
+    slug: "funeral-homes",
+    href: partnerPath("funeral-homes"),
+    anchorId: "b2b-funeral-homes",
+  },
+  {
+    icon: "💼",
+    iconSrc: "/images/partner-consultants.png?v=3",
+    title: "For Consultants",
+    dropdownDesc: "Proven solutions to meet your clients' needs",
+    desc: "White-label the full platform or integrate a single pillar. Win retention and differentiate your offering with the only complete bereavement product on the market.",
+    slug: "consultants",
+    href: partnerPath("consultants"),
+    anchorId: "b2b-consultants",
   },
 ];
 
-/** Partners nav dropdown — derived from b2bSolutions so labels stay in sync */
-export const businessDropdown: NavDropdownItem[] = b2bSolutions.map((s) => ({
-  title: s.title,
-  desc: s.dropdownDesc,
-  href: `#${s.anchorId}`,
-  switchAudience: "business",
-}));
+/** Partners nav dropdown, derived from b2bSolutions so labels stay in sync */
+export const businessDropdown: NavDropdownItem[] = [
+  { title: "For All Partners", desc: "How organisations work with gently", href: ROUTES.partners },
+  ...b2bSolutions.map((s) => ({
+    title: s.title,
+    desc: s.dropdownDesc,
+    href: s.href,
+  })),
+];
 
-/** Business-only — short stat strip under the partnership intro. */
+export const companyDropdown: NavDropdownItem[] = [
+  { title: navContactLabel, desc: navContactDesc, href: ROUTES.contact },
+  { title: "Our mission", desc: "Why gently exists", href: ROUTES.mission },
+  { title: "About gently", desc: "A modern approach to bereavement support", href: sectionHref(ROUTES.forYou, "bereavement-intro") },
+  { title: "FAQ", desc: "Common questions", href: sectionHref(ROUTES.forYou, "faq") },
+];
+
+/** Business-only, short stat strip under the partnership intro. */
 export const businessStatStrip: BusinessStatStripContent = {
   kicker: "The Gently difference",
   headline: "One platform. Three pillars. Zero integration burden.",
   subhead:
-    "Gently is the only platform that covers the full bereavement journey — estate, admin, and grief wellbeing — under a single contract.",
+    "Gently is the only platform that covers the full bereavement journey (estate, admin, and grief wellbeing) under a single contract.",
   stats: [
     { value: "1", label: "platform across\nestate, admin & wellbeing" },
     { value: "3", label: "pillars of support\nfor every person you cover" },
@@ -485,101 +1030,114 @@ export const businessStatStrip: BusinessStatStripContent = {
   ],
 };
 
-/** Business-only — "Why partner with us" feature carousel. */
+/** Business-only, "Why partner with us" feature carousel. */
 export const businessWhyPartner: BusinessWhyPartnerContent = {
   heading: "A new standard for bereavement support.",
   kicker: "Why partner with us",
   tagline: "The UK's trusted bereavement partner.",
   headline: "Empower families to prepare while they still can.",
-  subhead:
-    "Gently helps patients and families navigate funeral planning, estate settlement, and everything that comes after a loss. It acts as a secure digital vault where families can store important information and documents — so when loss happens, they don’t have to search. Everything is already organised and ready.",
+  subhead: "Everything your people need, all in one place",
   cards: [
     {
       icon: "lock",
+      iconSrc: "/images/secure-digital-vault-heart.png?v=3",
+      iconScale: 1.38,
       title: "Secure Digital Vault",
-      body: "Families securely store wills, deeds, insurance policies, account information, and personal instructions — all in one encrypted place.",
+      body: "Families securely store wills, deeds, insurance policies, account information, and personal instructions, all in one encrypted place.",
     },
     {
       icon: "network",
+      iconSrc: "/images/estate-visualisation.png?v=3",
       title: "Estate Visualisation",
       body: "An interactive map of the full estate: assets, debts, accounts, and beneficiaries. Everything in one view, so nothing is hidden and nothing forgotten.",
     },
     {
       icon: "folder",
+      iconSrc: "/images/document-organisation-folder.png?v=3",
       title: "Document Organisation",
       body: "Upload and categorise every critical document. When the time comes, family members have instant access to everything they need.",
     },
     {
       icon: "share",
+      iconSrc: "/images/share-documents.png?v=3",
       title: "Share Documents",
       body: "Securely share specific documents with executors, solicitors, or family members. Granular permissions, a clear audit trail, no email attachments to chase.",
     },
     {
       icon: "checklist",
+      iconSrc: "/images/guided-care-plan.png?v=3",
       title: "Guided Care Plan",
       body: "A step-by-step plan that walks patients and families through every task: registering the death, closing accounts, navigating probate, and the long tail after.",
     },
     {
       icon: "handoff",
+      iconSrc: "/images/family-handoff.png?v=3",
       title: "Seamless Family Handoff",
-      body: "All stored information is pre-filled for the family. They continue on the platform for estate settlement with minimal friction — no searching, no guessing.",
+      body: "All stored information is pre-filled for the family. They continue on the platform for estate settlement with minimal friction, with no searching, no guessing.",
     },
     {
       icon: "heart",
+      iconSrc: "/images/peace-of-mind-heart.png?v=3",
       title: "Peace of Mind",
       body: "Knowing affairs are in order lets families focus on what matters most: time with loved ones, not paperwork.",
     },
     {
       icon: "free",
+      iconSrc: "/images/free-for-families.png?v=3",
       title: "100% Free for Families",
-      body: "Your organisation pays. Families never pay a cent. Full access for as long as they need it — no subscription, no upsell.",
+      body: "Your organisation pays. Families never pay a cent. Full access for as long as they need it, with no subscription, no upsell.",
     },
     {
       icon: "book",
+      iconSrc: "/images/grief-awareness.png?v=3",
       title: "Increased Grief Awareness",
-      body: "16 expert-led courses and 94 science-backed lessons on grief, sleep, and resilience — built into the platform for the moments after loss.",
+      body: "16 expert-led courses and 94 science-backed lessons on grief, sleep, and resilience, built into the platform for the moments after loss.",
     },
   ],
 };
 
-/** Business-only — 4-step "how it works" block. */
+/** Business-only, 4-step "how it works" block. */
 export const businessPartnership: BusinessPartnershipContent = {
   kicker: "How it works",
-  headline: "From signed partnership to a family that doesn’t have to search.",
+  headline: "From partnership to family support",
   subhead:
-    "Four steps from the day you partner with Gently to the day a family inherits a fully organised estate. No technical integration. Most partners are live with their people in under 30 days.",
+    "A clear path for your organisation, with no technical integration, and most partners are live with their people in under 30 days.",
   steps: [
     {
       num: 1,
-      title: "Partner with Gently",
-      body: "Your organisation signs as a partner. We provide co-branded materials, manager training, and a rollout plan tailored to your workforce, members, or clients.",
+      milestone: "Partner",
+      title: "Sign on as a partner",
+      body: "Your organisation joins Gently. We co-brand materials, brief managers, and shape a rollout plan for your workforce, members, or clients.",
     },
     {
       num: 2,
-      title: "Introduce",
-      body: "HR, benefits leads, or care coordinators introduce Gently to the people you support. We provide the language, the assets, and the warm hand-off.",
+      milestone: "Introduce",
+      title: "Share Gently with your people",
+      body: "HR, benefits, or care teams introduce the benefit. We supply the language, assets, and a warm hand-off so uptake feels natural, not like another HR task.",
     },
     {
       num: 3,
-      title: "Individual prepares",
-      body: "The person you support uses Gently at their own pace — building a secure vault, mapping their estate, organising documents, and tending to wellbeing alongside.",
+      milestone: "Prepare",
+      title: "People get ready ahead of time",
+      body: "Individuals use Gently at their own pace: a secure vault, estate map, organised documents, and wellbeing support before crisis hits.",
     },
     {
       num: 4,
-      title: "Family benefit",
-      body: "When loss happens, family members, executors, and advisors inherit a fully organised estate. The Care Team continues alongside them through admin, probate, and grief.",
+      milestone: "Support",
+      title: "Families are supported when loss happens",
+      body: "Loved ones inherit clarity: organised paperwork, a dedicated Care Team for admin and probate, and grief support that continues for as long as they need.",
     },
   ],
 };
 
-/** Business-only — Gently vs alternatives compare table. */
+/** Business-only, Gently vs alternatives compare table. */
 export const businessCompareTable: BusinessCompareTableContent = {
-  kicker: "How Gently compares",
-  headline: "Most employers offer fragments. Gently covers the whole journey.",
+  kicker: "How gently compares",
+  headline: "How gently compares to the usual ways of getting through it.",
   subhead:
     "The standard bereavement stack is a few days of leave, an EAP leaflet, and a hope that things settle down. Here is what your people are actually missing.",
   columns: [
-    { name: "Gently", tagline: "Complete coverage", highlight: true },
+    { name: "gently", tagline: "Complete coverage", highlight: true },
     { name: "EAP only", tagline: "Counselling helpline" },
     { name: "Leave only", tagline: "3–5 days off" },
     { name: "No provision", tagline: "Status quo" },
@@ -593,13 +1151,26 @@ export const businessCompareTable: BusinessCompareTableContent = {
     { feature: "Coverage duration", cells: ["12–18 months", "Sessions only", "3–5 days", "None"] },
     { feature: "Usage & outcomes reporting", cells: [true, "Partial", false, false] },
     { feature: "White-label / co-branding", cells: [true, false, false, false] },
-    { feature: "Technical integration required", cells: ["None", "None", "None", "—"] },
+    { feature: "Technical integration required", cells: ["None", "None", "None", "N/A"] },
   ],
   footnote:
-    "EAPs serve a real purpose — but bereavement needs more than a helpline. Gently sits alongside your existing benefits, not in place of them.",
+    "EAPs serve a real purpose, but bereavement needs more than a helpline. Gently sits alongside your existing benefits, not in place of them.",
 };
 
-/** Individual — gently vs the usual alternatives after a loss. */
+/** Business-only — leader quote (partners hub + vertical pages). */
+export const partnerLeaderQuote: PartnerLeaderQuoteContent = {
+  paragraphs: [
+    "After years supporting people through loss in large organisations, I rarely see anything that joins the practical and human sides so well.",
+    "gently is the first platform I've seen that families and employers can actually rely on, long after the funeral.",
+    "Gently represents the most significant step forward for bereavement support in years.",
+  ],
+  organization: "HSBC",
+  attribution: "HSBC Ex Head of HR",
+  learnMoreLabel: "Learn more",
+  learnMoreHref: bookingUrl,
+};
+
+/** Individual, gently vs the usual alternatives after a loss. */
 export const individualCompareTable: BusinessCompareTableContent = {
   kicker: "How gently compares",
   headline: "How gently compares to the usual ways of getting through it.",
@@ -625,7 +1196,7 @@ export const individualCompareTable: BusinessCompareTableContent = {
     "Solicitor fees reflect typical UK full estate administration (£2,000 to £10,000+ plus 20% VAT). gently sits alongside professionals, not in place of them. When legal advice is needed, we help you find someone you can trust.",
 };
 
-/** Business-only — pricing/model. Mirrors EverSettled's "free for X, paid by Y" framing. */
+/** Business-only, pricing/model. Mirrors EverSettled's "free for X, paid by Y" framing. */
 export const businessPricingModel: BusinessPricingModelContent = {
   kicker: "Transparent & simple pricing",
   headline: "Free for your people. Paid by the organisation.",
@@ -636,7 +1207,7 @@ export const businessPricingModel: BusinessPricingModelContent = {
       audience: "For your people",
       price: "£0",
       priceSuffix: "always",
-      paidBy: "100% free — no excess, no out-of-pocket.",
+      paidBy: "100% free, with no excess, no out-of-pocket.",
       features: [
         "Dedicated Care Manager",
         "Estate & probate guidance",
@@ -666,45 +1237,45 @@ export const businessPricingModel: BusinessPricingModelContent = {
 };
 
 /** Primary in-page targets for plain nav links */
-export const navLoginHref = "#cta";
+export const navLoginHref = sectionHref(ROUTES.forYou, "cta");
 
-/** Footer link grid — hrefs match section ids on the home page */
+/** Footer link grid */
 export const footerColumns: FooterColumn[] = [
   {
-    heading: "Solutions",
+    heading: "For You",
     links: [
-      { label: "Care Team", href: "#solution" },
-      { label: "Estate & legacy", href: "#pillar-estate" },
-      { label: "Admin & logistics", href: "#pillar-admin" },
-      { label: "Grief & wellbeing", href: "#pillar-wellbeing" },
+      { label: "For You", href: ROUTES.forYou },
+      { label: "Care Team", href: sectionHref(ROUTES.forYou, "solution") },
+      { label: "The problem", href: sectionHref(ROUTES.forYou, "problem") },
+      { label: "FAQ", href: sectionHref(ROUTES.forYou, "faq") },
     ],
   },
   {
     heading: navPartnersMenu,
     links: [
-      { label: "Overview", href: "#b2b", switchAudience: "business" },
+      { label: "For All Partners", href: ROUTES.partners },
       ...b2bSolutions.map((s) => ({
-        label: s.title,
-        href: `#${s.anchorId}`,
-        switchAudience: "business" as const,
+        label: s.title.replace(/^For /, ""),
+        href: s.href,
       })),
     ],
   },
   {
     heading: "Company",
     links: [
-      { label: "About gently", href: "#bereavement-intro" },
-      { label: "The problem", href: "#problem" },
-      { label: "The difference", href: "#compare" },
-      { label: "FAQ", href: "#faq" },
+      { label: "Our mission", href: ROUTES.mission },
+      { label: navContactLabel, href: ROUTES.contact },
+      { label: "About gently", href: sectionHref(ROUTES.forYou, "bereavement-intro") },
+      { label: "Science & research", href: sectionHref(ROUTES.forYou, "science") },
+      { label: "FAQ", href: sectionHref(ROUTES.forYou, "faq") },
     ],
   },
   {
     heading: "Legal",
     links: [
-      { label: "Privacy", href: "#cta" },
-      { label: "Terms", href: "#cta" },
-      { label: "Crisis resources", href: "#faq" },
+      { label: "Privacy", href: sectionHref(ROUTES.forYou, "cta") },
+      { label: "Terms", href: sectionHref(ROUTES.forYou, "cta") },
+      { label: "Crisis resources", href: sectionHref(ROUTES.forYou, "faq") },
     ],
   },
 ];
@@ -785,29 +1356,29 @@ export const solutionsDropdown: NavDropdownItem[] = [
 ];
 
 export const resourcesDropdown: NavDropdownItem[] = [
-  { title: "About gently", href: "#bereavement-intro" },
-  { title: "Science & research", href: "#science" },
-  { title: "Who it's for", href: "#who" },
-  { title: "FAQ", href: "#faq" },
-  { title: "What people say", href: "#testimonials" },
+  { title: "About gently", href: sectionHref(ROUTES.forYou, "bereavement-intro") },
+  { title: "Science & research", href: sectionHref(ROUTES.forYou, "science") },
+  { title: "Who it's for", href: sectionHref(ROUTES.forYou, "who") },
+  { title: "FAQ", href: sectionHref(ROUTES.forYou, "faq") },
+  { title: "What people say", href: sectionHref(ROUTES.forYou, "testimonials") },
 ];
 
-/** Floating chat — email + message lead capture */
+/** Floating chat, email + message lead capture */
 export const chatWidget: ChatWidgetContent = {
   launcherLabel: "Ask a question",
   agentName: "gently",
   individual: {
     headerSubtext: "Our team can also help",
     welcomeMessages: [
-      "Hi there! You're speaking with the gently team. We're here to answer questions about support after loss — for you or someone you're caring for.",
+      "Hi there! You're speaking with the gently team. We're here to answer questions about support after loss, for you or someone you're caring for.",
       "How can we help?",
     ],
   },
   business: {
     headerSubtext: "Partnerships & employer support",
     welcomeMessages: [
-      "Hi there! You're speaking with the gently partnerships team. We work with HR and benefits leaders to offer bereavement support that's free for employees — estate, admin, and grief wellbeing in one place.",
-      "What would you like to explore — roll-out, pricing, or how gently fits your organisation?",
+      "Hi there! You're speaking with the gently partnerships team. We work with HR and benefits leaders to offer bereavement support that's free for employees, estate, admin, and grief wellbeing in one place.",
+      "What would you like to explore: roll-out, pricing, or how gently fits your organisation?",
     ],
   },
   emailPlaceholder: "email@example.com",
@@ -819,7 +1390,7 @@ export const chatWidget: ChatWidgetContent = {
   emptyMessage: "Please add a short message so we know how to help.",
   sendingLabel: "Sending…",
   thankYouMessage:
-    "Thank you — we've received your message. Someone from the team will reply by email shortly.",
+    "Thank you. We've received your message. Someone from the team will reply by email shortly.",
   errorMessage: "We couldn't send that. Please try again in a moment.",
   networkError: "Something went wrong. Check your connection and try again.",
 };

@@ -8,7 +8,7 @@ export default function Science() {
   const { kicker, headline, subheadLines, researchers } = scienceSection;
 
   return (
-    <section id="science" className="min-h-screen flex items-center scroll-mt-[120px] bg-[var(--bg)] py-16">
+    <section id="science" className="scroll-mt-[120px] bg-[var(--bg)] py-20 md:py-28">
       <div className="mx-auto max-w-content px-6 w-full">
         <p className="mb-3 text-center text-[10px] uppercase tracking-[0.14em] text-[var(--accent)]">
           {kicker}

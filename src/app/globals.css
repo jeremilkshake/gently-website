@@ -34,12 +34,9 @@
   --hero-sky: #e1f4ff;
   /* Hero headline emphasis — “handled.” / “complete” (#FDBB30) */
   --hero-wordmark: #fdbb30;
-  /* Fixed nav + sticky audience bar — hero pulls up by this so sky sits behind transparent nav */
+  /* Fixed top nav — hero offset & scroll-padding */
   --header-nav-h: 60px;
-  /* Slightly generous so hero copy clears the audience bar */
-  --header-toggle-h: 3.5rem;
-  /* Fixed nav + sticky toggle — used for hero offset & scroll-padding */
-  --header-stack: calc(var(--header-nav-h) + var(--header-toggle-h));
+  --header-stack: var(--header-nav-h);
   /* Frosted bar when scrolled (same hue as hero sky) */
   --nav-sky-glass-bg: rgba(225, 244, 255, 0.94);
   --nav-glass-bg: rgba(247, 244, 237, 0.88);
@@ -50,6 +47,19 @@
   --glow-wellbeing: rgba(79, 117, 104, 0.14);
   /* Gate intro.svg — inner diamond light blue */
   --gate-intro-blue: #2ba1fb;
+
+  /* Compare-scroll section (drop-in component tokens) */
+  --card-bg: var(--card);
+  --card-border: var(--border-hover);
+  --text-muted: var(--muted);
+  --badge-neutral: var(--bg-3);
+  --header-neutral: var(--text);
+  --compare-without-fill: var(--bg-3);
+  --compare-with-fill: var(--hero-wordmark);
+  --on-fill: var(--card);
+  --pill-bg: var(--card);
+  --pill-text: var(--text);
+  --blue-contrast: var(--card);
 }
 
 @layer base {
@@ -57,7 +67,7 @@
     scroll-behavior: auto;
     margin: 0;
     min-height: 100%;
-    /* In-page anchors land below fixed nav + audience bar (+ notch overlap on mobile) */
+    /* In-page anchors land below fixed nav (+ notch overlap on mobile) */
     scroll-padding-top: calc(var(--header-stack) + env(safe-area-inset-top, 0px));
   }
   body {
@@ -111,12 +121,90 @@
   }
   .fade-up {
     opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(14px);
+    transition:
+      opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 1s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .fade-up.visible {
     opacity: 1;
     transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fade-up {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .problem-panel-enter {
+    animation: problem-panel-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes problem-panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .problem-panel-enter {
+      animation: none;
+    }
+  }
+  /* Stagger children when parent gets .visible (e.g. partner leader quote) */
+  .quote-reveal-stagger .quote-reveal-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .quote-reveal-stagger.quote-reveal-armed:not(.visible) .quote-reveal-item {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .quote-reveal-stagger.quote-reveal-armed.visible .quote-reveal-item {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .quote-reveal-stagger.quote-reveal-armed:not(.visible) .quote-reveal-item {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .typewriter-cursor {
+    animation: typewriter-blink 0.85s step-end infinite;
+  }
+  @keyframes typewriter-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes problem-topic-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+  .problem-topic-progress {
+    animation: problem-topic-progress var(--problem-topic-ms, 5s) linear forwards;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .problem-topic-progress {
+      animation: none;
+      transform: scaleX(1);
+    }
   }
   .marquee-track {
     animation: slideLeft 36s linear infinite;

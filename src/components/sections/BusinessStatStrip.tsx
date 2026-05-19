@@ -1,13 +1,10 @@
 "use client";
 
-import { useAudience } from "@/lib/audienceContext";
 import { businessStatStrip } from "@/lib/content";
 import { useScrollReveal } from "@/lib/useScrollReveal";
 
 export default function BusinessStatStrip() {
-  const { audience } = useAudience();
   const ref = useScrollReveal();
-  if (audience !== "business") return null;
 
   return (
     <section

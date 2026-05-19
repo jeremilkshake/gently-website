@@ -1,6 +1,6 @@
 "use client";
 
-import { useAudience } from "@/lib/audienceContext";
+import Image from "next/image";
 import { businessCompareTable } from "@/lib/content";
 import { useScrollReveal } from "@/lib/useScrollReveal";
 
@@ -50,10 +50,7 @@ function renderCell(value: boolean | string, highlight: boolean) {
 }
 
 export default function BusinessCompareTable() {
-  const { audience } = useAudience();
   const ref = useScrollReveal();
-  if (audience !== "business") return null;
-
   const { kicker, headline, subhead, columns, rows, footnote } = businessCompareTable;
 
   return (
@@ -95,14 +92,21 @@ export default function BusinessCompareTable() {
                           : "bg-[var(--bg-2)]")
                       }
                     >
-                      <div
-                        className={
-                          "font-serif text-[15px] font-extrabold tracking-[-0.01em] " +
-                          (col.highlight ? "text-[var(--text)]" : "text-[var(--text)]")
-                        }
-                      >
-                        {col.name}
-                      </div>
+                      {col.highlight ? (
+                        <span className="inline-flex items-center justify-center" aria-label={col.name}>
+                          <Image
+                            src="/images/grievegently-logo.svg"
+                            alt={col.name}
+                            width={140}
+                            height={40}
+                            className="h-7 w-auto"
+                          />
+                        </span>
+                      ) : (
+                        <div className="font-serif text-[15px] font-extrabold tracking-[-0.01em] text-[var(--text)]">
+                          {col.name}
+                        </div>
+                      )}
                       {col.tagline && (
                         <div className="font-reading text-[11px] text-[var(--muted)] mt-1">
                           {col.tagline}

@@ -9,12 +9,18 @@ interface AudienceContextType {
 }
 
 const AudienceContext = createContext<AudienceContextType>({
-  audience: "business",
+  audience: "individual",
   setAudience: () => {},
 });
 
-export function AudienceProvider({ children }: { children: ReactNode }) {
-  const [audience, setAudience] = useState<Audience>("business");
+export function AudienceProvider({
+  children,
+  initialAudience = "individual",
+}: {
+  children: ReactNode;
+  initialAudience?: Audience;
+}) {
+  const [audience, setAudience] = useState<Audience>(initialAudience);
   return (
     <AudienceContext.Provider value={{ audience, setAudience }}>
       {children}

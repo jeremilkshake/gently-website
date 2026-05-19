@@ -1,6 +1,5 @@
 "use client";
 
-import { useAudience } from "@/lib/audienceContext";
 import { businessPricingModel, bookingUrl, openExternalTab } from "@/lib/content";
 import { useScrollReveal } from "@/lib/useScrollReveal";
 
@@ -14,10 +13,7 @@ function CheckSmall() {
 }
 
 export default function BusinessPricingModel() {
-  const { audience } = useAudience();
   const ref = useScrollReveal();
-  if (audience !== "business") return null;
-
   const { kicker, headline, subhead, tiers, footnote } = businessPricingModel;
 
   return (

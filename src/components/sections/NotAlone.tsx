@@ -6,7 +6,7 @@ export default function NotAlone() {
   const ref = useScrollReveal();
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-[var(--bg)]">
+    <section className="flex items-center justify-center bg-[var(--bg)] py-20 md:py-28">
       <div className="max-w-content mx-auto px-6 text-center">
         <h2
           ref={ref}

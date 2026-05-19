@@ -1,208 +1,196 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ChevronDown } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
 import {
   bookingUrl,
   businessDropdown,
+  companyDropdown,
   gateAuthUi,
-  navBusinessCta,
+  gateLogoutHref,
+  heroBookingCta,
+  navBookingCta,
+  navCompanyMenu,
+  navContactLabel,
+  navFamiliesLabel,
+  navMobileMenuCloseAria,
+  navMobileMenuOpenAria,
   navPartnersMenu,
-  navLoginHref,
+  navResourcesMenu,
+  navSolutionsMenu,
   openExternalTab,
   resourcesDropdown,
   solutionsDropdown,
 } from "@/lib/content";
+import { ROUTES, solutionsNavBase } from "@/lib/routes";
+import NavDropdown from "@/components/nav/NavDropdown";
+import MobileNavMenu from "@/components/nav/MobileNavMenu";
 import { SessionLogout } from "@/components/ui/SessionLogout";
 import { Logo } from "@/components/ui/Logo";
-import { useGateUnlock } from "@/lib/gateUnlockContext";
-import { useAudience } from "@/lib/audienceContext";
 import { cn } from "@/lib/utils";
-import type { MouseEvent } from "react";
 import type { NavDropdownItem } from "@/types";
 
-function Dropdown({
-  items,
-  hasCta,
-  onItemClick,
-  onNavigate,
-}: {
-  items: NavDropdownItem[];
-  hasCta?: boolean;
-  onItemClick?: (item: NavDropdownItem, e: MouseEvent<HTMLAnchorElement>) => void;
-  /** Called after any dropdown link is activated (closes the menu). */
-  onNavigate?: () => void;
-}) {
-  return (
-    <div
-      className="absolute left-0 z-[999] rounded-[20px] border-2 border-[var(--border)] bg-[var(--card)] p-2 shadow-[0_2px_0_0_var(--border)]"
-      style={{
-        top: "calc(100% + 8px)",
-        minWidth: hasCta ? 380 : 260,
-      }}
-    >
-      <div className={cn("flex", hasCta ? "flex-row" : "flex-col")}>
-        <div className="flex flex-1 flex-col gap-0.5 p-1">
-          {items.map((item) => (
-            <a
-              key={item.title}
-              href={item.href}
-              onClick={(e) => {
-                onItemClick?.(item, e);
-                onNavigate?.();
-              }}
-              className="flex flex-col gap-0.5 rounded-[10px] px-3 py-2.5 no-underline transition-colors hover:bg-[var(--surface-hover)]"
-            >
-              <span
-                className="text-[13px] font-medium text-[var(--text)]"
-                style={item.color ? { color: item.color } : undefined}
-              >
-                {item.title}
-              </span>
-              {item.desc && (
-                <span className="font-reading text-[11px] leading-[1.4] text-[var(--muted)]">{item.desc}</span>
-              )}
-            </a>
-          ))}
-        </div>
-        {hasCta && (
-          <div className="flex min-w-[160px] flex-col justify-center gap-3 rounded-r-[12px] border-l border-[var(--border)] bg-[rgba(119,208,250,0.1)] px-[18px] py-5">
-            <p className="font-reading m-0 text-[13px] leading-[1.5] text-[var(--text)]">{navBusinessCta.body}</p>
-            <a
-              href={bookingUrl}
-              {...openExternalTab}
-              onClick={() => onNavigate?.()}
-              className="flex items-center gap-1 text-[12px] text-[var(--accent)] no-underline transition-all hover:gap-2"
-            >
-              {navBusinessCta.linkLabel}
-            </a>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+function withSolutionsBase(items: NavDropdownItem[], base: string): NavDropdownItem[] {
+  return items.map((item) => {
+    const hashIndex = item.href.indexOf("#");
+    if (hashIndex === -1) return item;
+    return { ...item, href: `${base}${item.href.slice(hashIndex)}` };
+  });
 }
 
 export default function Nav() {
-  const { gateEnabled, unlocked } = useGateUnlock();
-  const { audience, setAudience } = useAudience();
+  const pathname = usePathname();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  /** Solid hero sky — must stay opaque so animated clouds in the hero never read through the bar */
-  const handleDropdownLink = (item: NavDropdownItem, e: MouseEvent<HTMLAnchorElement>) => {
-    if (item.switchAudience && item.switchAudience !== audience) {
-      e.preventDefault();
-      setOpenMenu(null);
-      setAudience(item.switchAudience);
-      const id = item.href.startsWith("#") ? item.href.slice(1) : "";
-      if (!id) return;
-      const scrollToTarget = () => document.getElementById(id)?.scrollIntoView({ behavior: "auto", block: "start" });
-      requestAnimationFrame(() => {
-        requestAnimationFrame(scrollToTarget);
-      });
-    }
-  };
+  const solutionsItems = useMemo(
+    () => withSolutionsBase(solutionsDropdown, solutionsNavBase(pathname)),
+    [pathname],
+  );
+
+  const isChooser = pathname === ROUTES.home;
+  const bookingCtaLabel = pathname.startsWith(ROUTES.forYou) ? heroBookingCta : navBookingCta;
+  const isContact = pathname.startsWith(ROUTES.contact);
 
   useEffect(() => {
-    const handleClick = (e: Event) => {
-      if (!(e.target as Element).closest("[data-nav-item]")) setOpenMenu(null);
+    setOpenMenu(null);
+    setMobileOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpenMenu(null);
+        setMobileOpen(false);
+      }
     };
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  const toggle = (name: string) => setOpenMenu((prev) => (prev === name ? null : name));
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (!(e.target as Element).closest("[data-nav-root]")) {
+        setOpenMenu(null);
+      }
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, []);
 
-  const menuBtnClass = (key: string) =>
+  const setMenu = (key: string) => setOpenMenu((prev) => (prev === key ? null : key));
+
+  const linkClass = (active?: boolean) =>
     cn(
-      "flex cursor-pointer items-center gap-1 rounded-lg border-0 bg-transparent px-3 py-2 font-sans text-[13px] transition-colors",
-      openMenu === key
-        ? "text-[var(--text)]"
+      "shrink-0 rounded-lg px-2.5 py-2 font-sans text-[13px] no-underline transition-colors lg:px-3",
+      active
+        ? "bg-[var(--surface-hover)] font-semibold text-[var(--text)]"
         : "text-[var(--muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--text)]",
     );
 
   return (
-    <nav
-      className={cn(
-        "relative z-[2] flex h-[60px] w-full shrink-0 items-center justify-between px-6",
-        "bg-[var(--hero-sky)] border-b border-[rgba(28,25,20,0.06)]",
-      )}
+    <header
+      data-nav-root
+      className="relative z-[2] border-b border-[rgba(28,25,20,0.06)] bg-[var(--hero-sky)]"
     >
-      <Logo variant="nav" />
+      <div className="mx-auto grid h-[var(--header-nav-h)] max-w-[1280px] grid-cols-[auto_1fr_auto] items-center gap-3 px-4 sm:gap-4 sm:px-6">
+        <Logo variant="nav" />
 
-      <div className="hidden min-w-0 items-center gap-0.5 whitespace-nowrap md:flex">
-        <div className="relative" data-nav-item>
-          <button type="button" className={menuBtnClass("business")} onClick={() => toggle("business")}>
-            {navPartnersMenu}
-            <ChevronDown
-              size={12}
-              className={cn("transition-transform duration-300", openMenu === "business" && "rotate-180")}
-            />
-          </button>
-          {openMenu === "business" && (
-            <Dropdown
-              items={businessDropdown}
-              hasCta
-              onItemClick={handleDropdownLink}
-              onNavigate={() => setOpenMenu(null)}
+        <nav
+          className="hidden items-center justify-center gap-0.5 overflow-visible md:flex"
+          aria-label="Main"
+        >
+          <Link href={ROUTES.forYou} className={linkClass(pathname.startsWith(ROUTES.forYou))}>
+            {navFamiliesLabel}
+          </Link>
+
+          <NavDropdown
+            id="nav-partners"
+            label={navPartnersMenu}
+            items={businessDropdown}
+            open={openMenu === "business"}
+            onToggle={() => setMenu("business")}
+            onClose={() => setOpenMenu(null)}
+            hasCta
+          />
+
+          <NavDropdown
+            id="nav-solutions"
+            label={navSolutionsMenu}
+            items={solutionsItems}
+            open={openMenu === "solutions"}
+            onToggle={() => setMenu("solutions")}
+            onClose={() => setOpenMenu(null)}
+          />
+
+          <NavDropdown
+            id="nav-company"
+            label={navCompanyMenu}
+            items={companyDropdown}
+            open={openMenu === "company"}
+            onToggle={() => setMenu("company")}
+            onClose={() => setOpenMenu(null)}
+          />
+
+          <Link href={ROUTES.contact} className={linkClass(isContact)}>
+            {navContactLabel}
+          </Link>
+
+          {!isChooser && (
+            <NavDropdown
+              id="nav-resources"
+              label={navResourcesMenu}
+              items={resourcesDropdown}
+              open={openMenu === "resources"}
+              onToggle={() => setMenu("resources")}
+              onClose={() => setOpenMenu(null)}
             />
           )}
-        </div>
+        </nav>
 
-        <div className="relative" data-nav-item>
-          <button type="button" className={menuBtnClass("solutions")} onClick={() => toggle("solutions")}>
-            Solutions
-            <ChevronDown
-              size={12}
-              className={cn("transition-transform duration-300", openMenu === "solutions" && "rotate-180")}
-            />
+        <div className="flex items-center justify-end gap-2">
+          <Link href={ROUTES.contact} className={cn(linkClass(isContact), "md:hidden")}>
+            {navContactLabel}
+          </Link>
+
+          <button
+            type="button"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-0 bg-transparent text-[var(--text)] transition-colors hover:bg-[var(--surface-hover)] md:hidden"
+            aria-label={mobileOpen ? navMobileMenuCloseAria : navMobileMenuOpenAria}
+            aria-expanded={mobileOpen}
+            onClick={() => {
+              setOpenMenu(null);
+              setMobileOpen((v) => !v);
+            }}
+          >
+            {mobileOpen ? <X size={22} aria-hidden /> : <Menu size={22} aria-hidden />}
           </button>
-          {openMenu === "solutions" && (
-            <Dropdown items={solutionsDropdown} onNavigate={() => setOpenMenu(null)} />
-          )}
-        </div>
 
-        <span className="rounded-lg px-3 py-2 font-sans text-[13px] text-[var(--muted)] cursor-default select-none">
-          Customers
-        </span>
-
-        <div className="relative" data-nav-item>
-          <button type="button" className={menuBtnClass("resources")} onClick={() => toggle("resources")}>
-            Resources
-            <ChevronDown
-              size={12}
-              className={cn("transition-transform duration-300", openMenu === "resources" && "rotate-180")}
-            />
-          </button>
-          {openMenu === "resources" && (
-            <Dropdown items={resourcesDropdown} onNavigate={() => setOpenMenu(null)} />
-          )}
-        </div>
-      </div>
-
-      <div className="flex items-center gap-2.5">
-        {gateEnabled && unlocked === true ? (
           <SessionLogout
             label={gateAuthUi.logout}
-            afterLogoutHref="/"
-            className="cursor-pointer border-0 bg-transparent p-0 font-sans text-[13px] text-[var(--muted)] transition-colors hover:text-[var(--text)]"
+            afterLogoutHref={gateLogoutHref}
+            className="hidden shrink-0 cursor-pointer border-0 bg-transparent p-0 font-sans text-[13px] text-[var(--muted)] transition-colors hover:text-[var(--text)] lg:inline"
           />
-        ) : !gateEnabled ? (
+
           <a
-            href={navLoginHref}
-            className="font-sans text-[13px] text-[var(--muted)] no-underline transition-colors hover:text-[var(--text)]"
+            href={bookingUrl}
+            {...openExternalTab}
+            className="font-brand inline-flex min-h-[2.5rem] shrink-0 items-center rounded-xl border-2 border-[var(--text)] bg-[var(--gate-intro-blue)] px-3 py-2 text-xs font-extrabold text-[var(--text)] no-underline shadow-[0_4px_0_0_var(--text)] transition hover:brightness-[0.97] active:translate-y-px sm:min-h-[3rem] sm:px-5 sm:text-sm"
           >
-            {gateAuthUi.login}
+            {bookingCtaLabel}
           </a>
-        ) : null}
-        <a
-          href={bookingUrl}
-          {...openExternalTab}
-          className="inline-flex min-h-[3rem] items-center rounded-xl border-2 border-[var(--text)] bg-[var(--gate-intro-blue)] px-5 py-2 text-sm font-nunito font-extrabold text-[var(--text)] no-underline shadow-[0_4px_0_0_var(--text)] transition hover:brightness-[0.97] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)]"
-        >
-          Book a Demo
-        </a>
+        </div>
       </div>
-    </nav>
+
+      <MobileNavMenu
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        solutionsItems={solutionsItems}
+        isChooser={isChooser}
+        bookingCtaLabel={bookingCtaLabel}
+      />
+    </header>
   );
 }

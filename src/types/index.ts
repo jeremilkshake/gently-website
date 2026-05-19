@@ -1,9 +1,86 @@
 export type Audience = "individual" | "business";
 
-/** Sticky audience bar — partners (B2B) vs families (individual). */
-export interface AudienceToggleContent {
-  partners: string;
-  families: string;
+export type PartnerSlug =
+  | "hospice-hospitals"
+  | "employers"
+  | "consultants"
+  | "financial-institutions"
+  | "funeral-homes"
+  | "education-institutions";
+
+/** Neutral home — individuals vs partners chooser cards */
+export interface HomeChooserCard {
+  label: string;
+  body: string;
+  closing: string;
+  href: string;
+  continueLabel?: string;
+}
+
+export interface HomeChooserContent {
+  headline: string;
+  subhead: string;
+  intro: string;
+  families: HomeChooserCard;
+  partners: HomeChooserCard;
+}
+
+/** `/company/mission` page */
+export interface MissionPageContent {
+  kicker: string;
+  headline: string;
+  subhead: string;
+  paragraphs: string[];
+  ctaLabel: string;
+  ctaHref: string;
+}
+
+/** `/company/contact` — split layout + inquiry form */
+export interface ContactPageContent {
+  kicker: string;
+  headline: string;
+  quote: {
+    text: string;
+    attribution: string;
+  };
+  form: {
+    firstName: { label: string; placeholder: string };
+    lastName: { label: string; placeholder: string };
+    email: { label: string; placeholder: string };
+    phone: { label: string; placeholder: string };
+    country: { label: string; placeholder: string };
+    company: { label: string; placeholder: string };
+    title: { label: string; placeholder: string };
+    message: { label: string; placeholder: string };
+    privacyPrefix: string;
+    privacyLinkLabel: string;
+    privacyHref: string;
+    submitLabel: string;
+    submittingLabel: string;
+    consentRequired: string;
+    invalidEmail: string;
+    messageRequired: string;
+    successTitle: string;
+    successBody: string;
+    errorMessage: string;
+    networkError: string;
+  };
+}
+
+/** Per-vertical partner landing (`/partners/[slug]`) */
+export interface PartnerPageHeroContent {
+  kicker: string;
+  headline: string;
+  lede: string;
+  primaryCta: string;
+  secondaryCta: string;
+  secondaryHref: string;
+}
+
+export interface PartnerPageContent {
+  slug: PartnerSlug;
+  hero: PartnerPageHeroContent;
+  problem: ProblemSectionContent;
 }
 
 /** Nav deep links in Solution — `id="pillar-{anchor}"` on one row each */
@@ -37,6 +114,37 @@ export interface CompareSupportCopyVariant {
   donePanelBody: string;
 }
 
+export interface CompareScrollStep {
+  title: string;
+  body: string;
+}
+
+export interface CompareScrollWithStep extends CompareScrollStep {
+  num: number;
+}
+
+export interface CompareScrollLabels {
+  kicker: string;
+  beforeAfterEmphasis: string;
+  withoutTitle: string;
+  withTitle: string;
+  withoutDoneBadge: string;
+  withoutHoursUnit: string;
+  withSavePrefix: string;
+  withHoursUnit: string;
+  withDoneBadge: string;
+  mobileWithoutTab: string;
+  mobileWithTab: string;
+}
+
+export interface CompareScrollAudienceContent extends CompareSupportCopyVariant {
+  labels: CompareScrollLabels;
+  withoutSteps: CompareScrollStep[];
+  withSteps: CompareScrollWithStep[];
+  maxWithoutHours: number;
+  maxSavedHours: number;
+}
+
 export interface ImpactStat {
   num: string;
   label: string;
@@ -67,6 +175,15 @@ export interface Testimonial {
 export interface TestimonialsSectionContent {
   headline: string;
   subhead: string;
+}
+
+/** Business-only — executive / leader quote block (e.g. HSBC HR). */
+export interface PartnerLeaderQuoteContent {
+  paragraphs: string[];
+  organization: string;
+  attribution: string;
+  learnMoreLabel: string;
+  learnMoreHref: string;
 }
 
 export interface ScienceResearcher {
@@ -121,14 +238,11 @@ export interface NavDropdownItem {
   desc?: string;
   href: string;
   color?: string;
-  /** If set, clicking the link switches audience before scrolling (e.g. B2B anchors). */
-  switchAudience?: Audience;
 }
 
 export interface FooterLink {
   label: string;
   href: string;
-  switchAudience?: Audience;
 }
 
 export interface FooterColumn {
@@ -138,12 +252,16 @@ export interface FooterColumn {
 
 export interface B2BSolution {
   icon: string;
+  iconSrc?: string;
+  iconScale?: number;
   title: string;
   desc: string;
   /** Short line in the Partners nav dropdown */
   dropdownDesc: string;
+  /** Route segment under `/partners/` */
+  slug: PartnerSlug;
   href: string;
-  /** In-page anchor for nav deep links */
+  /** Legacy in-page anchor — kept for hub section ids */
   anchorId: string;
 }
 
@@ -166,13 +284,62 @@ export interface FaqItem {
 export interface ProblemItem {
   title: string;
   body: string;
+  /** Lucide icon key — see `Problem.tsx` icon map */
+  icon?: string;
+}
+
+/** Rotating phrase in the familiar problem narrative headline. */
+export interface ProblemFamiliarNarrative {
+  /** Lead-in before the slot, e.g. "You have to grieve — whilst also managing your loved one's" */
+  prefix: string;
+  /** Optional closing after the slot, e.g. "." */
+  suffix?: string;
+}
+
+/** One row in the For You familiar accordion (left) + detail panel (right). */
+export interface ProblemFamiliarTopic {
+  id: string;
+  title: string;
+  /** Short grammar-friendly label for the narrative slot (synced with accordion) */
+  slotLabel: string;
+  /** Expanded accordion copy */
+  body: string;
+  /** Topic illustration — see docs/problem-topic-graphics-brief.md */
+  imageSrc: string;
+  imageAlt: string;
+}
+
+/** Grouped rows in the right-hand detail card */
+export interface ProblemFamiliarPanelGroup {
+  label: string;
+  points: string[];
+  /** Brand illustration in public/images */
+  imageSrc: string;
+  imageAlt: string;
+}
+
+/** Optional lead-in for the For You problem section (accordion + panel). */
+export interface ProblemFamiliarIntro {
+  /** Prompt above the narrative, e.g. "Does any of this feel familiar?" */
+  eyebrow: string;
+  narrative: ProblemFamiliarNarrative;
+  panelSubtitle: string;
+  panelStatus: string;
+  panelGroups: ProblemFamiliarPanelGroup[];
+  topics: ProblemFamiliarTopic[];
+  /** Last topic id still fully in the clipped accordion viewport */
+  accordionClipAfterId: string;
+  /** Ms per topic before auto-advance */
+  topicIntervalMs: number;
+  reassurance: string;
 }
 
 export interface ProblemSectionContent {
   tag: string;
-  headline: string;
-  subhead: string;
+  headline?: string;
+  subhead?: string;
   items: ProblemItem[];
+  familiar?: ProblemFamiliarIntro;
 }
 
 /** Business-only stat strip — short, scannable claims under the hero/intro. */
@@ -193,6 +360,8 @@ export interface BusinessStatStripContent {
 /** Business-only partnership steps — 4-step "how partnership works" block. */
 export interface BusinessPartnershipStep {
   num: number;
+  /** Short label on the timeline (e.g. "Partner", "Rollout") */
+  milestone: string;
   title: string;
   body: string;
 }
@@ -202,6 +371,27 @@ export interface BusinessPartnershipContent {
   headline: string;
   subhead: string;
   steps: BusinessPartnershipStep[];
+}
+
+/** For You — vertical “how it works” timeline after bereavement intro */
+export interface CustomApproachStep {
+  num: number;
+  title: string;
+  body?: string;
+  bodySecondary?: string;
+  footnote?: {
+    beforeLink: string;
+    linkLabel: string;
+    href: string;
+  };
+}
+
+export interface CustomApproachSectionContent {
+  kicker: string;
+  headline: string;
+  appDownloadLabel: string;
+  appDownloadHref: string;
+  steps: CustomApproachStep[];
 }
 
 /** Business-only compare table — Gently vs alternatives. */
@@ -236,6 +426,10 @@ export interface BusinessCompareTableContent {
 export interface BusinessWhyPartnerCard {
   /** Key into the icon map in the component (e.g. "lock", "network") */
   icon: string;
+  /** Optional brand image — replaces the Lucide icon when set */
+  iconSrc?: string;
+  /** Visual scale when artwork has extra padding (default 1) */
+  iconScale?: number;
   title: string;
   body: string;
 }

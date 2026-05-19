@@ -2,27 +2,28 @@
 
 import { useEffect } from "react";
 import Lenis from "lenis";
+import { notifySmoothScrollTick } from "@/lib/smoothScroll";
 
 export function SmoothScroll() {
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReducedMotion) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
-      duration: 1.45,
+      duration: 1.6,
       lerp: 0.075,
       smoothWheel: true,
+      wheelMultiplier: 0.9,
     });
 
-    let rafId = 0;
-    const raf = (time: number) => {
+    let id = 0;
+    const loop = (time: number) => {
       lenis.raf(time);
-      rafId = window.requestAnimationFrame(raf);
+      notifySmoothScrollTick();
+      id = requestAnimationFrame(loop);
     };
-    rafId = window.requestAnimationFrame(raf);
-
+    id = requestAnimationFrame(loop);
     return () => {
-      window.cancelAnimationFrame(rafId);
+      cancelAnimationFrame(id);
       lenis.destroy();
     };
   }, []);

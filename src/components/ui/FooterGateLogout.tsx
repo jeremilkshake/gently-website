@@ -1,20 +1,16 @@
-"use client";
-
 import { SessionLogout } from "@/components/ui/SessionLogout";
-import { gateAuthUi } from "@/lib/content";
-import { useGateUnlock } from "@/lib/gateUnlockContext";
+import { gateAuthUi, gateLogoutHref } from "@/lib/content";
 
 type Props = {
   className?: string;
 };
 
+/** Logout in footer — only rendered inside the post-gate marketing shell */
 export function FooterGateLogout({ className }: Props) {
-  const { gateEnabled, unlocked } = useGateUnlock();
-  if (!gateEnabled || unlocked !== true) return null;
   return (
     <SessionLogout
       label={gateAuthUi.logout}
-      afterLogoutHref="/"
+      afterLogoutHref={gateLogoutHref}
       className={className}
     />
   );

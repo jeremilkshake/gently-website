@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRef, type CSSProperties } from "react";
 import {
   motion,
@@ -12,30 +13,25 @@ import {
   type Variants,
 } from "framer-motion";
 import { Heart, ShieldCheck } from "lucide-react";
-import { useIsBusiness } from "@/lib/audienceContext";
 import {
   bookingUrl,
   heroBadgeText,
-  heroBookingCta,
-  heroBusinessBookingCta,
-  heroBusinessLede,
   heroBusinessTrustBadges,
+  heroIndividual,
+  heroPartnersHub,
   heroVisual,
   openExternalTab,
 } from "@/lib/content";
+
+export type HeroVariant = "forYou" | "partnersHub";
 
 const HERO_TRUST_ICONS = {
   heart: Heart,
   shield: ShieldCheck,
 } as const;
 
-/** Max horizontal travel (px) at full progress — tuned for visible, responsive parallax */
 const CLOUD_SCROLL_MAX_PX = 168;
-
-/** Entrance easing — slower, smooth deceleration */
 const HERO_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
-
-/** Seconds between each hierarchy step (badge → title → lede → CTAs → image) */
 const STAGGER = 0.22;
 const DELAY_CHILD = 0.12;
 const ITEM_DURATION = 0.82;
@@ -74,7 +70,6 @@ function buildHeroEnterVariants(reduceMotion: boolean | null): {
   };
 }
 
-/** Decorative Union.svg clouds — `shift` sign = direction when scrolling down through hero (+ = right) */
 const heroClouds = [
   { key: "a", shift: 1, style: { top: "5%", left: "-6%", width: "min(340px, 46vw)" as const } },
   { key: "b", shift: -0.92, style: { top: "18%", right: "-2%", left: "auto" as const, width: "min(260px, 34vw)" as const } },
@@ -111,8 +106,12 @@ function HeroCloud({
   );
 }
 
-export default function Hero() {
-  const isBiz = useIsBusiness();
+type Props = {
+  variant: HeroVariant;
+};
+
+export default function Hero({ variant }: Props) {
+  const copy = variant === "forYou" ? heroIndividual : heroPartnersHub;
   const reduceMotion = useReducedMotion();
   const { container: containerVariants, item: itemVariants } = buildHeroEnterVariants(reduceMotion ?? false);
 
@@ -131,24 +130,19 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate z-0 -mt-[var(--header-stack)] flex min-h-[100dvh] min-h-screen flex-col items-center justify-center overflow-x-hidden bg-[var(--hero-sky)] px-6 pb-20 pt-[calc(var(--header-stack)+9rem+env(safe-area-inset-top,0px))] text-center"
+      id="hero"
+      className="relative isolate z-0 -mt-[var(--header-nav-h)] flex min-h-[100dvh] min-h-screen flex-col items-center justify-center overflow-x-hidden bg-[var(--hero-sky)] px-6 pb-20 pt-[calc(var(--header-nav-h)+9rem+env(safe-area-inset-top,0px))] text-center scroll-mt-[var(--header-nav-h)]"
     >
-      {/* Full-bleed sky (SVG + solid fallback — same as nav / toggle at top) */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 bg-[var(--hero-sky)] bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url(/images/hero-sky.svg)" }}
       />
-      {/* Animated Union clouds — drift above sky, below glow + copy */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[1] overflow-hidden"
-        aria-hidden
-      >
+      <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden" aria-hidden>
         {heroClouds.map((c) => (
           <HeroCloud key={c.key} progress={heroProgressSmooth} shift={c.shift} style={c.style} />
         ))}
       </div>
-      {/* Soft ambient glow — tuned down so the sky art stays primary */}
       <motion.div className="pointer-events-none absolute z-[2]" style={{ y: glowY, top: "45%", left: "50%" }}>
         <div
           className="hero-glow h-[400px] w-[700px] opacity-40"
@@ -160,13 +154,12 @@ export default function Hero() {
 
       <motion.div className="relative z-[3] w-full" style={{ y: textY }}>
         <motion.div
-          key={isBiz ? "biz" : "ind"}
+          key={variant}
           className="flex w-full flex-col items-center"
           variants={containerVariants}
           initial="hidden"
           animate="show"
         >
-          {/* 1 — Badge (context) */}
           <motion.div
             variants={itemVariants}
             className="mb-6 inline-flex items-center gap-2 rounded-full border-2 border-[var(--text)] bg-transparent px-3.5 py-1.5"
@@ -182,43 +175,54 @@ export default function Hero() {
             <span className="text-[12px] text-[var(--muted)]">{heroBadgeText}</span>
           </motion.div>
 
-          {/* 2 — Headline → 3 — Lede → 4–5 — CTAs (one after another) */}
-          {isBiz ? (
+          <motion.h1
+            variants={itemVariants}
+            className="hero-headline font-serif mx-auto mb-4 max-w-[780px] text-[clamp(36px,5.5vw,66px)] font-extrabold leading-[1.08] tracking-[-0.025em] text-[var(--text)]"
+          >
+            {variant === "partnersHub" ? (
+              heroPartnersHub.headlineSegments.map((segment, index) =>
+                "highlight" in segment && segment.highlight ? (
+                  <em key={index} className="italic text-[var(--hero-wordmark)]">
+                    {segment.text}
+                  </em>
+                ) : (
+                  <span key={index}>{segment.text}</span>
+                ),
+              )
+            ) : (
+              <>
+                {heroIndividual.headlineBefore}
+                <em className="italic text-[var(--hero-wordmark)]">{heroIndividual.headlineEmphasis}</em>
+              </>
+            )}
+          </motion.h1>
+          <motion.p
+            variants={itemVariants}
+            className="font-reading mx-auto mb-9 max-w-[520px] text-[clamp(15px,1.8vw,18px)] font-light text-[var(--muted)]"
+          >
+            {copy.lede}
+          </motion.p>
+          <motion.div
+            variants={itemVariants}
+            className="mb-0 flex w-full max-w-[520px] flex-wrap justify-center gap-2.5"
+          >
+            <a
+              href={bookingUrl}
+              {...openExternalTab}
+              className="inline-flex min-h-[3rem] flex-1 items-center justify-center rounded-xl border-2 border-[var(--text)] bg-[var(--gate-intro-blue)] px-5 py-3 font-nunito text-sm font-extrabold text-[var(--text)] shadow-[0_4px_0_0_var(--text)] transition hover:brightness-[0.97] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)] sm:flex-initial"
+            >
+              {copy.primaryCta}
+            </a>
+            <a
+              href={copy.secondaryHref}
+              className="inline-flex min-h-[3rem] flex-1 items-center justify-center rounded-[9px] border-2 border-[var(--text)] bg-transparent px-6 py-3 text-[14px] text-[var(--text)] shadow-[0_4px_0_0_var(--text)] transition-all hover:bg-[var(--surface-hover)] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)] sm:flex-initial"
+            >
+              {copy.secondaryCta}
+            </a>
+          </motion.div>
+
+          {variant === "partnersHub" ? (
             <>
-              <motion.h1
-                variants={itemVariants}
-                className="hero-headline font-serif mx-auto mb-4 max-w-[780px] text-[clamp(36px,5.5vw,66px)] font-extrabold leading-[1.08] tracking-[-0.025em]"
-              >
-                Give your people the{" "}
-                <em className="italic text-[var(--hero-wordmark)]">gift</em>{" "}
-                of{" "}
-                <em className="italic text-[var(--hero-wordmark)]">complete support</em>{" "}
-                after loss.
-              </motion.h1>
-              <motion.p
-                variants={itemVariants}
-                className="font-reading mx-auto mb-9 max-w-[520px] text-[clamp(15px,1.8vw,18px)] font-light text-[var(--muted)]"
-              >
-                {heroBusinessLede}
-              </motion.p>
-              <motion.div
-                variants={itemVariants}
-                className="mb-0 flex w-full max-w-[520px] flex-wrap justify-center gap-2.5"
-              >
-                <a
-                  href={bookingUrl}
-                  {...openExternalTab}
-                  className="inline-flex min-h-[3rem] flex-1 items-center justify-center rounded-xl border-2 border-[var(--text)] bg-[var(--gate-intro-blue)] px-5 py-3 font-nunito text-sm font-extrabold text-[var(--text)] shadow-[0_4px_0_0_var(--text)] transition hover:brightness-[0.97] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)] sm:flex-initial"
-                >
-                  {heroBusinessBookingCta}
-                </a>
-                <a
-                  href="#b2b"
-                  className="inline-flex min-h-[3rem] flex-1 items-center justify-center rounded-[9px] border-2 border-[var(--text)] bg-transparent px-6 py-3 text-[14px] text-[var(--text)] shadow-[0_4px_0_0_var(--text)] transition-all hover:bg-[var(--surface-hover)] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)] sm:flex-initial"
-                >
-                  See solutions
-                </a>
-              </motion.div>
               <motion.div
                 variants={itemVariants}
                 className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
@@ -236,45 +240,18 @@ export default function Hero() {
                   );
                 })}
               </motion.div>
-            </>
-          ) : (
-            <>
-              <motion.h1
-                variants={itemVariants}
-                className="hero-headline font-serif mx-auto mb-4 max-w-[780px] text-[clamp(36px,5.5vw,66px)] font-extrabold leading-[1.08] tracking-[-0.025em]"
-              >
-                Everything that comes after loss,
-                <br />
-                <em className="italic text-[var(--hero-wordmark)]">handled.</em>
-              </motion.h1>
               <motion.p
                 variants={itemVariants}
-                className="font-reading mx-auto mb-9 max-w-[460px] text-[clamp(15px,1.8vw,18px)] font-light text-[var(--muted)]"
+                className="font-reading mt-5 text-[13px] text-[var(--muted)]"
               >
-                Estate planning, automated admin, and science-based grief support, in one place.
+                {heroPartnersHub.forYouPrompt}{" "}
+                <Link href={heroPartnersHub.forYouHref} className="text-[var(--accent)] no-underline hover:underline">
+                  {heroPartnersHub.forYouLinkLabel}
+                </Link>
               </motion.p>
-              <motion.div
-                variants={itemVariants}
-                className="mb-0 flex w-full max-w-[520px] flex-wrap justify-center gap-2.5"
-              >
-                <a
-                  href={bookingUrl}
-                  {...openExternalTab}
-                  className="inline-flex min-h-[3rem] flex-1 items-center justify-center rounded-xl border-2 border-[var(--text)] bg-[var(--gate-intro-blue)] px-5 py-3 font-nunito text-sm font-extrabold text-[var(--text)] shadow-[0_4px_0_0_var(--text)] transition hover:brightness-[0.97] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)] sm:flex-initial"
-                >
-                  {heroBookingCta}
-                </a>
-                <a
-                  href="#solution"
-                  className="inline-flex min-h-[3rem] flex-1 items-center justify-center rounded-[9px] border-2 border-[var(--text)] bg-transparent px-6 py-3 text-[14px] text-[var(--text)] shadow-[0_4px_0_0_var(--text)] transition-all hover:bg-[var(--surface-hover)] active:translate-y-px active:shadow-[0_3px_0_0_var(--text)] sm:flex-initial"
-                >
-                  See how it works
-                </a>
-              </motion.div>
             </>
-          )}
+          ) : null}
 
-          {/* 6 — Supporting visual (last) */}
           <motion.div
             variants={itemVariants}
             className="hero-image mt-28 w-[80%] max-w-[784px] overflow-hidden"

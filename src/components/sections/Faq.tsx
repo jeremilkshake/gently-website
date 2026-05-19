@@ -8,7 +8,7 @@ export default function Faq() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="min-h-screen flex items-center py-16 bg-[var(--bg-2)] scroll-mt-[120px]">
+    <section id="faq" className="py-20 md:py-28 bg-[var(--bg-2)] scroll-mt-[120px]">
       <div className="max-w-content mx-auto px-6 w-full">
         <p className="text-[10px] uppercase tracking-[.14em] text-[var(--accent)] text-center mb-2">
           FAQ

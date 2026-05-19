@@ -17,7 +17,7 @@ export default function Pain() {
   const ref = useScrollReveal();
 
   return (
-    <section id="pain" className="min-h-screen flex items-center py-20 bg-[var(--bg-2)] scroll-mt-[120px]">
+    <section id="pain" className="py-20 md:py-28 bg-[var(--bg-2)] scroll-mt-[120px]">
       <div className="max-w-content mx-auto px-6 w-full">
         <h2
           ref={ref}
