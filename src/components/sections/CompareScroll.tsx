@@ -2,14 +2,15 @@
 "use client";
 
 import { useMemo, useRef } from "react";
-import { spreadStageHeightPx } from "@/lib/compare/config";
 import {
   compareScrollMetrics,
   sectionAnimationProgress,
   sectionReleaseProgress,
   sectionReleaseTranslateT,
+  type CompareScrollPlacement,
 } from "@/lib/compare/progress";
 import { useCompareScroll } from "@/lib/compare/useCompareScroll";
+import { cn } from "@/lib/utils";
 import CompareColumn, {
   type CompareColumnData,
 } from "./compare/CompareColumn";
@@ -17,20 +18,73 @@ import CompareColumnsAnimated from "./compare/CompareColumnsAnimated";
 
 interface CompareScrollProps {
   eyebrow?: string;
-  heading: string;
-  subheading?: string;
+  line1: string;
+  line2?: string;
+  subheadingPrefix?: string;
+  subheadingBrand?: string;
   columns: [CompareColumnData, CompareColumnData];
+  /** Tighter scroll + overlap when placed directly above the CTA. */
+  placement?: CompareScrollPlacement;
+}
+
+const INTRO_KICKER =
+  "mb-2 text-center text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--accent)]";
+const INTRO_HEADLINE =
+  "mx-auto max-w-3xl text-center font-serif text-[clamp(26px,3.2vw,42px)] font-extrabold leading-tight tracking-[-0.02em] text-[var(--text)]";
+const INTRO_SUBHEAD =
+  "mx-auto mt-4 max-w-xl text-center font-reading text-[15px] leading-[1.65] font-light text-[var(--muted)]";
+
+function CompareScrollIntro({
+  eyebrow,
+  line1,
+  line2,
+  subheadingPrefix,
+  subheadingBrand,
+}: Pick<
+  CompareScrollProps,
+  "eyebrow" | "line1" | "line2" | "subheadingPrefix" | "subheadingBrand"
+>) {
+  const hasSubhead = subheadingPrefix || subheadingBrand;
+
+  return (
+    <>
+      {eyebrow && <p className={INTRO_KICKER}>{eyebrow}</p>}
+      <h2 className={INTRO_HEADLINE}>
+        {line1}
+        {line2 && (
+          <>
+            <br />
+            {line2}
+          </>
+        )}
+      </h2>
+      {hasSubhead && (
+        <p className={INTRO_SUBHEAD}>
+          {subheadingPrefix}
+          {subheadingBrand && (
+            <em className="font-serif font-semibold not-italic text-[var(--accent)]">
+              {subheadingBrand}
+            </em>
+          )}
+        </p>
+      )}
+    </>
+  );
 }
 
 /**
- * Three beats: spread cards scroll in → subtle latch under nav → stack on scroll.
+ * One pass: intro scrolls away → sticky stage → stack on scroll → roll up into next section.
  */
 export default function CompareScroll({
   eyebrow,
-  heading,
-  subheading,
+  line1,
+  line2,
+  subheadingPrefix,
+  subheadingBrand,
   columns,
+  placement = "default",
 }: CompareScrollProps) {
+  const isPreCta = placement === "preCta";
   const sectionRef = useRef<HTMLElement>(null);
   const introRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -40,20 +94,14 @@ export default function CompareScroll({
     columns[1].cards.length,
   );
 
-  const {
-    progress,
-    isStatic,
-    isLatched,
-    latchSnap,
-    pinTrackPx,
-    spreadStagePx,
-  } = useCompareScroll(sectionRef, introRef, stageRef, longestCount);
+  const { progress, isStatic, isLatched, latchSnap, pinTrackPx } =
+    useCompareScroll(sectionRef, introRef, stageRef, longestCount, placement);
 
   const [negativeColumn, positiveColumn] = columns;
 
-  const { scrollTrackVh, animationShare } = useMemo(
-    () => compareScrollMetrics(longestCount),
-    [longestCount],
+  const { animationShare } = useMemo(
+    () => compareScrollMetrics(longestCount, placement),
+    [longestCount, placement],
   );
 
   const animationProgress = sectionAnimationProgress(progress, animationShare);
@@ -61,46 +109,42 @@ export default function CompareScroll({
   const releaseTranslateT = sectionReleaseTranslateT(releaseProgress);
 
   const navH = "var(--header-nav-h)";
-  const pinViewport = `calc(100dvh - ${navH})`;
 
   const latchSettleY = (1 - latchSnap) * 10;
-  const releaseY = releaseTranslateT > 0 ? -releaseTranslateT * 100 : 0;
+  const releaseY =
+    releaseTranslateT > 0 ? -releaseTranslateT * 100 : 0;
+  const hasCollapsed = animationProgress > 0;
+  const isFinished = animationProgress >= 1 && releaseProgress >= 1;
   const stageTransform =
-    isLatched && !isStatic
-      ? `translate3d(0, calc(${latchSettleY}px + ${releaseY}%), 0)`
+    !isStatic && (isLatched || hasCollapsed)
+      ? `translate3d(0, calc(${isLatched ? latchSettleY : 0}px + ${releaseY}%), 0)`
       : undefined;
-
-  const spreadEstimate = spreadStageHeightPx(longestCount);
-  const sectionMinHeight = isStatic
-    ? undefined
-    : `calc(${spreadEstimate}px + ${scrollTrackVh * 100}vh + 12rem)`;
+  const hideStage = !isStatic && !isLatched && isFinished;
 
   return (
     <section
       id="compare"
       ref={sectionRef}
-      style={sectionMinHeight ? { minHeight: sectionMinHeight } : undefined}
-      className="relative w-full scroll-mt-[120px] bg-[var(--bg)]"
-    >
-      <div ref={introRef} className="relative mx-auto max-w-6xl px-6 pt-16 pb-10 text-center">
-        {eyebrow && (
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-[var(--blue)]">
-            {eyebrow}
-          </p>
-        )}
-        <h2 className="mx-auto max-w-3xl text-4xl font-bold leading-tight text-[var(--text)]">
-          {heading}
-        </h2>
-        {subheading && (
-          <p className="mx-auto mt-4 max-w-xl text-lg text-[var(--text-muted)]">
-            {subheading}
-          </p>
-        )}
-      </div>
-
-      {isLatched && !isStatic && spreadStagePx > 0 && (
-        <div aria-hidden style={{ height: spreadStagePx }} />
+      className={cn(
+        "relative w-full scroll-mt-[120px] bg-[var(--bg)] pb-0",
+        isPreCta && "-mb-[min(40vh,520px)]",
       )}
+    >
+      <div
+        ref={introRef}
+        className={cn(
+          "relative mx-auto max-w-6xl px-6 text-center",
+          isPreCta ? "pt-12 pb-6" : "pt-16 pb-10",
+        )}
+      >
+        <CompareScrollIntro
+          eyebrow={eyebrow}
+          line1={line1}
+          line2={line2}
+          subheadingPrefix={subheadingPrefix}
+          subheadingBrand={subheadingBrand}
+        />
+      </div>
 
       <div
         ref={stageRef}
@@ -109,40 +153,33 @@ export default function CompareScroll({
         style={
           isStatic
             ? undefined
-            : isLatched
-              ? {
-                  position: "fixed",
-                  top: navH,
-                  left: 0,
-                  right: 0,
-                  height: pinViewport,
-                  overflow: "hidden",
-                  zIndex: 30,
-                  transform: stageTransform,
-                  willChange: "transform",
-                }
-              : {
-                  position: "relative",
-                }
+            : {
+                position: "sticky",
+                top: navH,
+                zIndex: 30,
+                transform: stageTransform,
+                willChange: stageTransform ? "transform" : undefined,
+                visibility: hideStage ? "hidden" : undefined,
+                pointerEvents: hideStage ? "none" : undefined,
+              }
         }
         className="w-full bg-[var(--bg)]"
       >
-        <div className="mx-auto flex max-w-6xl flex-col justify-start px-6 py-8">
+        <div
+          className={cn(
+            "mx-auto flex max-w-6xl flex-col justify-start px-6",
+            isPreCta ? "py-5" : "py-8",
+          )}
+        >
           {isStatic && (
-            <header className="mb-12 shrink-0 text-center">
-              {eyebrow && (
-                <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-[var(--blue)]">
-                  {eyebrow}
-                </p>
-              )}
-              <h2 className="mx-auto max-w-3xl text-4xl font-bold leading-tight text-[var(--text)]">
-                {heading}
-              </h2>
-              {subheading && (
-                <p className="mx-auto mt-4 max-w-xl text-lg text-[var(--text-muted)]">
-                  {subheading}
-                </p>
-              )}
+            <header className="mb-12 shrink-0">
+              <CompareScrollIntro
+                eyebrow={eyebrow}
+                line1={line1}
+                line2={line2}
+                subheadingPrefix={subheadingPrefix}
+                subheadingBrand={subheadingBrand}
+              />
             </header>
           )}
 

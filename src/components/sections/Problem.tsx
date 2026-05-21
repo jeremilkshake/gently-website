@@ -9,7 +9,6 @@ import {
   type TransitionEvent,
 } from "react";
 import type { RefObject } from "react";
-import Image from "next/image";
 import { useAudience } from "@/lib/audienceContext";
 import { problemSection } from "@/lib/content";
 import { useScrollReveal } from "@/lib/useScrollReveal";
@@ -56,24 +55,17 @@ function ProblemNarrativeCard({ subhead }: { subhead: string }) {
   );
 }
 
-function ProblemPanelVisual({ group }: { group: ProblemFamiliarPanelGroup }) {
+function ProblemPanelGroupCard({ group }: { group: ProblemFamiliarPanelGroup }) {
   return (
     <li className="list-none">
-      <div className="flex flex-col items-center rounded-[18px] border border-[var(--border-subtle)] bg-[var(--card)] px-3 pb-4 pt-5 text-center shadow-card">
-        <div className="mb-3 flex h-[88px] w-full items-center justify-center">
-          <Image
-            src={group.imageSrc}
-            alt={group.imageAlt}
-            width={80}
-            height={80}
-            unoptimized
-            className="h-[72px] w-[72px] object-contain md:h-[80px] md:w-[80px]"
-          />
-        </div>
-        <p className="font-reading mb-1.5 text-[11px] font-semibold uppercase tracking-[.1em] text-[var(--dim)]">
+      <div
+        className="flex h-full flex-col rounded-[18px] border border-[var(--border-subtle)] bg-[var(--card)] px-4 py-4 shadow-card"
+        style={{ borderLeftWidth: 3, borderLeftColor: "var(--hero-wordmark)" }}
+      >
+        <p className="font-reading mb-2 text-[11px] font-semibold uppercase tracking-[.1em] text-[var(--dim)]">
           {group.label}
         </p>
-        <p className="font-reading m-0 text-[12px] leading-[1.45] text-[var(--muted)]">
+        <p className="font-reading m-0 flex-1 text-[13px] leading-[1.5] text-[var(--muted)]">
           {group.points.join(" · ")}
         </p>
       </div>
@@ -96,29 +88,17 @@ function ProblemDetailPanel({
       className="problem-panel-enter relative flex min-h-[360px] flex-col justify-between rounded-[24px] border border-[var(--border)] bg-[var(--bg-2)] p-6 md:min-h-[420px] md:p-8 lg:p-9"
     >
       <div>
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
-          <div className="mx-auto flex h-[120px] w-[120px] flex-shrink-0 items-center justify-center rounded-[20px] border border-[var(--border-subtle)] bg-[var(--card)] shadow-card sm:mx-0 md:h-[128px] md:w-[128px]">
-            <Image
-              src={topic.imageSrc}
-              alt={topic.imageAlt}
-              width={112}
-              height={112}
-              unoptimized
-              className="h-[96px] w-[96px] object-contain md:h-[104px] md:w-[104px]"
-            />
-          </div>
-          <div className="min-w-0 flex-1 text-center sm:text-left">
-            <h3 className="font-serif text-[clamp(20px,2.4vw,26px)] font-extrabold tracking-[-0.025em] text-[var(--text)] leading-[1.15]">
-              {topic.title}
-            </h3>
-            <p className="font-reading mt-3 text-[15px] leading-[1.6] text-[var(--muted)]">
-              {topic.body}
-            </p>
-          </div>
+        <div className="min-w-0">
+          <h3 className="font-serif text-[clamp(22px,2.6vw,28px)] font-extrabold tracking-[-0.025em] text-[var(--text)] leading-[1.12]">
+            {topic.title}
+          </h3>
+          <p className="font-reading mt-3 max-w-[52ch] text-[15px] leading-[1.65] text-[var(--muted)]">
+            {topic.body}
+          </p>
         </div>
-        <ul className="mt-8 grid grid-cols-3 gap-2.5 sm:gap-3">
+        <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-2.5">
           {panelGroups.map((group) => (
-            <ProblemPanelVisual key={group.label} group={group} />
+            <ProblemPanelGroupCard key={group.label} group={group} />
           ))}
         </ul>
       </div>

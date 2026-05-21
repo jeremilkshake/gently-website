@@ -14,7 +14,7 @@ function gentlySpacer(index: number): CompareCardData {
 const withoutGently: CompareColumnData = {
   title: "Without Gently",
   variant: "negative",
-  counterTo: 100,            // counts 0 -> 100 hrs as the column completes
+  counterTo: 400,            // counts 0 -> 400 hrs as the column completes
   counterUnit: "hrs",
   donePillLabel: "Finally done",
   cards: [
@@ -83,9 +83,9 @@ const withoutGently: CompareColumnData = {
 const withGently: CompareColumnData = {
   title: "With Gently",
   variant: "positive",
-  counterTo: 0,              // the supported path costs ~0 of the user's hours
-  counterUnit: "hrs",
-  counterPrefix: "Save",
+  counterTo: 300,            // counts 0 -> 300+ hrs saved as the column completes
+  counterSuffix: "+",
+  counterUnit: "hrs saved",
   donePillLabel: "Done",
   cards: [
     {
@@ -138,6 +138,8 @@ export const COMPARE_COLUMNS: [CompareColumnData, CompareColumnData] = [
 
 export const COMPARE_SECTION_COPY = {
   eyebrow: "The difference",
-  heading: "Complete coverage. Measurable impact. One platform.",
-  subheading: "Before and after gently.",
+  line1: "Complete coverage. Measurable impact.",
+  line2: "One platform.",
+  subheadingPrefix: "Before and after ",
+  subheadingBrand: "gently.",
 };

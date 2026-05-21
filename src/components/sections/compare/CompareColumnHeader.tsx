@@ -15,6 +15,7 @@ interface CompareColumnHeaderProps {
   counterTo: number;
   counterUnit: string;
   counterPrefix?: string;
+  counterSuffix?: string;
   donePillLabel: string;
   variant: "negative" | "positive";
   isStatic: boolean;
@@ -47,6 +48,7 @@ export default function CompareColumnHeader({
   counterTo,
   counterUnit,
   counterPrefix,
+  counterSuffix,
   donePillLabel,
   variant,
   isStatic,
@@ -55,9 +57,12 @@ export default function CompareColumnHeader({
   const theme = HEADER_THEME[variant];
   const counterValue = Math.round(counterTo * reveal);
   /** Full fill + single high-contrast foreground so title/logo stay readable. */
-  const isComplete = reveal >= 0.99 || isStatic;
+  const isComplete = isStatic || reveal >= 0.99;
   const isDone = reveal >= 0.999;
-  const fillWidth = isComplete ? "100%" : `${Math.round(reveal * 100)}%`;
+  const fillPct = Math.min(100, Math.max(0, reveal * 100));
+  const pillBackground = isComplete
+    ? theme.fill
+    : `linear-gradient(to right, ${theme.fill} ${fillPct}%, var(--card) ${fillPct}%)`;
   const isWith = variant === "positive";
 
   return (
@@ -70,29 +75,19 @@ export default function CompareColumnHeader({
       className="mb-0"
     >
       <div
-        className="relative h-full overflow-hidden rounded-full border bg-[var(--card)] shadow-[var(--shadow-float)]"
-        style={{ borderColor: "var(--card-border)" }}
+        className="relative h-full overflow-hidden rounded-full border shadow-[var(--shadow-float)]"
+        style={{
+          borderColor: "var(--card-border)",
+          background: pillBackground,
+        }}
       >
-        {/* White base + left-to-right colour wipe (grey | yellow). */}
-        <div
-          aria-hidden
-          className={cn(
-            "pointer-events-none absolute z-0",
-            isComplete ? "inset-0" : "inset-y-0 left-0",
-          )}
-          style={{
-            width: isComplete ? undefined : fillWidth,
-            backgroundColor: theme.fill,
-          }}
-        />
-
         {/* Foreground */}
         <div className="relative z-10 flex h-full items-center justify-between gap-3 px-5 sm:px-6">
           <div className="min-w-0 flex-1">
             {isWith ? (
               <CompareHeaderLogo title={title} />
             ) : (
-              <span className="block truncate text-lg font-bold tracking-[-0.02em] text-[var(--text)] sm:text-xl">
+              <span className="block truncate font-serif text-lg font-extrabold tracking-[-0.02em] text-[var(--text)] sm:text-xl">
                 {title}
               </span>
             )}
@@ -124,10 +119,13 @@ export default function CompareColumnHeader({
                 />
               )}
               <span
-                className="flex h-9 min-w-9 items-center justify-center rounded-full bg-[var(--card)] px-2 text-base font-bold text-[var(--text)]"
+                className="flex h-9 min-w-9 items-center justify-center gap-px rounded-full bg-[var(--card)] px-2 text-base font-bold text-[var(--text)]"
                 style={{ border: "1px solid var(--card-border)" }}
               >
                 <Odometer value={counterValue} />
+                {counterSuffix && counterValue >= counterTo && (
+                  <span aria-hidden>{counterSuffix}</span>
+                )}
               </span>
               <TwoToneInline
                 text={counterUnit}

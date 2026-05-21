@@ -14,7 +14,7 @@ export default function CustomApproachCare() {
   return (
     <section
       id="custom-approach"
-      className="scroll-mt-[120px] border-y border-[var(--border)] bg-[var(--bg)] py-20 md:py-24"
+      className="scroll-mt-[120px] border-b border-[var(--border)] bg-[var(--bg)] pt-10 pb-20 md:pt-12 md:pb-24"
     >
       <div className="mx-auto max-w-[720px] px-6">
         <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--dim)]">

@@ -29,6 +29,21 @@ export default function MissionSection() {
             </p>
           ))}
         </div>
+        {missionPage.founderStory ? (
+          <div className="fade-up visible mt-14 space-y-6 border-t border-[var(--border)] pt-14">
+            <h2 className="font-serif text-[clamp(22px,2.5vw,28px)] font-extrabold tracking-[-0.02em] text-[var(--text)]">
+              {missionPage.founderStory.heading}
+            </h2>
+            {missionPage.founderStory.paragraphs.map((paragraph) => (
+              <p
+                key={paragraph.slice(0, 24)}
+                className="font-reading text-[15px] leading-[1.75] text-[var(--text)]"
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        ) : null}
         <Link
           href={missionPage.ctaHref}
           className="mt-12 inline-flex min-h-[3rem] items-center rounded-xl border-2 border-[var(--text)] bg-[var(--gate-intro-blue)] px-5 py-3 font-nunito text-sm font-extrabold text-[var(--text)] no-underline shadow-[0_4px_0_0_var(--text)] transition hover:brightness-[0.97]"

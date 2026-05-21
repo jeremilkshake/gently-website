@@ -3,7 +3,7 @@
 
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { deckHeightPx } from "@/lib/compare/config";
+import { COMPARE_CONFIG, deckHeightPx } from "@/lib/compare/config";
 import { easeInOutCubic } from "@/lib/compare/easing";
 import { columnCardSlideProgress } from "@/lib/compare/progress";
 import CompareCard from "./CompareCard";
@@ -31,7 +31,9 @@ export default function CompareColumnDeck({
   className,
 }: CompareColumnDeckProps) {
   const total = column.cards.length;
-  const animProgress = isLatched ? sectionProgress : 0;
+  const animProgress = sectionProgress > 0 ? sectionProgress : 0;
+  const progressScale =
+    column.variant === "positive" ? COMPARE_CONFIG.positiveProgressScale : 1;
 
   const slideTs = useMemo(
     () =>
@@ -42,16 +44,17 @@ export default function CompareColumnDeck({
           total,
           partnerCardCount,
           longestCount,
+          progressScale,
         ),
       ),
-    [column.cards, animProgress, total, partnerCardCount, longestCount],
+    [column.cards, animProgress, total, partnerCardCount, longestCount, progressScale],
   );
 
   const layoutT = useMemo(() => {
-    if (!isLatched) return 0;
+    if (sectionProgress <= 0) return 0;
     const maxSlide = slideTs.length ? Math.max(...slideTs) : 0;
     return easeInOutCubic(maxSlide);
-  }, [isLatched, slideTs]);
+  }, [sectionProgress, slideTs]);
 
   const deckHeight = deckHeightPx(total, layoutT);
 
@@ -81,7 +84,7 @@ export default function CompareColumnDeck({
         className="relative w-full"
         style={{
           height: deckHeight,
-          overflow: isLatched ? "hidden" : "visible",
+          overflow: sectionProgress > 0 ? "hidden" : "visible",
         }}
       >
         {column.cards.map((card, i) => (

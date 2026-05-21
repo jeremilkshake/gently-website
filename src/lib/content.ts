@@ -16,7 +16,6 @@ import type {
   CompareScrollAudienceContent,
   FooterColumn,
   ScienceSectionContent,
-  BusinessStatStripContent,
   BusinessPartnershipContent,
   BusinessCompareTableContent,
   BusinessPricingModelContent,
@@ -101,9 +100,18 @@ export const missionPage: MissionPageContent = {
   subhead: "Care that meets people where they are, after loss, without the scramble.",
   paragraphs: [
     "Gently exists because bereavement is never just one thing. Estate, admin, and grief land together, yet most people are left to stitch it alone, or organisations offer a fragment of what families actually need.",
+    "We have talked with so many people in bereavement groups — listening to what families actually need when probate, paperwork, and grief all land at once. Those conversations shaped what we build.",
+    "We have experienced loss ourselves and gone through it all — the admin, the grief, the gaps between services. That is not abstract for us; it is why we care about getting this right.",
     "We build one calm platform that covers the full journey: practical estate and admin help, and evidence-led grief wellbeing. Free for families when offered through a partner; straightforward for organisations to deploy without a heavy integration.",
     "Our north star is simple: when loss happens, people should have clarity, dignity, and support, not a pile of tabs, cold calls, and guesswork.",
   ],
+  founderStory: {
+    heading: "Jeremy Wong's story",
+    paragraphs: [
+      "After my brother Seb died, I went through bereavement the way most families do — piecing together probate, accounts, notifications, and support from different places, often with no clear path through.",
+      "gently grew from that experience, and from wanting no one else to face loss without a single place that holds the practical and emotional journey together.",
+    ],
+  },
   ctaLabel: "Partner with gently",
   ctaHref: ROUTES.partners,
 };
@@ -113,7 +121,7 @@ export const contactPage: ContactPageContent = {
   kicker: "Contact / demo request + partnership inquiry",
   headline: "Interested in bringing gently to your organisation?",
   quote: {
-    text: "gently is the first platform I've seen that families and employers can actually rely on, long after the funeral.",
+    text: "gently is the first platform I’ve seen that families and employers can actually rely on, long after the funeral.",
     attribution: "HSBC Ex Head of HR",
   },
   form: {
@@ -436,20 +444,14 @@ export const problemSection: {
         {
           label: "Where to begin",
           points: ["Not sure where to start", "What to do", "How to do it"],
-          imageSrc: "/images/estate-visualisation.png",
-          imageAlt: "Estate split across uncertain pieces",
         },
         {
           label: "The paperwork",
           points: ["Where paperwork is", "What to fill in", "When to fill it in"],
-          imageSrc: "/images/document-organisation-folder.png",
-          imageAlt: "Documents and forms to organise",
         },
         {
           label: "While you grieve",
           points: ["All whilst trying to grieve"],
-          imageSrc: "/images/guided-care-plan.png",
-          imageAlt: "Steps and deadlines on a long timeline",
         },
       ],
       topics: [
@@ -458,64 +460,48 @@ export const problemSection: {
           title: "Estate",
           slotLabel: "estate",
           body: "Property, assets, and who handles what rarely come with a clear map, especially when you are grieving.",
-          imageSrc: "/images/problem-topic-estate.png",
-          imageAlt: "Estate split into pieces with no clear map",
         },
         {
           id: "probate",
           title: "Probate",
           slotLabel: "probate",
           body: "Forms, thresholds, and legal steps that are hard to parse when all you want is a straight answer.",
-          imageSrc: "/images/problem-topic-probate.png",
-          imageAlt: "Probate forms and legal steps that feel unclear",
         },
         {
           id: "inheritance",
           title: "Inheritance",
           slotLabel: "inheritance",
           body: "Who receives what, and when, often stays unclear until you are already deep in admin.",
-          imageSrc: "/images/problem-topic-inheritance.png",
-          imageAlt: "Inheritance with uncertain who gets what and when",
         },
         {
           id: "will",
           title: "The will",
           slotLabel: "will",
           body: "Finding it, reading it, and knowing what it means in practice, often without a solicitor on speed dial.",
-          imageSrc: "/images/problem-topic-will.png",
-          imageAlt: "A will that is hard to find and understand",
         },
         {
           id: "funeral",
           title: "Funeral planning",
           slotLabel: "funeral",
           body: "Decisions that feel urgent and emotional, with prices and choices that are hard to compare calmly.",
-          imageSrc: "/images/problem-topic-funeral.png",
-          imageAlt: "Funeral choices and costs that are hard to compare",
         },
         {
           id: "benefits",
           title: "Benefits",
           slotLabel: "benefits",
           body: "Entitlements you may not know exist, buried in government sites and letters that arrive too late.",
-          imageSrc: "/images/problem-topic-benefits.png",
-          imageAlt: "Benefits and entitlements that are easy to miss",
         },
         {
           id: "government",
           title: "Government paperwork",
           slotLabel: "paperwork",
           body: "Registers, notifications, and departments that do not talk to each other, while deadlines keep moving.",
-          imageSrc: "/images/problem-topic-government.png",
-          imageAlt: "Government departments and deadlines that do not align",
         },
         {
           id: "accounts",
           title: "Closing accounts",
           slotLabel: "accounts",
           body: "Banks, utilities, and subscriptions. Each with its own process, proof, and hold music.",
-          imageSrc: "/images/problem-topic-accounts.png",
-          imageAlt: "Many accounts each with a different closing process",
         },
       ],
       accordionClipAfterId: "will",
@@ -1016,20 +1002,6 @@ export const companyDropdown: NavDropdownItem[] = [
   { title: "FAQ", desc: "Common questions", href: sectionHref(ROUTES.forYou, "faq") },
 ];
 
-/** Business-only, short stat strip under the partnership intro. */
-export const businessStatStrip: BusinessStatStripContent = {
-  kicker: "The Gently difference",
-  headline: "One platform. Three pillars. Zero integration burden.",
-  subhead:
-    "Gently is the only platform that covers the full bereavement journey (estate, admin, and grief wellbeing) under a single contract.",
-  stats: [
-    { value: "1", label: "platform across\nestate, admin & wellbeing" },
-    { value: "3", label: "pillars of support\nfor every person you cover" },
-    { value: "0", label: "technical integration\nrequired to deploy" },
-    { value: "12–18 mo", label: "of support per person,\nnot 3–5 days of leave" },
-  ],
-};
-
 /** Business-only, "Why partner with us" feature carousel. */
 export const businessWhyPartner: BusinessWhyPartnerContent = {
   heading: "A new standard for bereavement support.",
@@ -1161,7 +1133,7 @@ export const businessCompareTable: BusinessCompareTableContent = {
 export const partnerLeaderQuote: PartnerLeaderQuoteContent = {
   paragraphs: [
     "After years supporting people through loss in large organisations, I rarely see anything that joins the practical and human sides so well.",
-    "gently is the first platform I've seen that families and employers can actually rely on, long after the funeral.",
+    "gently is the first platform I’ve seen that families and employers can actually rely on, long after the funeral.",
     "Gently represents the most significant step forward for bereavement support in years.",
   ],
   organization: "HSBC",

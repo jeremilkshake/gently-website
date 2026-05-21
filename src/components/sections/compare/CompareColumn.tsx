@@ -1,6 +1,7 @@
 // src/components/sections/compare/CompareColumn.tsx
 "use client";
 
+import { COMPARE_CONFIG } from "@/lib/compare/config";
 import { columnProgress } from "@/lib/compare/progress";
 import CompareColumnDeck from "./CompareColumnDeck";
 import CompareColumnHeader from "./CompareColumnHeader";
@@ -12,6 +13,7 @@ export interface CompareColumnData {
   counterTo: number;
   counterUnit: string;
   counterPrefix?: string;
+  counterSuffix?: string;
   donePillLabel: string;
   cards: CompareCardData[];
 }
@@ -33,11 +35,14 @@ export default function CompareColumn({
   isStatic,
 }: CompareColumnProps) {
   const total = column.cards.length;
+  const progressScale =
+    column.variant === "positive" ? COMPARE_CONFIG.positiveProgressScale : 1;
   const colProgress = columnProgress(
     sectionProgress,
     total,
     longestCount,
     partnerCardCount,
+    progressScale,
   );
   const fill = isStatic ? 1 : colProgress;
 
@@ -49,9 +54,10 @@ export default function CompareColumn({
         counterTo={column.counterTo}
         counterUnit={column.counterUnit}
         counterPrefix={column.counterPrefix}
+        counterSuffix={column.counterSuffix}
         donePillLabel={column.donePillLabel}
         variant={column.variant}
-        isStatic
+        isStatic={isStatic}
       />
       <CompareColumnDeck
         column={column}

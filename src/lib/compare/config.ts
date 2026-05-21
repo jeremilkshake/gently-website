@@ -25,11 +25,14 @@ export const COMPARE_CONFIG = {
   /** Overlap between card windows — higher = more blend between steps. */
   windowOverlap: 0.5,
 
+  /** Gently (right) column — >1 finishes header fill + card stack earlier in the scroll. */
+  positiveProgressScale: 1.45,
+
   /** Hold after the last card lands (within the animation track). */
   tailVh: 0.28,
 
-  /** Extra scroll after animation — pinned stage scrolls off. */
-  releaseVh: 0.35,
+  /** Extra scroll after stack completes — pinned stage rolls up into the next section. */
+  releaseVh: 0.32,
 
   /** >1 reaches full collapse earlier in each card's window. */
   collapseAccel: 1.35,
@@ -42,6 +45,14 @@ export const COMPARE_CONFIG = {
 
   /** Latch settle duration (ms) — micro nudge when the stage pins. */
   latchSettleMs: 480,
+
+  /** Tighter scroll when compare sits directly above the CTA. */
+  preCta: {
+    cardScrollWindowVh: 0.24,
+    tailVh: 0.1,
+    releaseVh: 0.26,
+    stagePaddingY: 48,
+  },
 } as const;
 
 export type CompareConfig = typeof COMPARE_CONFIG;

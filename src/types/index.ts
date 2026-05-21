@@ -31,6 +31,10 @@ export interface MissionPageContent {
   headline: string;
   subhead: string;
   paragraphs: string[];
+  founderStory?: {
+    heading: string;
+    paragraphs: string[];
+  };
   ctaLabel: string;
   ctaHref: string;
 }
@@ -304,18 +308,12 @@ export interface ProblemFamiliarTopic {
   slotLabel: string;
   /** Expanded accordion copy */
   body: string;
-  /** Topic illustration — see docs/problem-topic-graphics-brief.md */
-  imageSrc: string;
-  imageAlt: string;
 }
 
 /** Grouped rows in the right-hand detail card */
 export interface ProblemFamiliarPanelGroup {
   label: string;
   points: string[];
-  /** Brand illustration in public/images */
-  imageSrc: string;
-  imageAlt: string;
 }
 
 /** Optional lead-in for the For You problem section (accordion + panel). */
@@ -340,21 +338,6 @@ export interface ProblemSectionContent {
   subhead?: string;
   items: ProblemItem[];
   familiar?: ProblemFamiliarIntro;
-}
-
-/** Business-only stat strip — short, scannable claims under the hero/intro. */
-export interface BusinessStatStripItem {
-  /** Big eyebrow value, e.g. "1 platform", "3 pillars", "0 integration" */
-  value: string;
-  /** Short supporting label */
-  label: string;
-}
-
-export interface BusinessStatStripContent {
-  kicker: string;
-  headline: string;
-  subhead: string;
-  stats: BusinessStatStripItem[];
 }
 
 /** Business-only partnership steps — 4-step "how partnership works" block. */

@@ -80,8 +80,17 @@ export function cardCollapseProgress(
  *   (collapsible cards × per-card window) + tail.
  * The LONGER column drives the height so both finish inside the section.
  */
-export function compareScrollMetrics(longestColumnCardCount: number) {
-  const { cardScrollWindowVh, tailVh, releaseVh } = COMPARE_CONFIG;
+export type CompareScrollPlacement = "default" | "preCta";
+
+export function compareScrollMetrics(
+  longestColumnCardCount: number,
+  placement: CompareScrollPlacement = "default",
+) {
+  const cfg =
+    placement === "preCta"
+      ? { ...COMPARE_CONFIG, ...COMPARE_CONFIG.preCta }
+      : COMPARE_CONFIG;
+  const { cardScrollWindowVh, tailVh, releaseVh } = cfg;
   const cardTrackVh =
     longestColumnCardCount * cardScrollWindowVh + tailVh;
   const scrollTrackVh = cardTrackVh + releaseVh;
@@ -163,10 +172,12 @@ export function columnCardSlideProgress(
   columnCardCount: number,
   partnerCardCount: number,
   longestColumnCardCount: number,
+  progressScale = 1,
 ): number {
+  const scaled = clamp01(sectionProgress * progressScale);
   const synced = syncedStepCount(columnCardCount, partnerCardCount);
   const { syncProgress, leftOnlyProgress } = compareScrollPhases(
-    sectionProgress,
+    scaled,
     longestColumnCardCount,
     synced,
   );
@@ -193,14 +204,16 @@ export function columnProgress(
   columnCardCount: number,
   longestColumnCardCount: number,
   partnerCardCount?: number,
+  progressScale = 1,
 ): number {
+  const scaled = clamp01(sectionProgress * progressScale);
   const partner = partnerCardCount ?? longestColumnCardCount;
   const synced = syncedStepCount(columnCardCount, partner);
   const syncShare = synced / Math.max(1, longestColumnCardCount);
 
   if (columnCardCount > synced) {
-    return clamp01(sectionProgress);
+    return scaled;
   }
 
-  return syncShare > 0 ? clamp01(sectionProgress / syncShare) : 1;
+  return syncShare > 0 ? clamp01(scaled / syncShare) : 1;
 }

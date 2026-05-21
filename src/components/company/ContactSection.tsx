@@ -25,8 +25,8 @@ export default function ContactSection() {
         </div>
 
         <blockquote className="fade-up visible mt-16 max-w-[440px] lg:mt-0">
-          <QuoteMark className="mb-5 opacity-70" />
-          <p className="font-reading m-0 text-[clamp(16px,1.8vw,18px)] font-light leading-[1.65] text-[var(--muted)]">
+          <QuoteMark variant="typographic" className="-ml-0.5 mb-0 leading-none" />
+          <p className="font-reading -mt-3 m-0 text-[clamp(16px,1.8vw,18px)] font-light leading-[1.65] text-[var(--muted)]">
             {quote.text}
           </p>
           <footer className="font-reading mt-5 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--dim)]">

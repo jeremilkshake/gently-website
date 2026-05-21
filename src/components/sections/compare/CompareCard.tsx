@@ -103,9 +103,8 @@ function CardBody({
   variant: "negative" | "positive";
 }) {
   const badgeBg =
-    variant === "positive" ? "var(--blue)" : "var(--badge-neutral)";
-  const badgeText =
-    variant === "positive" ? "var(--blue-contrast)" : "var(--text)";
+    variant === "positive" ? "var(--compare-with-fill)" : "var(--badge-neutral)";
+  const badgeText = "var(--text)";
 
   return (
     <div className="flex h-full min-h-0 flex-col px-5 py-4">
@@ -116,7 +115,7 @@ function CardBody({
         >
           {data.index + 1}
         </span>
-        <h4 className="min-w-0 flex-1 text-[15px] font-semibold leading-snug text-[var(--text)]">
+        <h4 className="min-w-0 flex-1 font-serif text-[17px] font-extrabold leading-snug tracking-[-0.02em] text-[var(--text)]">
           {data.title}
         </h4>
         <span

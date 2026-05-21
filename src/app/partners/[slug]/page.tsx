@@ -7,7 +7,6 @@ import TrustBar from "@/components/sections/TrustBar";
 import BusinessWhyPartner from "@/components/sections/BusinessWhyPartner";
 import CompareScroll from "@/components/sections/CompareScroll";
 import { COMPARE_COLUMNS, COMPARE_SECTION_COPY } from "@/lib/compareScrollSteps";
-import BusinessStatStrip from "@/components/sections/BusinessStatStrip";
 import BusinessPartnership from "@/components/sections/BusinessPartnership";
 import Solution from "@/components/solution/Solution";
 import BusinessCompareTable from "@/components/sections/BusinessCompareTable";
@@ -64,19 +63,21 @@ function PartnerPageBody({ page }: { page: (typeof partnerPages)[PartnerSlug] })
       <PartnerHero content={page.hero} />
       <TrustBar />
       <BusinessWhyPartner />
-      <CompareScroll
-        eyebrow={COMPARE_SECTION_COPY.eyebrow}
-        heading={COMPARE_SECTION_COPY.heading}
-        subheading={COMPARE_SECTION_COPY.subheading}
-        columns={COMPARE_COLUMNS}
-      />
-      <BusinessStatStrip />
       <BusinessPartnership />
       <Solution />
       <BusinessCompareTable />
       <PartnerLeaderQuote />
       <BusinessPricingModel />
       <Faq />
+      <CompareScroll
+        placement="preCta"
+        eyebrow={COMPARE_SECTION_COPY.eyebrow}
+        line1={COMPARE_SECTION_COPY.line1}
+        line2={COMPARE_SECTION_COPY.line2}
+        subheadingPrefix={COMPARE_SECTION_COPY.subheadingPrefix}
+        subheadingBrand={COMPARE_SECTION_COPY.subheadingBrand}
+        columns={COMPARE_COLUMNS}
+      />
       <Cta />
     </>
   );

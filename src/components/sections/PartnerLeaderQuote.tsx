@@ -36,7 +36,7 @@ function TypewriterWord({
 
   return (
     <motion.span
-      className="inline whitespace-nowrap"
+      className="inline"
       initial={false}
       animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 4 }}
       transition={{ duration: reduceMotion ? 0 : WORD_ANIM_S, ease: EASE }}
@@ -150,13 +150,13 @@ export default function PartnerLeaderQuote() {
       className="scroll-mt-[120px] bg-[var(--bg)] py-20 md:py-28"
     >
       <motion.div
-        className="mx-auto max-w-content px-6 md:flex md:justify-end"
+        className="mx-auto grid max-w-content grid-cols-1 px-6 md:grid-cols-12"
         initial={{ opacity: reduceMotion ? 1 : 0 }}
         animate={started ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: reduceMotion ? 0 : 0.35, ease: EASE }}
       >
         <blockquote
-          className="w-full min-w-0 max-w-[580px] border-l-2 border-[var(--border)] pl-6 md:pl-8"
+          className="min-w-0 md:col-span-7 md:col-start-6 lg:col-span-6 lg:col-start-7"
           aria-label={ariaLabel}
         >
           <motion.div
@@ -164,11 +164,11 @@ export default function PartnerLeaderQuote() {
             animate={started ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
             transition={{ duration: reduceMotion ? 0 : 0.45, ease: EASE }}
           >
-            <QuoteMark variant="typographic" className="mb-2 md:mb-3" />
+            <QuoteMark variant="typographic" className="-ml-0.5 mb-4 md:mb-5" />
           </motion.div>
 
           <motion.div
-            className="space-y-5 md:space-y-6"
+            className="space-y-6 md:space-y-7"
             initial={false}
           >
             {quoteLines.map(({ paragraphIndex, words }) => {
@@ -199,7 +199,7 @@ export default function PartnerLeaderQuote() {
             })}
           </motion.div>
 
-          <footer className="mt-10 border-t border-[var(--border)] pt-8">
+          <footer className="mt-12 md:mt-14">
             <p
               className="font-serif text-[clamp(26px,3vw,32px)] font-extrabold tracking-[-0.02em] text-[var(--text)]"
               aria-hidden

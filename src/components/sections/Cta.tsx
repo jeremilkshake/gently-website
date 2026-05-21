@@ -8,7 +8,7 @@ export default function Cta() {
   const copy = isBiz ? ctaSection.business : ctaSection.individual;
 
   return (
-    <section id="cta" className="flex flex-col items-center justify-center py-24 md:py-32 px-6 text-center bg-[var(--bg)] relative overflow-hidden scroll-mt-[120px]">
+    <section id="cta" className="relative z-[1] flex flex-col items-center justify-center py-24 md:py-32 px-6 text-center bg-[var(--bg)] overflow-hidden scroll-mt-[120px]">
       {/* Glow */}
       <div
         className="absolute w-[500px] h-[280px] pointer-events-none"

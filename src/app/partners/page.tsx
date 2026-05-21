@@ -33,16 +33,19 @@ export default async function PartnersPage({
         <Hero variant="partnersHub" />
         <TrustBar />
         <BusinessWhyPartner />
-        <CompareScroll
-          eyebrow={COMPARE_SECTION_COPY.eyebrow}
-          heading={COMPARE_SECTION_COPY.heading}
-          subheading={COMPARE_SECTION_COPY.subheading}
-          columns={COMPARE_COLUMNS}
-        />
         <BusinessPartnership />
         <B2BSection />
         <BusinessCompareTable />
         <PartnerLeaderQuote />
+        <CompareScroll
+          placement="preCta"
+          eyebrow={COMPARE_SECTION_COPY.eyebrow}
+          line1={COMPARE_SECTION_COPY.line1}
+          line2={COMPARE_SECTION_COPY.line2}
+          subheadingPrefix={COMPARE_SECTION_COPY.subheadingPrefix}
+          subheadingBrand={COMPARE_SECTION_COPY.subheadingBrand}
+          columns={COMPARE_COLUMNS}
+        />
         <Cta />
       </main>
       <Footer />

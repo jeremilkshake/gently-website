@@ -1,6 +1,7 @@
 // src/components/sections/compare/CompareColumnsAnimated.tsx
 "use client";
 
+import { COMPARE_CONFIG } from "@/lib/compare/config";
 import { columnProgress } from "@/lib/compare/progress";
 import CompareColumnDeck from "./CompareColumnDeck";
 import CompareColumnHeader from "./CompareColumnHeader";
@@ -25,7 +26,8 @@ export default function CompareColumnsAnimated({
   longestCount,
   isLatched,
 }: CompareColumnsAnimatedProps) {
-  const animProgress = isLatched ? sectionProgress : 0;
+  // Stay stacked after pin ends — don't snap back to spread when sticky releases.
+  const animProgress = sectionProgress > 0 ? sectionProgress : 0;
   const negativeFill = columnProgress(
     animProgress,
     negative.cards.length,
@@ -37,6 +39,7 @@ export default function CompareColumnsAnimated({
     positive.cards.length,
     longestCount,
     negative.cards.length,
+    COMPARE_CONFIG.positiveProgressScale,
   );
 
   return (
@@ -49,7 +52,7 @@ export default function CompareColumnsAnimated({
           counterUnit={negative.counterUnit}
           donePillLabel={negative.donePillLabel}
           variant={negative.variant}
-          isStatic
+          isStatic={false}
         />
         <CompareColumnHeader
           title={positive.title}
@@ -57,9 +60,10 @@ export default function CompareColumnsAnimated({
           counterTo={positive.counterTo}
           counterUnit={positive.counterUnit}
           counterPrefix={positive.counterPrefix}
+          counterSuffix={positive.counterSuffix}
           donePillLabel={positive.donePillLabel}
           variant={positive.variant}
-          isStatic
+          isStatic={false}
         />
       </div>
 
